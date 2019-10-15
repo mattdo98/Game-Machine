@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
+   <children>
+      <AnchorPane prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #00e673;">
+         <children>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="14.0" layoutY="12.0" onMouseClicked="#getHome" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Home.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="114.0" layoutY="12.0" onMouseClicked="#getLibrary" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Library.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="214.0" layoutY="12.0" onMouseClicked="#getProfile" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Profile.png" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="getLogin" layoutX="417.0" prefHeight="81.0" prefWidth="376.0">
+               <children>
+                  <PasswordField fx:id="getPassword" layoutX="110.0" layoutY="41.0" />
+                  <TextField fx:id="getUsername" layoutX="110.0" layoutY="10.0" />
+                  <Label layoutX="35.0" layoutY="15.0" text="Username:" />
+                  <Label layoutX="37.0" layoutY="46.0" text="Password:" />
+                  <Button layoutX="313.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#getLogin" text="Login" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="getLoggedIn" layoutX="417.0" layoutY="2.0" prefHeight="81.0" prefWidth="376.0" visible="false">
+               <children>
+                  <Label layoutX="150.0" layoutY="30.0" text="LOGGED IN" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getHome" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00cc66;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="HOME" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getLibrary" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00cc66;" visible="false">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="LIBRARY" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getProfile" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00cc66;" visible="false">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="PROFILE" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
