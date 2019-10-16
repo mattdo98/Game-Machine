@@ -8,44 +8,74 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class GameRentalController {
+  // FX ID for Task Bar AnchorPane
   @FXML
-  private TextField getUsername;
-  @FXML
-  private PasswordField getPassword;
-  @FXML
-  private AnchorPane getLogin;
-  @FXML
-  private AnchorPane getHome;
-  @FXML
-  private AnchorPane getLibrary;
-  @FXML
-  private AnchorPane getProfile;
-  @FXML
-  private PasswordField CreatePassword;
-  @FXML
-  private TextField CreateUsername;
+  private AnchorPane getTaskBar;
+  // FX ID for the myName label on top right
   @FXML
   private Label myName;
+  // FX ID for the HOME AnchorPane
   @FXML
-  /*
-    When logout label is clicked, disable the visibility of the other menu screens and make the
-    login screen visible.
-  */
+  private AnchorPane getHome;
+  // FX ID for the LIBRARY AnchorPane
+  @FXML
+  private AnchorPane getLibrary;
+  // FX ID for the PROFILE AnchorPane
+  @FXML
+  private AnchorPane getProfile;
+  // FX ID for the LOGIN AnchorPane
+  @FXML
+  private AnchorPane getLogin;
+  // FX ID for the EnterLogin AnchorPane
+  @FXML
+  private AnchorPane EnterLogin;
+  // FX ID for the EnterCreateAccount AnchorPane
+  @FXML
+  private AnchorPane EnterCreateAccount;
+  // FX ID for Password Field under Login
+  @FXML
+  private PasswordField getPassword;
+  // FX ID for Username Field under Login
+  @FXML
+  private TextField getUsername;
+  // FX ID for Password Field under Create Account
+  @FXML
+  private PasswordField CreatePassword;
+  // FX ID for Username Field under Create Account
+  @FXML
+  private TextField CreateUsername;
+
+  // On Mouse Click Show Create Account
+  @FXML
+  void ClickCreateAccount(MouseEvent event) {
+    EnterLogin.setVisible(false);
+    EnterCreateAccount.setVisible(true);
+  }
+
+  // On Mouse Click Show Login
+  @FXML
+  void ClickLogin(MouseEvent event) {
+    EnterLogin.setVisible(true);
+    EnterCreateAccount.setVisible(false);
+  }
+  @FXML
+
+  // On Mouse Click Logout
   void getLogout(MouseEvent event) {
     getLogin.setVisible(true);
     getHome.setVisible(false);
     getLibrary.setVisible(false);
     getProfile.setVisible(false);
+    getTaskBar.setVisible(false);
   }
+
+  // On Mouse Click for Create Account Button
   @FXML
   void CreateLogin(MouseEvent event) {
 
   }
-  /*
-    Get Login, assigns the text in username and password fields to variables. Prints the username
-    and password fields to test that we can see them. Changes the login screen to not be
-    visible and then sets the loggedin screen as visible.
-  */
+
+  // On Mouse Click for Login Button
   @FXML
   void getLogin(MouseEvent event) {
     String username = getUsername.getText();
@@ -55,32 +85,27 @@ public class GameRentalController {
 
     getLogin.setVisible(false);
     getHome.setVisible(true);
+    getTaskBar.setVisible(true);
     myName.setText(username);
   }
-  /*
-    If user clicks on the home button, we set the home anchorpane to visible and set the rest to
-    not be visible.
-  */
+
+  // On Mouse Click for HOME Label
   @FXML
   void getHome(MouseEvent event) {
     getHome.setVisible(true);
     getLibrary.setVisible(false);
     getProfile.setVisible(false);
   }
-  /*
-  If user clicks on the library button, we set the library anchorpane to visible and set the rest to
-  not be visible.
-*/
+
+  // On Mouse Click for LIBRARY Label
   @FXML
   void getLibrary(MouseEvent event) {
     getHome.setVisible(false);
     getLibrary.setVisible(true);
     getProfile.setVisible(false);
   }
-  /*
-  If user clicks on the profile button, we set the profile anchorpane to visible and set the rest to
-  not be visible.
-*/
+
+  // On Mouse Click for PROFILE Label
   @FXML
   void getProfile(MouseEvent event) {
     getHome.setVisible(false);
