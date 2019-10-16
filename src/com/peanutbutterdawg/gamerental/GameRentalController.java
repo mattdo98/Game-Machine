@@ -1,6 +1,7 @@
 package com.peanutbutterdawg.gamerental;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -14,13 +15,32 @@ public class GameRentalController {
   @FXML
   private AnchorPane getLogin;
   @FXML
-  private AnchorPane getLoggedIn;
-  @FXML
   private AnchorPane getHome;
   @FXML
   private AnchorPane getLibrary;
   @FXML
   private AnchorPane getProfile;
+  @FXML
+  private PasswordField CreatePassword;
+  @FXML
+  private TextField CreateUsername;
+  @FXML
+  private Label myName;
+  @FXML
+  /*
+    When logout label is clicked, disable the visibility of the other menu screens and make the
+    login screen visible.
+  */
+  void getLogout(MouseEvent event) {
+    getLogin.setVisible(true);
+    getHome.setVisible(false);
+    getLibrary.setVisible(false);
+    getProfile.setVisible(false);
+  }
+  @FXML
+  void CreateLogin(MouseEvent event) {
+
+  }
   /*
     Get Login, assigns the text in username and password fields to variables. Prints the username
     and password fields to test that we can see them. Changes the login screen to not be
@@ -34,7 +54,8 @@ public class GameRentalController {
     System.out.println(username + " " + password);
 
     getLogin.setVisible(false);
-    getLoggedIn.setVisible(true);
+    getHome.setVisible(true);
+    myName.setText(username);
   }
   /*
     If user clicks on the home button, we set the home anchorpane to visible and set the rest to
