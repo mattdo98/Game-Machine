@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<<<<<<< HEAD
-<?import javafx.scene.control.ChoiceBox?>
-=======
->>>>>>> origin/master
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
@@ -14,11 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
    <children>
-<<<<<<< HEAD
-      <AnchorPane fx:id="getTaskBar" prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;">
-=======
       <AnchorPane fx:id="getTaskBar" prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;" visible="false">
->>>>>>> origin/master
          <children>
             <Label layoutX="662.0" layoutY="12.0" prefHeight="31.0" prefWidth="44.0" text="Hello, " textFill="WHITE" />
             <Label fx:id="myName" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
@@ -49,17 +41,9 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-<<<<<<< HEAD
-      <AnchorPane fx:id="getHome" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;">
-         <children>
-            <Label layoutX="14.0" layoutY="14.0" text="HOME" textFill="WHITE" />
-            <ChoiceBox fx:id="searchFilters" layoutX="625.0" layoutY="60.0" prefHeight="27.0" prefWidth="161.0" />
-            <TextField fx:id="searchField" layoutX="625.0" layoutY="23.0" promptText="Search" />
-=======
       <AnchorPane fx:id="getHome" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="HOME" textFill="WHITE" />
->>>>>>> origin/master
          </children>
       </AnchorPane>
       <AnchorPane fx:id="getLibrary" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
@@ -77,11 +61,7 @@
             <Label layoutX="14.0" layoutY="14.0" text="ADMIN" textFill="WHITE" />
          </children>
       </AnchorPane>
-<<<<<<< HEAD
-      <AnchorPane fx:id="getLogin" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-=======
       <AnchorPane fx:id="getLogin" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
->>>>>>> origin/master
          <children>
             <AnchorPane fx:id="EnterLogin" layoutX="253.0" layoutY="276.0" prefHeight="140.0" prefWidth="300.0" visible="false">
                <children>
@@ -92,11 +72,7 @@
                   <RadioButton fx:id="AdminLogin" layoutX="14.0" layoutY="104.0" mnemonicParsing="false" text="Admin Login" textFill="WHITE" />
                </children>
             </AnchorPane>
-<<<<<<< HEAD
-            <AnchorPane fx:id="EnterCreateAccount" layoutX="253.0" layoutY="276.0" prefHeight="100.0" prefWidth="300.0" visible="false">
-=======
             <AnchorPane fx:id="EnterCreateAccount" layoutX="253.0" layoutY="276.0" prefHeight="128.0" prefWidth="300.0" visible="false">
->>>>>>> origin/master
                <children>
                   <PasswordField fx:id="CreatePassword" layoutX="14.0" layoutY="60.0" promptText="Password" />
                   <TextField fx:id="CreateUsername" layoutX="14.0" layoutY="29.0" promptText="Username" />
@@ -118,10 +94,7 @@
                   </Label>
                </children>
             </AnchorPane>
-<<<<<<< HEAD
-=======
             <Label fx:id="SuccessCreatedAccount" layoutX="253.0" layoutY="406.0" text="Account Successfully Created!" textFill="WHITE" visible="false" />
->>>>>>> origin/master
          </children>
       </AnchorPane>
    </children>
