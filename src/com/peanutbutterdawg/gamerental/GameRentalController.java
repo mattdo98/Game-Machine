@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class GameRentalController {
-  // FX ID for Task Bar AnchorPane
   @FXML
   private AnchorPane getTaskBar;
 
@@ -75,9 +74,6 @@ public class GameRentalController {
 
   @FXML
   private TextField CreateUsername;
-
-  @FXML
-  private AnchorPane getLoginInfo;
 
   @FXML
   private Label SuccessCreatedAccount;
