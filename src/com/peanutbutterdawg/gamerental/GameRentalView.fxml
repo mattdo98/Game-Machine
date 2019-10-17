@@ -99,7 +99,7 @@
                   <Label layoutX="14.0" layoutY="9.0" text="Create Account:" textFill="WHITE" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="getLoginInfo" layoutX="253.0" layoutY="224.0" prefHeight="52.0" prefWidth="294.0">
+            <AnchorPane fx:id="getLoginInfo" layoutX="253.0" layoutY="224.0" prefHeight="52.0" prefWidth="294.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="253.0">
                <children>
                   <Label layoutY="9.0" onMouseClicked="#ClickLogin" text="Login |" textFill="WHITE">
                      <font>

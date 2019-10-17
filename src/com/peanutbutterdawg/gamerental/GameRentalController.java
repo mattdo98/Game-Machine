@@ -120,6 +120,10 @@ public class GameRentalController {
     EnterCreateAccount.setVisible(false);
     EnterLogin.setVisible(false);
     SuccessCreatedAccount.setVisible(true);
+
+    // Clear Username and Password
+    CreateUsername.setText("");
+    CreatePassword.setText("");
   }
 
   // On Mouse Click for Login Button
@@ -143,6 +147,10 @@ public class GameRentalController {
     getTaskBar.setVisible(true);
     myName.setText(username);
     SuccessCreatedAccount.setVisible(false);
+
+    // Clear Username and Password
+    getUsername.setText("");
+    getPassword.setText("");
   }
 
   // On Mouse Click for ADMIN Label
