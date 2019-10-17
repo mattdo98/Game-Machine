@@ -1,10 +1,13 @@
 package com.peanutbutterdawg.gamerental;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -12,49 +15,70 @@ public class GameRentalController {
   // FX ID for Task Bar AnchorPane
   @FXML
   private AnchorPane getTaskBar;
-  // FX ID for the myName label on top right
+
   @FXML
   private Label myName;
-  // FX ID for the HOME AnchorPane
-  @FXML
-  private AnchorPane getHome;
-  // FX ID for the LIBRARY AnchorPane
-  @FXML
-  private AnchorPane getLibrary;
-  // FX ID for the PROFILE AnchorPane
-  @FXML
-  private AnchorPane getProfile;
-  // FX ID for the ADMIN Tab AnchorPane
+
   @FXML
   private AnchorPane getAdminTab;
-  // FX ID for the ADMIN AnchorPane
+
+  @FXML
+  private AnchorPane getHome;
+
+  @FXML
+  private ImageView imageView1;
+
+  @FXML
+  private ImageView imageView2;
+
+  @FXML
+  private ImageView imageView3;
+
+  @FXML
+  private TextField searchBar;
+
+  @FXML
+  private ChoiceBox<?> filterChoiceBox;
+
+  @FXML
+  private TableView<?> gamesTableView;
+
+  @FXML
+  private AnchorPane getLibrary;
+
+  @FXML
+  private AnchorPane getProfile;
+
   @FXML
   private AnchorPane getAdmin;
-  // FX ID for the LOGIN AnchorPane
+
   @FXML
   private AnchorPane getLogin;
-  // FX ID for the EnterLogin AnchorPane
+
   @FXML
   private AnchorPane EnterLogin;
-  // FX ID for the EnterCreateAccount AnchorPane
-  @FXML
-  private AnchorPane EnterCreateAccount;
-  // FX ID for Password Field under Login
+
   @FXML
   private PasswordField getPassword;
-  // FX ID for Username Field under Login
+
   @FXML
   private TextField getUsername;
-  // FX ID for Admin Radio Button
+
   @FXML
   private RadioButton AdminLogin;
-  // FX ID for Password Field under Create Account
+
+  @FXML
+  private AnchorPane EnterCreateAccount;
+
   @FXML
   private PasswordField CreatePassword;
-  // FX ID for Username Field under Create Account
+
   @FXML
   private TextField CreateUsername;
-  // FX ID for SuccessCreatedAccount Label on Create Account Screen
+
+  @FXML
+  private AnchorPane getLoginInfo;
+
   @FXML
   private Label SuccessCreatedAccount;
 
