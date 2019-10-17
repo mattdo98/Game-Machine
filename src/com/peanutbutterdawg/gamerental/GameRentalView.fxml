@@ -94,7 +94,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <Label fx:id="SuccessCreatedAccount" layoutX="253.0" layoutY="406.0" text="Account Successfully Created!" textFill="WHITE" visible="false" />
+            <Label fx:id="SuccessCreatedAccount" layoutX="253.0" layoutY="406.0" text="Account Successfully Created" textFill="WHITE" visible="false" />
          </children>
       </AnchorPane>
    </children>
