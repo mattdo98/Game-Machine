@@ -72,7 +72,7 @@
                   <RadioButton fx:id="AdminLogin" layoutX="14.0" layoutY="104.0" mnemonicParsing="false" text="Admin Login" textFill="WHITE" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="EnterCreateAccount" layoutX="253.0" layoutY="276.0" prefHeight="100.0" prefWidth="300.0" visible="false">
+            <AnchorPane fx:id="EnterCreateAccount" layoutX="253.0" layoutY="276.0" prefHeight="128.0" prefWidth="300.0" visible="false">
                <children>
                   <PasswordField fx:id="CreatePassword" layoutX="14.0" layoutY="60.0" promptText="Password" />
                   <TextField fx:id="CreateUsername" layoutX="14.0" layoutY="29.0" promptText="Username" />
@@ -94,6 +94,7 @@
                   </Label>
                </children>
             </AnchorPane>
+            <Label fx:id="SuccessCreatedAccount" layoutX="253.0" layoutY="406.0" text="Account Successfully Created!" textFill="WHITE" visible="false" />
          </children>
       </AnchorPane>
    </children>

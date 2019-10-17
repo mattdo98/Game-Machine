@@ -54,12 +54,16 @@ public class GameRentalController {
   // FX ID for Username Field under Create Account
   @FXML
   private TextField CreateUsername;
+  // FX ID for SuccessCreatedAccount Label on Create Account Screen
+  @FXML
+  private Label SuccessCreatedAccount;
 
   // On Mouse Click Show Create Account
   @FXML
   void ClickCreateAccount(MouseEvent event) {
     EnterLogin.setVisible(false);
     EnterCreateAccount.setVisible(true);
+    SuccessCreatedAccount.setVisible(false);
   }
 
   // On Mouse Click Show Login
@@ -67,6 +71,7 @@ public class GameRentalController {
   void ClickLogin(MouseEvent event) {
     EnterLogin.setVisible(true);
     EnterCreateAccount.setVisible(false);
+    SuccessCreatedAccount.setVisible(false);
   }
   @FXML
 
@@ -84,15 +89,25 @@ public class GameRentalController {
   // On Mouse Click for Create Account Button
   @FXML
   void CreateLogin(MouseEvent event) {
+    // Assigns the Username and Password the user entered to a String Variable
+    String username = getUsername.getText();
+    String password = getPassword.getText();
 
+    // Print Username and Password in System for Debug
+    System.out.println(username + " " + password);
+
+    // Set These Menus Visibility
+    EnterCreateAccount.setVisible(false);
+    EnterLogin.setVisible(false);
+    SuccessCreatedAccount.setVisible(true);
   }
 
   // On Mouse Click for Login Button
   @FXML
   void getLogin(MouseEvent event) {
     // Assigns the Username and Password the user entered to a String Variable
-    String username = getUsername.getText();
-    String password = getPassword.getText();
+    String username = CreateUsername.getText();
+    String password = CreatePassword.getText();
 
     // If the AdminLogin Radio Button is Selected, Show Admin Tab
     if (AdminLogin.isSelected()) {
@@ -107,6 +122,7 @@ public class GameRentalController {
     getHome.setVisible(true);
     getTaskBar.setVisible(true);
     myName.setText(username);
+    SuccessCreatedAccount.setVisible(false);
   }
 
   // On Mouse Click for ADMIN Label
