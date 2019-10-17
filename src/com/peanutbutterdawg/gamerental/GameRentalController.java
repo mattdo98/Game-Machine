@@ -90,8 +90,8 @@ public class GameRentalController {
   @FXML
   void CreateLogin(MouseEvent event) {
     // Assigns the Username and Password the user entered to a String Variable
-    String username = getUsername.getText();
-    String password = getPassword.getText();
+    String username = CreateUsername.getText();
+    String password = CreatePassword.getText();
 
     // Print Username and Password in System for Debug
     System.out.println(username + " " + password);
@@ -106,8 +106,8 @@ public class GameRentalController {
   @FXML
   void getLogin(MouseEvent event) {
     // Assigns the Username and Password the user entered to a String Variable
-    String username = CreateUsername.getText();
-    String password = CreatePassword.getText();
+    String username = getUsername.getText();
+    String password = getPassword.getText();
 
     // If the AdminLogin Radio Button is Selected, Show Admin Tab
     if (AdminLogin.isSelected()) {
@@ -163,5 +163,16 @@ public class GameRentalController {
     getLibrary.setVisible(false);
     getProfile.setVisible(true);
     getAdmin.setVisible(false);
+  }
+  // initialize method
+  @FXML
+  private void initialize() {
+    // Set These Menus to Visible by Default
+    getHome.setVisible(false);
+    getLibrary.setVisible(false);
+    getProfile.setVisible(false);
+    getAdmin.setVisible(false);
+    getTaskBar.setVisible(false);
+    getLogin.setVisible(true);
   }
 }

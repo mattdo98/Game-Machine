@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
@@ -43,8 +48,21 @@
       </AnchorPane>
       <AnchorPane fx:id="getHome" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
          <children>
-            <Label layoutX="14.0" layoutY="14.0" text="HOME" textFill="WHITE" />
-            <Button layoutX="253.0" layoutY="191.0" mnemonicParsing="false" text="Button" />
+            <Label layoutX="14.0" layoutY="14.0" text="Top Games" textFill="WHITE" />
+            <FlowPane layoutX="14.0" layoutY="31.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </FlowPane>
+            <TextField layoutX="599.0" layoutY="35.0" />
+            <ChoiceBox layoutX="625.0" layoutY="80.0" prefHeight="27.0" prefWidth="161.0" />
+            <TableView layoutX="14.0" layoutY="252.0" prefHeight="254.0" prefWidth="600.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="Game" />
+              </columns>
+            </TableView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="getLibrary" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
@@ -62,7 +80,7 @@
             <Label layoutX="14.0" layoutY="14.0" text="ADMIN" textFill="WHITE" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="getLogin" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="getLogin" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="EnterLogin" layoutX="253.0" layoutY="276.0" prefHeight="140.0" prefWidth="300.0" visible="false">
                <children>
