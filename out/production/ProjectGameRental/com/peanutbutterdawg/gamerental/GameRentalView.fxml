@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
+   <children>
+      <AnchorPane prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;">
+         <children>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="14.0" layoutY="12.0" onMouseClicked="#getHome" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Home.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="114.0" layoutY="12.0" onMouseClicked="#getLibrary" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Library.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="214.0" layoutY="12.0" onMouseClicked="#getProfile" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/Profile.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="662.0" layoutY="12.0" prefHeight="31.0" prefWidth="44.0" text="Hello, " textFill="WHITE" />
+            <Label fx:id="myName" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
+            <Label layoutX="662.0" layoutY="42.0" onMouseClicked="#getLogout" text="LOGOUT" textFill="WHITE" underline="true" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getHome" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="HOME" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getLibrary" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="LIBRARY" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getProfile" layoutY="81.0" prefHeight="523.0" prefWidth="800.0" style="-fx-background-color: #00264d;" visible="false">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="PROFILE" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="getLogin" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;">
+         <children>
+            <AnchorPane layoutX="212.0" layoutY="320.0" prefHeight="81.0" prefWidth="376.0">
+               <children>
+                  <PasswordField fx:id="getPassword" layoutX="110.0" layoutY="41.0" />
+                  <TextField fx:id="getUsername" layoutX="110.0" layoutY="10.0" />
+                  <Label layoutX="35.0" layoutY="15.0" text="Username:" textFill="WHITE" />
+                  <Label layoutX="37.0" layoutY="46.0" text="Password:" textFill="WHITE" />
+                  <Button layoutX="309.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#getLogin" text="Submit" />
+                  <Label layoutX="110.0" layoutY="-10.0" text="Login:" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="212.0" layoutY="199.0" prefHeight="81.0" prefWidth="376.0">
+               <children>
+                  <PasswordField fx:id="CreatePassword" layoutX="110.0" layoutY="41.0" />
+                  <TextField fx:id="CreateUsername" layoutX="110.0" layoutY="10.0" />
+                  <Label layoutX="35.0" layoutY="15.0" text="Username:" textFill="WHITE" />
+                  <Label layoutX="37.0" layoutY="46.0" text="Password:" textFill="WHITE" />
+                  <Button layoutX="309.0" layoutY="25.0" mnemonicParsing="false" onMouseClicked="#CreateLogin" text="Submit" />
+                  <Label layoutX="110.0" layoutY="-10.0" text="Create Account:" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
