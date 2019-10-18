@@ -1,70 +1,26 @@
 package com.peanutbutterdawg.gamerental;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class GameRentalController {
-  @FXML
-  private AnchorPane getTaskBar;
-
-  @FXML
-  private Label myName;
-
-  @FXML
-  private AnchorPane getAdminTab;
-
-  @FXML
-  private AnchorPane getHome;
-
-  @FXML
-  private ImageView imageView1;
-
-  @FXML
-  private ImageView imageView2;
-
-  @FXML
-  private ImageView imageView3;
-
-  @FXML
-  private TextField searchBar;
-
-  @FXML
-  private ChoiceBox<?> filterChoiceBox;
-
-  @FXML
-  private TableView<?> gamesTableView;
-
-  @FXML
-  private AnchorPane getLibrary;
-
-  @FXML
-  private AnchorPane getProfile;
-
-  @FXML
-  private AnchorPane getAdmin;
-
-  @FXML
-  private AnchorPane getLogin;
-
+public class GameRentalController implements Initializable {
   @FXML
   private AnchorPane EnterLogin;
-
-  @FXML
-  private PasswordField getPassword;
-
-  @FXML
-  private TextField getUsername;
-
-  @FXML
-  private RadioButton AdminLogin;
 
   @FXML
   private AnchorPane EnterCreateAccount;
@@ -76,9 +32,38 @@ public class GameRentalController {
   private TextField CreateUsername;
 
   @FXML
+  private PasswordField Password;
+
+  @FXML
+  private TextField Username;
+
+  @FXML
   private Label SuccessCreatedAccount;
 
-  // On Mouse Click Show Create Account
+  @FXML
+  private RadioButton AdminLogin;
+
+  @FXML
+  private Label myName;
+
+  @FXML
+  private AnchorPane getAdminTab;
+
+  // Assigns the Created Username and Created Password the user entered to a String Variable
+  @FXML public String createUsername;
+  @FXML public String createPassword;
+
+  // Assigns the Username and Password the user entered to a String Variable
+  @FXML public String username;
+  @FXML public String password;
+
+  // initialize method
+  @Override
+  public void initialize(URL url, ResourceBundle rb) {
+
+  }
+
+  // On Mouse Click Show Create Account Items on LoginView
   @FXML
   void ClickCreateAccount(MouseEvent event) {
     EnterLogin.setVisible(false);
@@ -86,35 +71,23 @@ public class GameRentalController {
     SuccessCreatedAccount.setVisible(false);
   }
 
-  // On Mouse Click Show Login
+  // On Mouse Click Show Login Items on LoginView
   @FXML
   void ClickLogin(MouseEvent event) {
     EnterLogin.setVisible(true);
     EnterCreateAccount.setVisible(false);
     SuccessCreatedAccount.setVisible(false);
   }
-  @FXML
 
-  // On Mouse Click Logout
-  void getLogout(MouseEvent event) {
-    getLogin.setVisible(true);
-    getHome.setVisible(false);
-    getLibrary.setVisible(false);
-    getProfile.setVisible(false);
-    getTaskBar.setVisible(false);
-    getAdminTab.setVisible(false);
-    getAdmin.setVisible(false);
-  }
-
-  // On Mouse Click for Create Account Button
+  // On Action for Create Account Button
   @FXML
-  void CreateLogin(MouseEvent event) {
-    // Assigns the Username and Password the user entered to a String Variable
-    String username = CreateUsername.getText();
-    String password = CreatePassword.getText();
+  void CreateLogin(ActionEvent event) {
+    // Grab Text in Username and Password Fields
+    createUsername = CreateUsername.getText();
+    createPassword = CreatePassword.getText();
 
     // Print Username and Password in System for Debug
-    System.out.println(username + " " + password);
+    System.out.println(createUsername + " " + createPassword);
 
     // Set These Menus Visibility
     EnterCreateAccount.setVisible(false);
@@ -126,81 +99,93 @@ public class GameRentalController {
     CreatePassword.setText("");
   }
 
-  // On Mouse Click for Login Button
+  // On Action for Login Button
   @FXML
-  void getLogin(MouseEvent event) {
-    // Assigns the Username and Password the user entered to a String Variable
-    String username = getUsername.getText();
-    String password = getPassword.getText();
+  void Login(ActionEvent event) throws IOException {
+    // Grab Text in Username and Password Fields
+    username = Username.getText();
+    password = Password.getText();
 
-    // If the AdminLogin Radio Button is Selected, Show Admin Tab
-    if (AdminLogin.isSelected()) {
-      getAdminTab.setVisible(true);
-    }
+    // Loads HomeView
+    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
+    Scene HomeViewScene = new Scene(HomeViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(HomeViewScene);
+    window.show();
 
     // Print Username and Password in System for Debug
     System.out.println(username + " " + password);
 
-    // On Login Set These Menus to Visible
-    getLogin.setVisible(false);
-    getHome.setVisible(true);
-    getTaskBar.setVisible(true);
-    myName.setText(username);
-    SuccessCreatedAccount.setVisible(false);
-
     // Clear Username and Password
-    getUsername.setText("");
-    getPassword.setText("");
+    Username.setText("");
+    Password.setText("");
   }
 
-  // On Mouse Click for ADMIN Label
+  // On Action for LOGOUT Button
   @FXML
-  void getAdmin(MouseEvent event) {
-    // Set These Menus to Visible
-    getHome.setVisible(false);
-    getLibrary.setVisible(false);
-    getProfile.setVisible(false);
-    getAdmin.setVisible(true);
+  void getLogout(ActionEvent event) throws IOException   {
+    Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+    Scene LoginViewScene = new Scene(LoginViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(LoginViewScene);
+    window.show();
   }
 
-  // On Mouse Click for HOME Label
+  // On Action for HOME Button
   @FXML
-  void getHome(MouseEvent event) {
-    // Set These Menus to Visible
-    getHome.setVisible(true);
-    getLibrary.setVisible(false);
-    getProfile.setVisible(false);
-    getAdmin.setVisible(false);
+  void getHome(ActionEvent event) throws IOException  {
+    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
+    Scene HomeViewScene = new Scene(HomeViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(HomeViewScene);
+    window.show();
   }
 
-  // On Mouse Click for LIBRARY Label
+  // On Action for LIBRARY Button
   @FXML
-  void getLibrary(MouseEvent event) {
-    // Set These Menus to Visible
-    getHome.setVisible(false);
-    getLibrary.setVisible(true);
-    getProfile.setVisible(false);
-    getAdmin.setVisible(false);
+  void getLibrary(ActionEvent event) throws IOException  {
+    Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
+    Scene LibraryViewScene = new Scene(LibraryViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(LibraryViewScene);
+    window.show();
   }
 
-  // On Mouse Click for PROFILE Label
+  // On Action for PROFILE Button
   @FXML
-  void getProfile(MouseEvent event) {
-    // Set These Menus to Visible
-    getHome.setVisible(false);
-    getLibrary.setVisible(false);
-    getProfile.setVisible(true);
-    getAdmin.setVisible(false);
+  void getProfile(ActionEvent event) throws IOException  {
+    Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
+    Scene ProfileViewScene = new Scene(ProfileViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(ProfileViewScene);
+    window.show();
   }
-  // initialize method
+
+  // On Action for ADMIN Button
   @FXML
-  private void initialize() {
-    // Set These Menus to Visible by Default
-    getHome.setVisible(false);
-    getLibrary.setVisible(false);
-    getProfile.setVisible(false);
-    getAdmin.setVisible(false);
-    getTaskBar.setVisible(false);
-    getLogin.setVisible(true);
+  void getAdmin(ActionEvent event) throws IOException  {
+    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+    Scene AdminViewScene = new Scene(AdminViewParent);
+
+    //This line gets the Stage information
+    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    window.setScene(AdminViewScene);
+    window.show();
   }
 }
