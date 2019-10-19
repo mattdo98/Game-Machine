@@ -2,6 +2,7 @@ package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class GameRentalController implements Initializable {
@@ -41,6 +44,16 @@ public class GameRentalController implements Initializable {
   private Label SuccessCreatedAccount;
 
   @FXML
+  private TextFlow userName;
+
+  @FXML
+  private TextFlow userEmail;
+
+  @FXML
+  private TextFlow subEnd;
+
+
+  @FXML
   private RadioButton AdminLogin;
 
   @FXML
@@ -60,6 +73,8 @@ public class GameRentalController implements Initializable {
   // initialize method
   @Override
   public void initialize(URL url, ResourceBundle rb) {
+    // Text to show sub end date (*not currently working)
+    subEnd = new TextFlow(new Text(displaySubEnd()));
 
   }
 
@@ -171,9 +186,9 @@ public class GameRentalController implements Initializable {
 
     //This line gets the Stage information
     Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
     window.setScene(ProfileViewScene);
     window.show();
+
   }
 
   // On Action for ADMIN Button
@@ -188,4 +203,15 @@ public class GameRentalController implements Initializable {
     window.setScene(AdminViewScene);
     window.show();
   }
+  //Shows subscription ending (*not currently functioning correctly)
+  public String displaySubEnd(){
+    Calendar dateEnd = Calendar.getInstance();
+    dateEnd.add(Calendar.MONTH,1);
+    return dateEnd.toString();
+  }
+
+
+
+
+
 }
