@@ -9,22 +9,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="profileView" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.221" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
+<AnchorPane fx:id="profileView" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.GameRentalController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button layoutX="662.0" layoutY="39.0" mnemonicParsing="false" onAction="#getLogout" style="-fx-background-color: transparent;" text="LOGOUT" textFill="WHITE" underline="true" />
             <Label layoutX="662.0" layoutY="12.0" prefHeight="31.0" prefWidth="44.0" text="Hello, " textFill="WHITE" />
             <Label fx:id="myName" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
-            <AnchorPane fx:id="getAdminTab" layoutX="322.0" layoutY="28.0" prefHeight="12.0" prefWidth="106.0" visible="false">
-               <children>
-                  <Label onMouseClicked="#getAdmin" text=" | ADMIN" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
             <Button alignment="CENTER" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#getHome" prefHeight="53.0" prefWidth="127.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="HOME" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
@@ -35,52 +26,56 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" layoutX="286.0" layoutY="12.0" mnemonicParsing="false" onAction="#getProfile" prefHeight="53.0" prefWidth="145.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="PROFILE" textAlignment="CENTER" textFill="WHITE" AnchorPane.topAnchor="12.0">
+            <Button alignment="CENTER" layoutX="286.0" layoutY="12.0" mnemonicParsing="false" onAction="#getProfile" prefHeight="53.0" prefWidth="145.0" style="-fx-border-color: transparent; -fx-background-color: #00264d;" text="PROFILE" textAlignment="CENTER" textFill="WHITE" AnchorPane.topAnchor="12.0">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" layoutX="431.0" layoutY="12.0" mnemonicParsing="false" onAction="#getAdmin" prefHeight="53.0" prefWidth="145.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="ADMIN" textAlignment="CENTER" textFill="WHITE" visible="false">
+            <Button alignment="CENTER" layoutX="431.0" layoutY="12.0" mnemonicParsing="false" onAction="#getAdmin" prefHeight="53.0" prefWidth="145.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="ADMIN" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Button>
-            <GridPane layoutX="61.0" layoutY="121.0" prefHeight="232.0" prefWidth="354.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="165.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="189.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
                <children>
-                  <TextFlow fx:id="userName" prefHeight="130.0" prefWidth="189.0" GridPane.columnIndex="1" />
-                  <Label prefHeight="96.0" prefWidth="185.0" text="Username:" textAlignment="CENTER" textFill="#fffefe">
+                  <GridPane layoutX="14.0" layoutY="63.0" prefHeight="232.0" prefWidth="354.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="165.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="189.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextFlow fx:id="userName" prefHeight="130.0" prefWidth="189.0" GridPane.columnIndex="1" />
+                        <Label prefHeight="96.0" prefWidth="185.0" text="Username:" textAlignment="CENTER" textFill="#fffefe">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <TextFlow fx:id="userEmail" prefHeight="124.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label prefHeight="75.0" prefWidth="165.0" text="Email:" textFill="WHITE" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="105.0" prefWidth="165.0" text="Subscription ends: " textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <TextFlow fx:id="subEnd" prefHeight="144.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+                  <Label layoutX="17.0" layoutY="14.0" text="Account information" textFill="WHITE">
                      <font>
-                        <Font size="19.0" />
+                        <Font size="33.0" />
                      </font>
                   </Label>
-                  <TextFlow fx:id="userEmail" prefHeight="124.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label prefHeight="75.0" prefWidth="165.0" text="Email:" textFill="WHITE" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="105.0" prefWidth="165.0" text="Subscription ends: " textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                  <TextFlow fx:id="subEnd" prefHeight="144.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
-            </GridPane>
-            <Label layoutX="64.0" layoutY="72.0" text="Account information" textFill="WHITE">
-               <font>
-                  <Font size="33.0" />
-               </font>
-            </Label>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
