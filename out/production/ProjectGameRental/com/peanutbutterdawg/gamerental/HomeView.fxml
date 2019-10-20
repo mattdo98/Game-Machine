@@ -17,7 +17,7 @@
          <children>
             <Button layoutX="662.0" layoutY="39.0" mnemonicParsing="false" onAction="#getLogout" style="-fx-background-color: transparent;" text="LOGOUT" textFill="WHITE" underline="true" />
             <Label layoutX="662.0" layoutY="12.0" prefHeight="31.0" prefWidth="44.0" text="Hello, " textFill="WHITE" />
-            <Label fx:id="myName" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
+            <Label fx:id="name" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
             <AnchorPane fx:id="getAdminTab" layoutX="322.0" layoutY="28.0" prefHeight="12.0" prefWidth="106.0" visible="false">
                <children>
                   <Label onMouseClicked="#getAdmin" text=" | ADMIN" textFill="WHITE">
