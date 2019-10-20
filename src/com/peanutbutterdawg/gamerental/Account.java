@@ -2,14 +2,11 @@ package com.peanutbutterdawg.gamerental;
 
 interface Account {
 
-    void setUserID(String userID);
-    String getUserID();
+  void setUserID(String userID);
 
-    void setUsername(String username);
+  String getUserID();
 
-    void setPassword(String password);
+  void setUsername(String username);
 
-
-
-
+  void setPassword(String password);
 }
