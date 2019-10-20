@@ -38,7 +38,7 @@
             </Button>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
                <children>
-                  <GridPane layoutX="14.0" layoutY="63.0" prefHeight="232.0" prefWidth="354.0">
+                  <GridPane layoutX="14.0" layoutY="63.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="75.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="165.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="189.0" />
@@ -50,28 +50,28 @@
                     </rowConstraints>
                      <children>
                         <TextFlow fx:id="userName" prefHeight="130.0" prefWidth="189.0" GridPane.columnIndex="1" />
-                        <Label prefHeight="96.0" prefWidth="185.0" text="Username:" textAlignment="CENTER" textFill="#fffefe">
+                        <Label text="Username:" textAlignment="CENTER" textFill="#fffefe">
                            <font>
-                              <Font size="19.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
                         <TextFlow fx:id="userEmail" prefHeight="124.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label prefHeight="75.0" prefWidth="165.0" text="Email:" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
-                              <Font size="19.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="105.0" prefWidth="165.0" text="Subscription ends: " textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
+                        <Label prefHeight="74.0" prefWidth="212.0" text="Subscription Ends: " textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
                            <font>
-                              <Font size="19.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
                         <TextFlow fx:id="subEnd" prefHeight="144.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <Label layoutX="17.0" layoutY="14.0" text="Account information" textFill="WHITE">
+                  <Label layoutX="17.0" layoutY="14.0" text="Account information" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
                      <font>
-                        <Font size="33.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
                </children>
