@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
@@ -21,8 +22,6 @@ import javafx.stage.Stage;
 public class GameRentalController implements Initializable {
 
 
-  public Label myName;
-  public AnchorPane adminView;
   @FXML private AnchorPane adminView;
 
   @FXML private AnchorPane EnterLogin;
@@ -61,49 +60,9 @@ public class GameRentalController implements Initializable {
 
   @FXML private ComboBox filter;
 
+  @FXML private ComboBox filter1;
+
   public GameRentalController(){}
-  //initializer to populate the pages.
-  @FXML
-  public void initialize(){
-    System.out.println("is this working, guess not.");
-
-    //Initialize and populate the game page filter table with some stuff.
-    tableGamesTab = new TableView();
-    TableColumn<String,Games> titleColumn = new TableColumn<>("Title");
-    titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-    TableColumn<String,Games> genreColumn = new TableColumn<>("Genre");
-    genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-
-    TableColumn<String,Games> ratingColumn = new TableColumn<>("Rating");
-    ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
-
-    tableGamesTab.getColumns().add(titleColumn);
-    tableGamesTab.getColumns().add(genreColumn);
-    tableGamesTab.getColumns().add(ratingColumn);
-    //Remove these below when we begin setting it up with database.
-    tableGamesTab.getItems().add(new Games("Death Stranding", "Action, Adventure", "7.5/10"));
-    tableGamesTab.getItems().add(new Games("The Outer Worlds", "Action, RPG", "8/10"));
-    tableGamesTab.getItems().add(new Games("Monster Hunter World", "Action", "9/10"));
-    //End of game page table initialize
-
-    //Filter populate
-    filter.getItems().add("Action");
-    filter.getItems().add("Adventure");
-    filter.getItems().add("RPG");
-    filter.getItems().add("FPS");
-
-    //Filter1 populate
-    filter.getItems().add(">2.5");
-    filter.getItems().add("2.5-7.5");
-    filter.getItems().add(">7.5");
-
-
-  }
-
-  // This method causes the add game button on the admin tab to show add gametext-fields and buttons.
-  @FXML private Label name;
-
   // This method causes the add game button on the admin tab to show add game text-fields and buttons.
   @FXML
   void addGame() {
@@ -133,6 +92,44 @@ public class GameRentalController implements Initializable {
   public void initialize(URL url, ResourceBundle rb) {
     // Text to show sub end date (*not currently working)
     subEnd = new TextFlow(new Text(displaySubEnd()));
+
+    System.out.println("is this working, guess not.");
+
+    //Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO WORK
+    tableGamesTab = new TableView();
+    TableColumn<String,Games> titleColumn = new TableColumn<>("Title");
+    titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+    TableColumn<String,Games> genreColumn = new TableColumn<>("Genre");
+    genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+    TableColumn<String,Games> ratingColumn = new TableColumn<>("Rating");
+    ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
+    tableGamesTab.getColumns().add(titleColumn);
+    tableGamesTab.getColumns().add(genreColumn);
+    tableGamesTab.getColumns().add(ratingColumn);
+    //Remove these below when we begin setting it up with database.
+    tableGamesTab.getItems().add(new Games("Death Stranding", "Action, Adventure",
+        "7.5/10"));
+    tableGamesTab.getItems().add(new Games("The Outer Worlds", "Action, RPG",
+        "8/10"));
+    tableGamesTab.getItems().add(new Games("Monster Hunter World", "Action",
+        "9/10"));
+    //End of game page table initialize
+
+    //Filter populate STILL FIGURING OUT!
+    filter = new ComboBox();
+    filter.getItems().add("Action");
+    filter.getItems().add("Adventure");
+    filter.getItems().add("RPG");
+    filter.getItems().add("FPS");
+
+    //Filter1 populate
+    filter1 = new ComboBox();
+    filter1.getItems().add(">2.5");
+    filter1.getItems().add("2.5-7.5");
+    filter1.getItems().add(">7.5");
   }
 
   // On Mouse Click Show Create Account Items on LoginView
