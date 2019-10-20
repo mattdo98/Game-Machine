@@ -16,7 +16,7 @@
             <Button layoutX="662.0" layoutY="39.0" mnemonicParsing="false" onAction="#getLogout" style="-fx-background-color: transparent;" text="LOGOUT" textFill="WHITE" underline="true" />
             <Label layoutX="662.0" layoutY="12.0" prefHeight="31.0" prefWidth="44.0" text="Hello, " textFill="WHITE" />
             <Label fx:id="myName" layoutX="710.0" layoutY="17.0" prefHeight="21.0" prefWidth="83.0" text="----" textFill="WHITE" />
-            <Button alignment="CENTER" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#getHome" prefHeight="53.0" prefWidth="127.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="HOME" textAlignment="CENTER" textFill="WHITE">
+            <Button alignment="CENTER" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#getHome" prefHeight="53.0" prefWidth="127.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="GAMES" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

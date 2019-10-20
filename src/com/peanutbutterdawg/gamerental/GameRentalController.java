@@ -1,18 +1,15 @@
 package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Calendar;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,8 +18,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-public class GameRentalController implements Initializable {
-
+public class GameRentalController {
   @FXML
   private AnchorPane EnterLogin;
 
@@ -54,20 +50,24 @@ public class GameRentalController implements Initializable {
   private TextFlow subEnd;
 
   @FXML
-  private RadioButton AdminLogin;
-
-  @FXML
   public Label name;
 
   @FXML
   private AnchorPane getAdminTab;
 
+  @FXML
+  private ComboBox filter;
+
+  @FXML
+  void filter(ActionEvent event) {
+
+  }
+
   // initialize method
-  @Override
-  public void initialize(URL url, ResourceBundle rb) {
+  @FXML
+  private void initialize() {
     // Text to show sub end date (*not currently working)
     subEnd = new TextFlow(new Text(displaySubEnd()));
-
   }
 
   // On Mouse Click Show Create Account Items on LoginView
