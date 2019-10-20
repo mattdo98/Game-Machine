@@ -34,7 +34,7 @@
             </font>
         </Button>
     </AnchorPane>
-    <AnchorPane layoutX="5.0" layoutY="77.0" prefHeight="526.0" prefWidth="804.0" style="-fx-background-color: #00264d;">
+    <AnchorPane layoutY="77.0" prefHeight="526.0" prefWidth="809.0" style="-fx-background-color: #00264d;">
         <Button layoutX="39.0" layoutY="23.0" mnemonicParsing="false" onAction="#addGame" style="-fx-border-color: transparent; -fx-background-color: -fx-border-color;" text="Add or Remove Game Page" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font size="24.0" />
@@ -79,23 +79,23 @@
                     <Font size="24.0" />
                 </font>
             </Label>
-           <AnchorPane fx:id="editGamePage" layoutX="17.0" layoutY="-17.0" prefHeight="217.0" prefWidth="383.0" visible="false">
-               <TextField layoutX="20.0" layoutY="47.0" promptText="Admin Username" />
-               <TextField layoutX="20.0" layoutY="86.0" promptText="Admin Password" />
-               <Button layoutX="200.0" layoutY="85.0" mnemonicParsing="false" text="Create Admin Account" />
-               <ComboBox layoutX="20.0" layoutY="161.0" prefHeight="27.0" prefWidth="168.0" promptText="Select Admin" />
-               <Button layoutX="199.0" layoutY="160.0" mnemonicParsing="false" text="Delete Admin" />
-               <Label layoutX="20.0" layoutY="15.0" text="Create Admin:" textFill="WHITE">
-                   <font>
-                       <Font size="24.0" />
-                   </font>
-               </Label>
-               <Label layoutX="21.0" layoutY="129.0" text="Delete Admin:" textFill="WHITE">
-                   <font>
-                       <Font size="24.0" />
-                   </font>
-               </Label>
-           </AnchorPane>
+        </AnchorPane>
+        <AnchorPane fx:id="editGamePage" layoutX="410.0" layoutY="18.0" prefHeight="279.0" prefWidth="380.0" visible="false">
+            <TextField layoutX="20.0" layoutY="47.0" promptText="Admin Username" />
+            <TextField layoutX="20.0" layoutY="86.0" promptText="Admin Password" />
+            <Button layoutX="200.0" layoutY="85.0" mnemonicParsing="false" text="Create Admin Account" />
+            <ComboBox layoutX="20.0" layoutY="161.0" prefHeight="27.0" prefWidth="168.0" promptText="Select Admin" />
+            <Button layoutX="199.0" layoutY="160.0" mnemonicParsing="false" text="Delete Admin" />
+            <Label layoutX="20.0" layoutY="15.0" text="Create Admin:" textFill="WHITE">
+                <font>
+                    <Font size="24.0" />
+                </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="129.0" text="Delete Admin:" textFill="WHITE">
+                <font>
+                    <Font size="24.0" />
+                </font>
+            </Label>
         </AnchorPane>
     </AnchorPane>
 </AnchorPane>
