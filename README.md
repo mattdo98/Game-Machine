@@ -62,3 +62,7 @@ Maximilien Latura
 Shane Smith
 
 Samuel Thomas
+
+## **Acknowledgements**
+
+With the help of Nicolas Caceda
