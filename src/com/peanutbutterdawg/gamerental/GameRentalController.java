@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
@@ -23,51 +20,70 @@ import javafx.stage.Stage;
 
 public class GameRentalController implements Initializable {
 
-  @FXML
-  private AnchorPane EnterLogin;
+  public Label myName;
+  public AnchorPane adminView;
 
-  @FXML
-  private AnchorPane EnterCreateAccount;
+  @FXML private AnchorPane EnterLogin;
 
-  @FXML
-  private PasswordField CreatePassword;
+  @FXML private AnchorPane EnterCreateAccount;
 
-  @FXML
-  private TextField CreateUsername;
+  @FXML private PasswordField CreatePassword;
 
-  @FXML
-  private PasswordField Password;
+  @FXML private TextField CreateUsername;
 
-  @FXML
-  private TextField Username;
+  @FXML private PasswordField Password;
 
-  @FXML
-  private Label SuccessCreatedAccount;
+  @FXML private TextField Username;
 
-  @FXML
-  private TextFlow userName;
+  @FXML private Label SuccessCreatedAccount;
 
-  @FXML
-  private TextFlow userEmail;
+  @FXML private TextFlow userName;
 
-  @FXML
-  private TextFlow subEnd;
+  @FXML private TextFlow userEmail;
 
-  @FXML
-  private RadioButton AdminLogin;
+  @FXML private TextFlow subEnd;
 
-  @FXML
-  public Label name;
+  @FXML private RadioButton AdminLogin;
 
+  @FXML public Label name;
+
+  @FXML private AnchorPane getAdminTab;
+
+  @FXML private AnchorPane editGamePage;
+
+  @FXML private AnchorPane createAdminAccount;
+
+  @FXML private AnchorPane addRemoveGame;
+
+  // This method causes the add game button on the admin tab to show add game text-fields and buttons.
   @FXML
-  private AnchorPane getAdminTab;
+  void addGame() {
+    editGamePage.setVisible(false);
+    createAdminAccount.setVisible(false);
+    addRemoveGame.setVisible(true);
+  }
+
+  // This method causes the edit game button on the admin tab to show edit game text-fields and buttons.
+  @FXML
+  void editGame() {
+    editGamePage.setVisible(true);
+    createAdminAccount.setVisible(false);
+    addRemoveGame.setVisible(false);
+  }
+
+  // This method causes the create admin button on the admin tab to show create admin text-fields and buttons.
+  @FXML
+  void createAdmin() {
+    editGamePage.setVisible(false);
+    createAdminAccount.setVisible(true);
+    addRemoveGame.setVisible(false);
+  }
 
   // initialize method
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     // Text to show sub end date (*not currently working)
     subEnd = new TextFlow(new Text(displaySubEnd()));
-
   }
 
   // On Mouse Click Show Create Account Items on LoginView
@@ -102,15 +118,15 @@ public class GameRentalController implements Initializable {
   // On Action for Login Button
   @FXML
   void Login(ActionEvent event) throws IOException {
-    // Loads HomeView
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(HomeViewScene);
     window.show();
+
 
     // Clear Username and Password
     Username.setText("");
@@ -123,7 +139,7 @@ public class GameRentalController implements Initializable {
     Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
     Scene LoginViewScene = new Scene(LoginViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(LoginViewScene);
@@ -136,7 +152,7 @@ public class GameRentalController implements Initializable {
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(HomeViewScene);
@@ -149,7 +165,7 @@ public class GameRentalController implements Initializable {
     Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
     Scene LibraryViewScene = new Scene(LibraryViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(LibraryViewScene);
@@ -162,7 +178,7 @@ public class GameRentalController implements Initializable {
     Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
     Scene ProfileViewScene = new Scene(ProfileViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(ProfileViewScene);
@@ -175,15 +191,15 @@ public class GameRentalController implements Initializable {
     Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
     Scene AdminViewScene = new Scene(AdminViewParent);
 
-    //This line gets the Stage information
+    // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
     window.setScene(AdminViewScene);
     window.show();
   }
 
-  //Shows subscription ending (*not currently functioning correctly)
-  public String displaySubEnd() {
+  // Shows subscription ending (*not currently functioning correctly)
+  private String displaySubEnd() {
     Calendar dateEnd = Calendar.getInstance();
     dateEnd.add(Calendar.MONTH, 1);
     return dateEnd.toString();
