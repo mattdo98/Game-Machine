@@ -19,9 +19,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class GameRentalController implements Initializable {
-
-  public Label myName;
-  public AnchorPane adminView;
+  @FXML private AnchorPane adminView;
 
   @FXML private AnchorPane EnterLogin;
 
@@ -45,7 +43,6 @@ public class GameRentalController implements Initializable {
 
   @FXML private RadioButton AdminLogin;
 
-  @FXML public Label name;
 
   @FXML private AnchorPane getAdminTab;
 
@@ -55,8 +52,9 @@ public class GameRentalController implements Initializable {
 
   @FXML private AnchorPane addRemoveGame;
 
-  // This method causes the add game button on the admin tab to show add game text-fields and
-  // buttons.
+  @FXML private Label name;
+
+  // This method causes the add game button on the admin tab to show add game text-fields and buttons.
   @FXML
   void addGame() {
     editGamePage.setVisible(false);
@@ -64,8 +62,7 @@ public class GameRentalController implements Initializable {
     addRemoveGame.setVisible(true);
   }
 
-  // This method causes the edit game button on the admin tab to show edit game text-fields and
-  // buttons.
+  // This method causes the edit game button on the admin tab to show edit game text-fields and buttons.
   @FXML
   void editGame() {
     editGamePage.setVisible(true);
@@ -73,8 +70,7 @@ public class GameRentalController implements Initializable {
     addRemoveGame.setVisible(false);
   }
 
-  // This method causes the create admin button on the admin tab to show create admin text-fields
-  // and buttons.
+  // This method causes the create admin button on the admin tab to show create admin text-fields and buttons.
   @FXML
   void createAdmin() {
     editGamePage.setVisible(false);
@@ -129,7 +125,6 @@ public class GameRentalController implements Initializable {
 
     window.setScene(HomeViewScene);
     window.show();
-
 
     // Clear Username and Password
     Username.setText("");
