@@ -62,7 +62,17 @@ public class GameRentalController implements Initializable {
 
   @FXML private ComboBox filter1;
 
-  public GameRentalController(){}
+  @FXML private TableColumn ratingColumn2;
+
+  @FXML private TableColumn genreColumn2;
+
+  @FXML private TableColumn titleColumn2;
+
+  public GameRentalController(){
+    tableGamesTab = new TableView();
+    filter = new ComboBox();
+    filter1 = new ComboBox();
+  }
   // This method causes the add game button on the admin tab to show add game text-fields and buttons.
   @FXML
   void addGame() {
@@ -88,7 +98,7 @@ public class GameRentalController implements Initializable {
   }
 
   // initialize method
-  @Override
+  @FXML
   public void initialize(URL url, ResourceBundle rb) {
     // Text to show sub end date (*not currently working)
     subEnd = new TextFlow(new Text(displaySubEnd()));
@@ -96,7 +106,7 @@ public class GameRentalController implements Initializable {
     System.out.println("is this working, guess not.");
 
     //Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO WORK
-    tableGamesTab = new TableView();
+
     TableColumn<String,Games> titleColumn = new TableColumn<>("Title");
     titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -119,14 +129,14 @@ public class GameRentalController implements Initializable {
     //End of game page table initialize
 
     //Filter populate STILL FIGURING OUT!
-    filter = new ComboBox();
+
     filter.getItems().add("Action");
     filter.getItems().add("Adventure");
     filter.getItems().add("RPG");
     filter.getItems().add("FPS");
 
     //Filter1 populate
-    filter1 = new ComboBox();
+
     filter1.getItems().add(">2.5");
     filter1.getItems().add("2.5-7.5");
     filter1.getItems().add(">7.5");
