@@ -3,6 +3,8 @@ package com.peanutbutterdawg.gamerental;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +28,7 @@ public class HomeViewController implements Initializable {
 
   @FXML private AnchorPane getHome;
 
-  @FXML private TableView<String> tableGamesTab;
+  @FXML private TableView<Games> tableGamesTab;
 
   @FXML private TableColumn<?, ?> titleColumn2;
 
@@ -41,6 +43,7 @@ public class HomeViewController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeCBO();
+    initializeGamesTable();
   }
 
   @FXML
@@ -138,5 +141,18 @@ public class HomeViewController implements Initializable {
         "8/10"));
     tableGamesTab.getItems().add(new Games("Monster Hunter World", "Action",
         "9/10"));*/
+    titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+    genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+    ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
+    final ObservableList<Games> games = FXCollections.observableArrayList(
+        new Games("Death Stranding", "Action, Adventure",
+            "7.5/10"),
+        new Games("Death Stranding", "Action, Adventure",
+            "7.5/10")
+    );
+    tableGamesTab.setItems(games);
   }
 }

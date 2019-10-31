@@ -73,29 +73,6 @@ public class LoginViewController implements Initializable {
     filter = new ComboBox();
     filter1 = new ComboBox();
   }
-  // This method causes the add game button on the admin tab to show add game text-fields and buttons.
-  @FXML
-  void addGame() {
-    editGamePage.setVisible(false);
-    createAdminAccount.setVisible(false);
-    addRemoveGame.setVisible(true);
-  }
-
-  // This method causes the edit game button on the admin tab to show edit game text-fields and buttons.
-  @FXML
-  void editGame() {
-    editGamePage.setVisible(true);
-    createAdminAccount.setVisible(false);
-    addRemoveGame.setVisible(false);
-  }
-
-  // This method causes the create admin button on the admin tab to show create admin text-fields and buttons.
-  @FXML
-  void createAdmin() {
-    editGamePage.setVisible(false);
-    createAdminAccount.setVisible(true);
-    addRemoveGame.setVisible(false);
-  }
 
   // initialize method
   @FXML
