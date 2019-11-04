@@ -14,22 +14,18 @@ import javafx.stage.Stage;
 
 public class AdminViewController {
 
-  @FXML
-  private AnchorPane adminView;
+  @FXML private AnchorPane adminView;
 
-  @FXML
-  private Label myName;
+  @FXML private Label myName;
 
-  @FXML
-  private AnchorPane editGamePage;
+  @FXML private AnchorPane editGamePage;
 
-  @FXML
-  private AnchorPane addRemoveGame;
+  @FXML private AnchorPane addRemoveGame;
 
-  @FXML
-  private AnchorPane createAdminAccount;
+  @FXML private AnchorPane createAdminAccount;
 
-  // This method causes the add game button on the admin tab to show add game text-fields and buttons.
+  // This method causes the add game button on the admin tab to show add game text-fields and
+  // buttons.
   @FXML
   void addGame() {
     editGamePage.setVisible(false);
@@ -37,7 +33,8 @@ public class AdminViewController {
     addRemoveGame.setVisible(true);
   }
 
-  // This method causes the edit game button on the admin tab to show edit game text-fields and buttons.
+  // This method causes the edit game button on the admin tab to show edit game text-fields and
+  // buttons.
   @FXML
   void editGame() {
     editGamePage.setVisible(true);
@@ -45,7 +42,8 @@ public class AdminViewController {
     addRemoveGame.setVisible(false);
   }
 
-  // This method causes the create admin button on the admin tab to show create admin text-fields and buttons.
+  // This method causes the create admin button on the admin tab to show create admin text-fields
+  // and buttons.
   @FXML
   void createAdmin() {
     editGamePage.setVisible(false);
@@ -112,5 +110,4 @@ public class AdminViewController {
     window.setScene(ProfileViewScene);
     window.show();
   }
-
 }

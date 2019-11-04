@@ -2,8 +2,14 @@ package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+
+import com.sun.org.apache.bcel.internal.generic.Select;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,20 +27,17 @@ import javafx.stage.Stage;
 
 public class LoginViewController implements Initializable {
 
+  // Database stuff: No touch >:-(
+  private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
+  private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+
+  @FXML public AnchorPane getLogin;
 
   @FXML private AnchorPane adminView;
 
   @FXML private AnchorPane EnterLogin;
 
   @FXML private AnchorPane EnterCreateAccount;
-
-  @FXML private PasswordField CreatePassword;
-
-  @FXML private TextField CreateUsername;
-
-  @FXML private PasswordField Password;
-
-  @FXML private TextField Username;
 
   @FXML private Label SuccessCreatedAccount;
 
@@ -68,7 +71,46 @@ public class LoginViewController implements Initializable {
 
   @FXML private TableColumn titleColumn2;
 
-  public LoginViewController(){
+  // Hi this is Robbie. These are the fields for LOGIN:
+  //////////////////////////////////////////////////////////////
+
+  @FXML private PasswordField password;
+
+  @FXML private TextField username;
+
+  @FXML private Button login;
+
+  // Hi this is Robbie. These are the fields and methods for CREATE ACCOUNT:
+  //////////////////////////////////////////////////////////////
+  @FXML private TextField firstName;
+
+  @FXML private TextField lastName;
+
+  @FXML private TextField createUsername;
+
+  @FXML private PasswordField createPassword;
+
+  @FXML private RadioButton isAdmin;
+
+  @FXML private TextField adminPassword;
+
+  @FXML private Button createAccount;
+
+  // Hi Robbie here. Every time the createaccount button is pressed, this code is executed. :)
+  @FXML
+  private void createAccountButton() {
+    insertToDatabase(
+        firstName.getText(),
+        lastName.getText(),
+        createUsername.getText(),
+        createPassword.getText(),
+        false, // <--- When an account is first created, SUB is always false.
+        isAdmin.isSelected());
+  }
+
+  /////////////////////////////////////////////////////////////
+
+  public LoginViewController() {
     tableGamesTab = new TableView();
     filter = new ComboBox();
     filter1 = new ComboBox();
@@ -81,7 +123,7 @@ public class LoginViewController implements Initializable {
     subEnd = new TextFlow(new Text(displaySubEnd()));
 
     System.out.println("is this working, guess not.");
-    //End of game page table initialize
+    // End of game page table initialize
   }
 
   // On Mouse Click Show Create Account Items on LoginView
@@ -109,8 +151,8 @@ public class LoginViewController implements Initializable {
     SuccessCreatedAccount.setVisible(true);
 
     // Clear Username and Password
-    CreateUsername.setText("");
-    CreatePassword.setText("");
+    createUsername.setText("");
+    createPassword.setText("");
   }
 
   // On Action for Login Button
@@ -125,10 +167,9 @@ public class LoginViewController implements Initializable {
     window.setScene(HomeViewScene);
     window.show();
 
-
     // Clear Username and Password
-    Username.setText("");
-    Password.setText("");
+    username.setText("");
+    password.setText("");
   }
 
   // On Action for LOGOUT Button
@@ -201,5 +242,43 @@ public class LoginViewController implements Initializable {
     Calendar dateEnd = Calendar.getInstance();
     dateEnd.add(Calendar.MONTH, 1);
     return dateEnd.toString();
+  }
+
+  // You can call this method to save to database
+  private void insertToDatabase(
+      String firstname,
+      String lastname,
+      String username,
+      String password,
+      Boolean subscription,
+      Boolean isAdmin) {
+
+    String insertToDB =
+        "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, PASSWORD, SUBSCRIPTION, ISADMIN) VALUES  "
+            + "('"
+            + firstname
+            + "', '"
+            + lastname
+            + "', '"
+            + username
+            + "', '"
+            + password
+            + "', '"
+            + subscription
+            + "', '"
+            + isAdmin
+            + "')";
+    // Here I am initializing my DataBase.
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      // This prepared statement executes my SQL String Command.
+      PreparedStatement stmt = conn.prepareStatement(insertToDB);
+      stmt.execute();
+      conn.close();
+      stmt.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 }
