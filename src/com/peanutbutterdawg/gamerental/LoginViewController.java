@@ -119,8 +119,7 @@ public class LoginViewController implements Initializable {
   // initialize method
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
-    // Text to show sub end date (*not currently working)
-    subEnd = new TextFlow(new Text(displaySubEnd()));
+
 
     System.out.println("is this working, guess not.");
     // End of game page table initialize
@@ -236,14 +235,14 @@ public class LoginViewController implements Initializable {
     window.setScene(AdminViewScene);
     window.show();
   }
-
-  // Shows subscription ending (*not currently functioning correctly)
+  //Matt here, will delete when implemented in the right controller
+  /* Shows subscription ending (*not currently functioning correctly)
   private String displaySubEnd() {
     Calendar dateEnd = Calendar.getInstance();
     dateEnd.add(Calendar.MONTH, 1);
     return dateEnd.toString();
   }
-
+*/
   // You can call this method to save to database
   private void insertToDatabase(
       String firstname,
