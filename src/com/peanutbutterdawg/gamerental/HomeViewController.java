@@ -42,7 +42,9 @@ public class HomeViewController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    initializeCBO();
+    // this initializes the filter combo boxes with hardcoded data
+    initializeFilterCBO();
+    // this initializes the table view with hardcoded data
     initializeGamesTable();
   }
 
@@ -106,13 +108,13 @@ public class HomeViewController implements Initializable {
     window.show();
   }
 
-  private void initializeCBO() {
+  private void initializeFilterCBO() {
     filter.getItems().add("Action");
     filter.getItems().add("Adventure");
     filter.getItems().add("RPG");
     filter.getItems().add("FPS");
 
-    //Filter1 populate
+    // Filter1 populate
 
     filter1.getItems().add(">2.5");
     filter1.getItems().add("2.5-7.5");
@@ -120,39 +122,19 @@ public class HomeViewController implements Initializable {
   }
 
   private void initializeGamesTable() {
-    //Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO WORK
+    // Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO
+    // WORK
 
-    /*TableColumn<String,Games> titleColumn = new TableColumn<>("Title");
-    titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-    TableColumn<String,Games> genreColumn = new TableColumn<>("Genre");
-    genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-
-    TableColumn<String,Games> ratingColumn = new TableColumn<>("Rating");
-    ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
-
-    tableGamesTab.getColumns().add(titleColumn);
-    tableGamesTab.getColumns().add(genreColumn);
-    tableGamesTab.getColumns().add(ratingColumn);
-    //Remove these below when we begin setting it up with database.
-    tableGamesTab.getItems().add(new Games("Death Stranding", "Action, Adventure",
-        "7.5/10"));
-    tableGamesTab.getItems().add(new Games("The Outer Worlds", "Action, RPG",
-        "8/10"));
-    tableGamesTab.getItems().add(new Games("Monster Hunter World", "Action",
-        "9/10"));*/
     titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
 
     genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
 
     ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
-    final ObservableList<Games> games = FXCollections.observableArrayList(
-        new Games("Death Stranding", "Action, Adventure",
-            "7.5/10"),
-        new Games("Death Stranding", "Action, Adventure",
-            "7.5/10")
-    );
+    final ObservableList<Games> games =
+        FXCollections.observableArrayList(
+            new Games("Death Stranding", "Action, Adventure", "7.5/10"),
+            new Games("Death Stranding", "Action, Adventure", "7.5/10"));
     tableGamesTab.setItems(games);
   }
 }

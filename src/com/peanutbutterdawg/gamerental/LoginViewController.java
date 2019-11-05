@@ -33,8 +33,6 @@ public class LoginViewController implements Initializable {
 
   @FXML public AnchorPane getLogin;
 
-  @FXML private AnchorPane adminView;
-
   @FXML private AnchorPane EnterLogin;
 
   @FXML private AnchorPane EnterCreateAccount;
@@ -48,28 +46,6 @@ public class LoginViewController implements Initializable {
   @FXML private TextFlow subEnd;
 
   @FXML private RadioButton AdminLogin;
-
-  @FXML public Label name;
-
-  @FXML private AnchorPane getAdminTab;
-
-  @FXML private AnchorPane editGamePage;
-
-  @FXML private AnchorPane createAdminAccount;
-
-  @FXML private AnchorPane addRemoveGame;
-
-  @FXML private TableView tableGamesTab;
-
-  @FXML private ComboBox filter;
-
-  @FXML private ComboBox filter1;
-
-  @FXML private TableColumn ratingColumn2;
-
-  @FXML private TableColumn genreColumn2;
-
-  @FXML private TableColumn titleColumn2;
 
   // Hi this is Robbie. These are the fields for LOGIN:
   //////////////////////////////////////////////////////////////
@@ -96,7 +72,7 @@ public class LoginViewController implements Initializable {
 
   @FXML private Button createAccount;
 
-  // Hi Robbie here. Every time the createaccount button is pressed, this code is executed. :)
+  // Hi Robbie here. Every time the createAccount button is pressed, this code is executed. :)
   @FXML
   private void createAccountButton() {
     insertToDatabase(
@@ -109,12 +85,6 @@ public class LoginViewController implements Initializable {
   }
 
   /////////////////////////////////////////////////////////////
-
-  public LoginViewController() {
-    tableGamesTab = new TableView();
-    filter = new ComboBox();
-    filter1 = new ComboBox();
-  }
 
   // initialize method
   @FXML

@@ -10,10 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../h2/bin/h2-1.4.199.jar!/" />
+          <root url="file://$MODULE_DIR$/../../FGCU Fall 2019/OOP/h2/bin" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../../FGCU Fall 2019/OOP/h2/bin" recursive="false" />
       </library>
     </orderEntry>
   </component>
