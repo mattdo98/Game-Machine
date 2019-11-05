@@ -2,28 +2,28 @@ package com.peanutbutterdawg.gamerental;
 
 public class Games {
   private String title;
-  private String genre;
-  private String rating;
+  private Genre genre;
+  private int rating;
 
-  public Games(String title, String genre, String rating) {
+  public Games(String title, Genre genre, int rating) {
     this.title = title;
     this.genre = genre;
     this.rating = rating;
   }
 
-  public String getRating() {
+  public int getRating() {
     return rating;
   }
 
-  public void setRating(String rating) {
+  public void setRating(int rating) {
     this.rating = rating;
   }
 
-  public String getGenre() {
+  public Genre getGenre() {
     return genre;
   }
 
-  public void setGenre(String genre) {
+  public void setGenre(Genre genre) {
     this.genre = genre;
   }
 

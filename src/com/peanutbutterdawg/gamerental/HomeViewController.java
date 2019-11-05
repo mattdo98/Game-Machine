@@ -1,7 +1,14 @@
 package com.peanutbutterdawg.gamerental;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,8 +26,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sun.java2d.loops.GeneralRenderer;
 
 public class HomeViewController implements Initializable {
+
+  private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
+  private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+
+  private ObservableList<Games> games;
 
   @FXML private Label name;
 
@@ -125,16 +138,60 @@ public class HomeViewController implements Initializable {
     // Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO
     // WORK
 
-    titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+    games = FXCollections.observableArrayList();
 
-    genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+    try {
+      String fromDbSql = "SELECT TITLE, GENRE, RATING FROM VIDEOGAME";
 
-    ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      // This prepared statement executes my SQL String Command.
+      PreparedStatement stmt = conn.prepareStatement(fromDbSql);
 
-    final ObservableList<Games> games =
-        FXCollections.observableArrayList(
-            new Games("Death Stranding", "Action, Adventure", "7.5/10"),
-            new Games("Death Stranding", "Action, Adventure", "7.5/10"));
-    tableGamesTab.setItems(games);
+      ResultSet rs = stmt.executeQuery();
+
+      while(rs.next()) {
+
+        String title = rs.getString("TITLE");
+        int genre = rs.getInt("GENRE");
+        int rating = rs.getInt("RATING");
+
+        Genre realGenre = null;
+
+        if(genre == 0) {
+          realGenre = Genre.ACTION;
+        }if(genre == 1) {
+          realGenre = Genre.ADVENTURE;
+        }if(genre == 2) {
+          realGenre = Genre.RPG;
+        }if(genre == 3) {
+          realGenre = Genre.SPORTS;
+        }if(genre == 4) {
+          realGenre = Genre.MMO;
+        }if(genre == 5) {
+          realGenre = Genre.STRATEGY;
+        }if(genre == 6) {
+          realGenre = Genre.SIMULATION;
+        }
+
+        // testing in the console
+        System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating);
+
+        // setting the games to the table view
+        tableGamesTab.setItems(games);
+        games.add(new Games(title, realGenre, rating));
+      }
+
+      // Setup for the table view
+      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
+      stmt.execute();
+      conn.close();
+      stmt.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 }
