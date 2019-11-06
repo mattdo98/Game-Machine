@@ -4,6 +4,8 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -35,67 +37,41 @@
         </Button>
     </AnchorPane>
     <AnchorPane layoutY="77.0" prefHeight="526.0" prefWidth="809.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
-        <AnchorPane fx:id="editGamePage" layoutX="411.0" layoutY="24.0" visible="false" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-            <ComboBox layoutX="18.0" layoutY="41.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
-            <TextField layoutX="19.0" layoutY="81.0" promptText="New Name" />
-            <TextField layoutX="19.0" layoutY="119.0" promptText="New Genre" />
-            <TextField layoutX="19.0" layoutY="157.0" promptText="New ESRB Rating" />
-            <Button layoutX="220.0" layoutY="157.0" mnemonicParsing="false" text="Edit!" />
-            <Label layoutX="19.0" layoutY="8.0" text="Edit Game Info:" textFill="WHITE">
+        <AnchorPane fx:id="editGamePage" layoutX="493.0" layoutY="281.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="281.0">
+            <ComboBox layoutY="37.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
+            <TextField layoutX="1.0" layoutY="77.0" promptText="New Name" />
+            <TextField layoutX="1.0" layoutY="115.0" promptText="New Genre" />
+            <Button layoutX="202.0" layoutY="153.0" mnemonicParsing="false" text="Edit!" />
+            <Label layoutX="1.0" layoutY="4.0" text="Edit Game Info:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
+         <ComboBox layoutX="1.0" layoutY="153.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
         </AnchorPane>
-        <AnchorPane fx:id="addRemoveGame" layoutX="393.0" layoutY="34.0" snapToPixel="false" visible="false" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-            <TextField layoutX="37.0" layoutY="31.0" promptText="Game Title" />
-            <TextField layoutX="37.0" layoutY="69.0" promptText="Genre" />
-            <TextField layoutX="37.0" layoutY="107.0" promptText="ESRB Rating" />
-            <Button layoutX="232.0" layoutY="31.0" mnemonicParsing="false" text="Add Game" />
-            <ChoiceBox layoutX="37.0" layoutY="176.0" prefHeight="27.0" prefWidth="167.0" />
-            <Button layoutX="217.0" layoutY="176.0" mnemonicParsing="false" text="Delete Game" />
-            <Label layoutX="38.0" layoutY="-2.0" text="Add Game:" textFill="WHITE">
+        <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="53.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="53.0">
+            <TextField layoutY="32.0" promptText="Game Title" />
+            <TextField layoutY="70.0" promptText="Genre" />
+            <Button layoutX="195.0" layoutY="32.0" mnemonicParsing="false" text="Add Game" />
+            <ChoiceBox layoutY="177.0" prefHeight="27.0" prefWidth="167.0" />
+            <Button layoutX="180.0" layoutY="177.0" mnemonicParsing="false" text="Delete Game" />
+            <Label layoutX="1.0" layoutY="-1.0" text="Add Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
-            <Label layoutX="38.0" layoutY="143.0" text="Delete Game:" textFill="WHITE">
+            <Label layoutX="1.0" layoutY="144.0" text="Delete Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
+         <ComboBox layoutY="108.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
         </AnchorPane>
-        <AnchorPane fx:id="createAdminAccount" layoutX="400.0" layoutY="24.0" visible="false" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-            <TextField layoutX="20.0" layoutY="47.0" promptText="Admin Username" />
-            <TextField layoutX="20.0" layoutY="86.0" promptText="Admin Password" />
-            <Button layoutX="216.0" layoutY="86.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="111.0" text="Create Admin" />
-            <ComboBox layoutX="20.0" layoutY="161.0" prefHeight="31.0" prefWidth="186.0" promptText="Select Admin" />
-            <Button layoutX="216.0" layoutY="161.0" mnemonicParsing="false" text="Delete Admin" />
-            <Label layoutX="20.0" layoutY="15.0" text="Create Admin:" textFill="WHITE">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-            <Label layoutX="21.0" layoutY="129.0" text="Delete Admin:" textFill="WHITE">
-                <font>
-                    <Font size="24.0" />
-                </font>
-            </Label>
-        </AnchorPane>
-      <Label layoutX="52.0" layoutY="203.0" onMouseClicked="#addGame" text="Add or Remove Game Page" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="52.0" layoutY="242.0" onMouseClicked="#editGame" text="Edit Game Page" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="75.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="52.0" layoutY="298.0" onMouseClicked="#createAdmin" text="Create Admin Account" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+      <TableView layoutX="22.0" layoutY="53.0" prefHeight="414.0" prefWidth="440.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
     </AnchorPane>
 </AnchorPane>

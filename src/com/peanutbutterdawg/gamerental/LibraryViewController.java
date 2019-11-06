@@ -1,23 +1,34 @@
 package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.h2.command.dml.Insert;
 
-public class LibraryViewController {
+public class LibraryViewController implements Initializable {
 
   @FXML
   private AnchorPane getLibrary;
 
   @FXML
   private Label myName;
+
+  // initialize method
+  @FXML
+  public void initialize(URL url, ResourceBundle rb) {
+
+    System.out.println("This is Library Tab");
+  }
 
   @FXML
   void getAdmin(ActionEvent event) throws IOException {

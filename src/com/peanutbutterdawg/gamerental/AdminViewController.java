@@ -1,9 +1,12 @@
 package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class AdminViewController {
+public class AdminViewController implements Initializable {
 
   @FXML private AnchorPane adminView;
 
@@ -22,6 +25,13 @@ public class AdminViewController {
   @FXML private AnchorPane addRemoveGame;
 
   @FXML private AnchorPane createAdminAccount;
+
+  // initialize method
+  @FXML
+  public void initialize(URL url, ResourceBundle rb) {
+
+    System.out.println("This is Admin Tab");
+  }
 
   // This method causes the add game button on the admin tab to show add game text-fields and
   // buttons.
