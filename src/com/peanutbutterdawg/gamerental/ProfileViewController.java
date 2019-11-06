@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,11 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class ProfileViewController {
+
+  private static final String JDBC_DRIVER = "org.h2.Driver"; // path to h2 driver
+  private static final String DB_URL = "jdbc:h2:./res/H2"; // Database url
+
+  private ObservableList<Profile> profile;
 
   @FXML
   private AnchorPane profileView;
@@ -116,6 +123,17 @@ public class ProfileViewController {
     Date subEndDate = tempEnd.getTime();
     subEnd.setText(df.format(subEndDate));
   }
+
+  private void intitalizeProfile(){
+
+
+
+
+  }
+
+
+
+
 
 
 }
