@@ -37,7 +37,7 @@
                         <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </FlowPane>
-                  <TextField layoutX="575.0" layoutY="294.0" prefHeight="31.0" prefWidth="200.0" promptText="Search Games" />
+                  <TextField fx:id="searchBar" layoutX="575.0" layoutY="294.0" onKeyPressed="#searchGames" prefHeight="31.0" prefWidth="200.0" promptText="Search Games" />
                   <TableView fx:id="tableGamesTab" layoutX="14.0" layoutY="293.0" prefHeight="200.0" prefWidth="500.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0">
                      <columns>
                         <TableColumn fx:id="titleColumn2" prefWidth="250.0" text="Title" />
