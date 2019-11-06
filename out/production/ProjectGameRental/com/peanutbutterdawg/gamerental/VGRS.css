@@ -1,0 +1,15 @@
+.button, .menu-button, .toggle-button, .split-menu-button {
+    -fx-font-size: 14;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-pref-height: 30;
+    -fx-min-width: 30;
+    -fx-background-color: antiquewhite;
+}
+
+.button:pressed {
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: #acacac;
+    -fx-effect: innershadow(gaussian, #adadad, 10, 0, 0, 3);
+}
+
