@@ -81,7 +81,8 @@ public class LoginViewController implements Initializable {
         createUsername.getText(),
         createPassword.getText(),
         false, // <--- When an account is first created, SUB is always false.
-        isAdmin.isSelected());
+        isAdmin.isSelected(),
+        false);
   }
 
   /////////////////////////////////////////////////////////////
@@ -220,10 +221,14 @@ public class LoginViewController implements Initializable {
       String username,
       String password,
       Boolean subscription,
-      Boolean isAdmin) {
+      Boolean isAdmin,
+      Boolean isActive) {
+
+    // had to add this so the program knows which user we are talking about
+    // all users will be set false, until they login
 
     String insertToDB =
-        "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, PASSWORD, SUBSCRIPTION, ISADMIN) VALUES  "
+        "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, PASSWORD, SUBSCRIPTION, ISADMIN, ISACTIVEUSER) VALUES  "
             + "('"
             + firstname
             + "', '"
@@ -236,6 +241,8 @@ public class LoginViewController implements Initializable {
             + subscription
             + "', '"
             + isAdmin
+            + "', '"
+            + isActive
             + "')";
     // Here I am initializing my DataBase.
     try {

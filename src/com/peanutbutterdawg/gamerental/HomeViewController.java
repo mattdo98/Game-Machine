@@ -1,14 +1,14 @@
 package com.peanutbutterdawg.gamerental;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +23,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import sun.java2d.loops.GeneralRenderer;
 
 public class HomeViewController implements Initializable {
 
@@ -40,6 +40,8 @@ public class HomeViewController implements Initializable {
   @FXML private AnchorPane getAdminTab;
 
   @FXML private AnchorPane getHome;
+
+  @FXML private TextField searchBar;
 
   @FXML private TableView<Games> tableGamesTab;
 
@@ -59,6 +61,8 @@ public class HomeViewController implements Initializable {
     initializeFilterCBO();
     // this initializes the table view with hardcoded data
     initializeGamesTable();
+    // this initializes the name label that is at the top of each page
+    //initializeNameLabel();
   }
 
   @FXML
@@ -119,6 +123,12 @@ public class HomeViewController implements Initializable {
 
     window.setScene(ProfileViewScene);
     window.show();
+  }
+
+  // this is the search functionality
+  @FXML
+  void searchGames(KeyEvent event) {
+
   }
 
   private void initializeFilterCBO() {
@@ -193,5 +203,32 @@ public class HomeViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  // not yet working....
+  private void initializeNameLabel() {
+
+    try {
+
+      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = true";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        String username = rs.getString("USERNAME");
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  public void searchGames(javafx.scene.input.KeyEvent keyEvent) {
   }
 }
