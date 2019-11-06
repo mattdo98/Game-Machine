@@ -146,15 +146,19 @@ public class LoginViewController implements Initializable {
   // On Action for Login Button
   @FXML
   void Login(ActionEvent event) throws IOException {
-    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-    Scene HomeViewScene = new Scene(HomeViewParent);
+    if(checkLoginInformation(username.getText(), password.getText())){
+      Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
+      Scene HomeViewScene = new Scene(HomeViewParent);
 
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+      // This line gets the Stage information
+      Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-    window.setScene(HomeViewScene);
-    window.show();
-
+      window.setScene(HomeViewScene);
+      window.show();
+    }
+    else{
+      System.out.println("Entered incorrect username or password.");
+    }
     // Clear Username and Password
     username.setText("");
     password.setText("");
@@ -253,6 +257,36 @@ public class LoginViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+    return false;
+  }
+
+  private boolean checkLoginInformation(String enteredUser, String enteredPassword) {
+    String checkFromDB = "SELECT USERNAME,PASSWORD FROM USER";
+
+    try {
+      Class.forName("org.h2.Driver");
+      Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(checkFromDB);
+
+      while(rs.next()) {
+        String username = rs.getString("USERNAME");
+        String password = rs.getString("PASSWORD");
+        if(username.equals(enteredUser) && password.equals(enteredPassword)){
+          stmt.close();
+          conn.close();
+          return true;
+        }
+      }
+
+
+      stmt.close();
+      conn.close();
+      return false;
+    } catch (SQLException | ClassNotFoundException eb) {
+      eb.printStackTrace();
+    }
+
     return false;
   }
 
