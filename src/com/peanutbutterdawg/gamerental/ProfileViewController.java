@@ -2,6 +2,10 @@ package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -111,6 +115,7 @@ public class ProfileViewController {
     displaySubEnd();
 
 
+
   }
 
   //Matt here, made method that shows a month from the current date
@@ -124,13 +129,28 @@ public class ProfileViewController {
     subEnd.setText(df.format(subEndDate));
   }
 
+  //Gets the Users Name from database and sets it to the userName TextField
   private void intitalizeProfile(){
-
 
 
 
   }
 
+//Easy access to database
+private void connectToDB(String selectStmt){
+    try {
+
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+        // This prepared statement executes my SQL String Command.
+        PreparedStatement stmt = conn.prepareStatement(selectStmt);
+        stmt.execute();
+        conn.close();
+        stmt.close();
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+    }
+}
 
 
 
