@@ -130,19 +130,6 @@ public class LoginViewController implements Initializable {
     SuccessCreatedAccount.setVisible(false);
   }
 
-  // On Action for Create Account Button
-  @FXML
-  void CreateLogin(ActionEvent event) {
-    // Set These Menus Visibility
-    EnterCreateAccount.setVisible(false);
-    EnterLogin.setVisible(false);
-    SuccessCreatedAccount.setVisible(true);
-
-    // Clear Username and Password
-    createUsername.setText("");
-    createPassword.setText("");
-  }
-
   // On Action for Login Button
   @FXML
   void Login(ActionEvent event) throws IOException {
@@ -158,72 +145,10 @@ public class LoginViewController implements Initializable {
     // Clear Username and Password
     username.setText("");
     password.setText("");
+
+    System.out.println("Test");
   }
 
-  // On Action for LOGOUT Button
-  @FXML
-  void getLogout(ActionEvent event) throws IOException {
-    Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-    Scene LoginViewScene = new Scene(LoginViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LoginViewScene);
-    window.show();
-  }
-
-  // On Action for HOME Button
-  @FXML
-  void getHome(ActionEvent event) throws IOException {
-    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-    Scene HomeViewScene = new Scene(HomeViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(HomeViewScene);
-    window.show();
-  }
-
-  // On Action for LIBRARY Button
-  @FXML
-  void getLibrary(ActionEvent event) throws IOException {
-    Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
-    Scene LibraryViewScene = new Scene(LibraryViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LibraryViewScene);
-    window.show();
-  }
-
-  // On Action for PROFILE Button
-  @FXML
-  void getProfile(ActionEvent event) throws IOException {
-    Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
-    Scene ProfileViewScene = new Scene(ProfileViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(ProfileViewScene);
-    window.show();
-  }
-
-  // On Action for ADMIN Button
-  @FXML
-  void getAdmin(ActionEvent event) throws IOException {
-    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-    Scene AdminViewScene = new Scene(AdminViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(AdminViewScene);
-    window.show();
-  }
   // Matt here, will delete when implemented in the right controller
   /* Shows subscription ending (*not currently functioning correctly)
     private String displaySubEnd() {

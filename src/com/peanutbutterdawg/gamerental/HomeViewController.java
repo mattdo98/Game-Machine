@@ -1,6 +1,5 @@
 package com.peanutbutterdawg.gamerental;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -126,9 +125,36 @@ public class HomeViewController implements Initializable {
   }
 
   // this is the search functionality
+  // NEED TO WORK ON
   @FXML
-  void searchGames(KeyEvent event) {
+  void searchGames(ActionEvent event) {
+    String searchBoxTex = searchBar.getText();
 
+    String sql = "SELECT TITLE, GENRE, ESRB, RATING FROM VIDEOGAME WHERE TITLE = ?";
+
+    try {
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, searchBoxTex);
+
+      ResultSet rs = ps.executeQuery();
+
+      while(rs.next()) {
+        System.out.println(rs.getString("TITLE"));
+        System.out.println(rs.getInt("GENRE"));
+        System.out.println(rs.getInt("ESRB"));
+        System.out.println(rs.getInt("RATING"));
+
+      }
+
+
+    } catch(ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void initializeFilterCBO() {
@@ -139,9 +165,39 @@ public class HomeViewController implements Initializable {
 
     // Filter1 populate
 
-    filter1.getItems().add(">2.5");
-    filter1.getItems().add("2.5-7.5");
-    filter1.getItems().add(">7.5");
+    filter1.getItems().add("1");
+    filter1.getItems().add("2");
+    filter1.getItems().add("3");
+    filter1.getItems().add("4");
+    filter1.getItems().add("5");
+    filter1.getItems().add("6");
+    filter1.getItems().add("7");
+    filter1.getItems().add("8");
+    filter1.getItems().add("9");
+    filter1.getItems().add("10");
+  }
+
+  @FXML
+  void addGame(ActionEvent event) {
+    ObservableList<Games> games;
+    games = tableGamesTab.getSelectionModel().getSelectedItems();
+
+    System.out.println(games.get(0).getTitle());
+
+    String sql = "INSERT INTO USERGAMES (game1) VALUES (?)";
+
+    try{
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, games.get(0).getTitle());
+
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void initializeGamesTable() {
