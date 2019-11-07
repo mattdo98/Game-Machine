@@ -181,6 +181,8 @@ public class HomeViewController implements Initializable {
         System.out.println(rs.getInt("GENRE"));
         System.out.println(rs.getInt("ESRB"));
         System.out.println(rs.getInt("RATING"));
+
+
       }
 
     } catch (ClassNotFoundException | SQLException e) {
