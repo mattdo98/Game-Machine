@@ -186,8 +186,6 @@ public class LoginViewController implements Initializable {
     // Clear Username and Password
     username.setText("");
     password.setText("");
-
-    System.out.println("Test");
   }
 
   // Matt here, will delete when implemented in the right controller

@@ -46,11 +46,12 @@
                      </columns>
                   </TableView>
                   <Button layoutX="673.0" layoutY="401.0" mnemonicParsing="false" style="-fx-background-color: #00264d;" text="Set Filter" textFill="WHITE" />
-                  <Button layoutX="604.0" layoutY="474.0" mnemonicParsing="false" onAction="#addGame" style="-fx-background-color: #00264d;" text="Add Game" textFill="WHITE" />
+                  <Button layoutX="637.0" layoutY="467.0" mnemonicParsing="false" onAction="#addGame" style="-fx-background-color: #00264d;" text="Add Game" textFill="WHITE" />
                   <ComboBox fx:id="filter" layoutX="648.0" layoutY="338.0" prefHeight="31.0" prefWidth="127.0" />
                   <Label layoutX="575.0" layoutY="343.0" text="Genre" textFill="WHITE" />
                   <ComboBox fx:id="filter1" layoutX="648.0" layoutY="369.0" prefHeight="31.0" prefWidth="127.0" />
                   <Label layoutX="575.0" layoutY="374.0" text="Rating" textFill="WHITE" />
+                  <Label fx:id="addedSuccessful" layoutX="542.0" layoutY="441.0" prefHeight="17.0" prefWidth="243.0" textFill="RED" />
                </children>
             </AnchorPane>
             <Button alignment="CENTER" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#getHome" prefHeight="53.0" prefWidth="127.0" style="-fx-border-color: transparent; -fx-background-color: #00264d;" text="GAMES" textAlignment="CENTER" textFill="WHITE">
