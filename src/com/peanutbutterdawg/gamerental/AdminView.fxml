@@ -37,40 +37,44 @@
         </Button>
     </AnchorPane>
     <AnchorPane layoutY="77.0" prefHeight="526.0" prefWidth="809.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
-        <AnchorPane fx:id="editGamePage" layoutX="493.0" layoutY="281.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="281.0">
+        <AnchorPane fx:id="editGamePage" layoutX="493.0" layoutY="291.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="291.0">
             <ComboBox layoutY="37.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
-            <TextField layoutX="1.0" layoutY="77.0" promptText="New Name" />
-            <TextField layoutX="1.0" layoutY="115.0" promptText="New Genre" />
-            <Button layoutX="202.0" layoutY="153.0" mnemonicParsing="false" text="Edit!" />
+            <TextField layoutY="68.0" promptText="New Name" />
+            <Button layoutX="202.0" layoutY="161.0" mnemonicParsing="false" text="Edit!" />
             <Label layoutX="1.0" layoutY="4.0" text="Edit Game Info:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
-         <ComboBox layoutX="1.0" layoutY="153.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
+         <ComboBox fx:id="getRating1" layoutY="130.0" prefHeight="31.0" prefWidth="187.0" promptText="New Rating" />
+         <ComboBox fx:id="getGenre1" layoutY="99.0" prefHeight="31.0" prefWidth="187.0" promptText="New Genre" />
+         <ComboBox fx:id="getESRB1" layoutY="161.0" prefHeight="31.0" prefWidth="187.0" promptText="New ESRB" />
         </AnchorPane>
-        <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="53.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="53.0">
-            <TextField layoutY="32.0" promptText="Game Title" />
-            <TextField layoutY="70.0" promptText="Genre" />
+        <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="14.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="14.0">
+            <TextField layoutY="32.0" prefHeight="31.0" prefWidth="187.0" promptText="Game Title" />
             <Button layoutX="195.0" layoutY="32.0" mnemonicParsing="false" text="Add Game" />
-            <ChoiceBox layoutY="177.0" prefHeight="27.0" prefWidth="167.0" />
-            <Button layoutX="180.0" layoutY="177.0" mnemonicParsing="false" text="Delete Game" />
+            <ChoiceBox layoutY="220.0" prefHeight="27.0" prefWidth="167.0" />
+            <Button layoutX="180.0" layoutY="220.0" mnemonicParsing="false" text="Delete Game" />
             <Label layoutX="1.0" layoutY="-1.0" text="Add Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
-            <Label layoutX="1.0" layoutY="144.0" text="Delete Game:" textFill="WHITE">
+            <Label layoutX="1.0" layoutY="187.0" text="Delete Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
                 </font>
             </Label>
-         <ComboBox layoutY="108.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
+         <ComboBox fx:id="getRating" layoutY="94.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
+         <ComboBox fx:id="getGenre" layoutY="63.0" prefHeight="31.0" prefWidth="187.0" promptText="Genre" />
+         <ComboBox fx:id="getESRB" layoutY="125.0" prefHeight="31.0" prefWidth="187.0" promptText="ESRB" />
         </AnchorPane>
-      <TableView layoutX="22.0" layoutY="53.0" prefHeight="414.0" prefWidth="440.0">
+      <TableView fx:id="tableAdminTab" layoutX="22.0" layoutY="14.0" prefHeight="469.0" prefWidth="440.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="titleColumn" prefWidth="219.0" text="Title" />
+          <TableColumn fx:id="genreColumn" prefWidth="102.0" text="Genre" />
+            <TableColumn fx:id="ratingColumn" prefWidth="58.0" text="Rating" />
+            <TableColumn fx:id="esrbColumn" prefWidth="60.0" text="ESRB" />
         </columns>
       </TableView>
     </AnchorPane>

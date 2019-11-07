@@ -26,8 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javax.swing.plaf.nimbus.State;
-import sun.dc.pr.PRError;
 
 public class HomeViewController implements Initializable {
 
@@ -52,9 +50,13 @@ public class HomeViewController implements Initializable {
 
   @FXML private TableColumn<?, ?> ratingColumn2;
 
-  @FXML private ComboBox<String> filter;
+  @FXML private ComboBox<Genre> getGenre;
 
   @FXML private ComboBox<String> filter1;
+
+  @FXML private TableColumn<?, ?> esrbColumn2;
+
+  @FXML private ComboBox<ESRB> getESRB;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -183,12 +185,13 @@ public class HomeViewController implements Initializable {
   }
 
   private void initializeFilterCBO() {
+    for (Genre item : Genre.values()) {
+      getGenre.getItems().addAll(item);
+    }
 
-    // Filter populate
-    filter.getItems().add("Action");
-    filter.getItems().add("Adventure");
-    filter.getItems().add("RPG");
-    filter.getItems().add("FPS");
+    for (ESRB item : ESRB.values()) {
+      getESRB.getItems().addAll(item);
+    }
 
     // Filter1 populate
     filter1.getItems().add("1");
@@ -236,7 +239,7 @@ public class HomeViewController implements Initializable {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, RATING FROM VIDEOGAME";
+      String fromDbSql = "SELECT TITLE, GENRE, ESRB, RATING FROM VIDEOGAME";
 
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
@@ -250,6 +253,28 @@ public class HomeViewController implements Initializable {
         String title = rs.getString("TITLE");
         int genre = rs.getInt("GENRE");
         int rating = rs.getInt("RATING");
+        int esrb = rs.getInt("ESRB");
+
+        ESRB realEsrb = null;
+
+        if (esrb == 0) {
+          realEsrb = ESRB.RP;
+        }
+        if (genre == 1) {
+          realEsrb = ESRB.C;
+        }
+        if (genre == 2) {
+          realEsrb = ESRB.E;
+        }
+        if (genre == 3) {
+          realEsrb = ESRB.T;
+        }
+        if (genre == 4) {
+          realEsrb = ESRB.M;
+        }
+        if (genre == 5) {
+          realEsrb = ESRB.A;
+        }
 
         Genre realGenre = null;
 
@@ -276,17 +301,18 @@ public class HomeViewController implements Initializable {
         }
 
         // testing in the console
-        System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating);
+        System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating + "\nESRB: " + realEsrb);
 
         // setting the games to the table view
         tableGamesTab.setItems(games);
-        games.add(new Games(title, realGenre, rating));
+        games.add(new Games(title, realGenre, rating, realEsrb));
       }
 
       // Setup for the table view
       titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
       genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
       ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
 
       stmt.execute();
       conn.close();

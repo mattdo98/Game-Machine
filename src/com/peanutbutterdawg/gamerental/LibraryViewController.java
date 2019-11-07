@@ -19,7 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.h2.command.dml.Insert;
 
 public class LibraryViewController implements Initializable {
 
