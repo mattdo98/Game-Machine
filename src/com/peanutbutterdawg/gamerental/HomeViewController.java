@@ -56,8 +56,6 @@ public class HomeViewController implements Initializable {
 
   @FXML private ComboBox<String> filter1;
 
-  @FXML private Label addedSuccessful;
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     // this initializes the filter combo boxes with hardcoded data
@@ -209,76 +207,26 @@ public class HomeViewController implements Initializable {
   void addGame(ActionEvent event) {
     ObservableList<Games> games = tableGamesTab.getSelectionModel().getSelectedItems();
 
-    // System.out.println(games.get(0).getTitle());
-    String game1 = getGame1();
-    String game2 = getGame2();
-    String game3 = getGame3();
+    System.out.println(games.get(0).getTitle());
 
-    if (game1 == null) {
+    String sql = "UPDATE USERGAMES SET GAME1 = ? WHERE USERNAME = ?";
 
-      String sql = "UPDATE USERGAMES SET GAME1 = ?, GAMECOUNT = '1' WHERE USERNAME = ?";
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
-      try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      PreparedStatement ps = conn.prepareStatement(sql);
 
-        PreparedStatement ps = conn.prepareStatement(sql);
+      ps.setString(1, games.get(0).getTitle());
+      ps.setString(2, name.getText());
 
-        ps.setString(1, games.get(0).getTitle());
-        ps.setString(2, name.getText());
+      ps.executeUpdate();
 
-        ps.executeUpdate();
-
-        ps.close();
-        conn.close();
-      } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
-      }
-
-    } else if (game2 == null) {
-      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = '2' WHERE USERNAME = ?";
-
-      try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        ps.setString(1, games.get(0).getTitle());
-        ps.setString(2, name.getText());
-
-        ps.executeUpdate();
-
-        ps.close();
-        conn.close();
-      } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
-      }
-    } else if (game3 == null) {
-      String sql = "UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
-
-      try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        ps.setString(1, games.get(0).getTitle());
-        ps.setString(2, "3");
-        ps.setString(3, name.getText());
-
-        ps.executeUpdate();
-
-        ps.close();
-        conn.close();
-      } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
-      }
-    } else {
-      addedSuccessful.setText("You don't have more rentals available.");
+      ps.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
     }
-    // addedSuccessful.setText("Successfully added " + games.get(0).getTitle() + "to your
-    // library!");
   }
 
   private void initializeGamesTable() {
@@ -369,83 +317,5 @@ public class HomeViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-  }
-
-  private String getGame1() {
-
-    String sql = "SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?";
-
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
-      ps.setString(1, name.getText());
-
-      ResultSet rs = ps.executeQuery();
-
-      while (rs.next()) {
-        // System.out.println(rs.getString("GAME1"));
-
-        return rs.getString("GAME1");
-      }
-
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  private String getGame2() {
-
-    String sql = "SELECT GAME2 FROM USERGAMES WHERE USERNAME = ?";
-
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
-      ps.setString(1, name.getText());
-
-      ResultSet rs = ps.executeQuery();
-
-      while (rs.next()) {
-        // System.out.println(rs.getString("GAME1"));
-
-        return rs.getString("GAME2");
-      }
-
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  private String getGame3() {
-
-    String sql = "SELECT GAME3 FROM USERGAMES WHERE USERNAME = ?";
-
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
-      ps.setString(1, name.getText());
-
-      ResultSet rs = ps.executeQuery();
-
-      while (rs.next()) {
-        // System.out.println(rs.getString("GAME1"));
-
-        return rs.getString("GAME3");
-      }
-
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 }

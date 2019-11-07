@@ -9,7 +9,7 @@ public enum Genre {
   STRATEGY(6),
   SIMULATION(7);
 
-  private int value;
+  public int value;
 
   Genre(int value) {
     this.value = value;
