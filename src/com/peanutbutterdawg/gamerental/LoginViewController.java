@@ -102,6 +102,24 @@ public class LoginViewController implements Initializable {
     } else {
       System.out.println("That username is already taken. Please try again.");
     }
+
+    String sql = "INSERT INTO USERGAMES (USERNAME, GAMECOUNT) VALUES (?, ?)";
+
+    try {
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, createUsername.getText());
+      ps.setString(2, "0");
+
+      ps.executeUpdate();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /////////////////////////////////////////////////////////////
@@ -146,6 +164,25 @@ public class LoginViewController implements Initializable {
     else{
       System.out.println("Entered incorrect username or password.");
     }
+
+    String sql = "UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, username.getText());
+
+      ps.executeUpdate();
+
+      ps.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
     // Clear Username and Password
     username.setText("");
     password.setText("");

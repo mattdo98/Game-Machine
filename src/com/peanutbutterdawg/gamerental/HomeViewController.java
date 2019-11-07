@@ -26,6 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.swing.plaf.nimbus.State;
+import sun.dc.pr.PRError;
 
 public class HomeViewController implements Initializable {
 
@@ -61,7 +63,7 @@ public class HomeViewController implements Initializable {
     // this initializes the table view with hardcoded data
     initializeGamesTable();
     // this initializes the name label that is at the top of each page
-    //initializeNameLabel();
+    initializeNameLabel();
   }
 
   @FXML
@@ -110,6 +112,31 @@ public class HomeViewController implements Initializable {
 
     window.setScene(LoginViewScene);
     window.show();
+
+    String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
+    String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(getUserName);
+
+      PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
+
+      while (rs.next()) {
+        String username = rs.getString("USERNAME");
+
+        ps.setString(1, username);
+        ps.executeUpdate();
+      }
+
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
@@ -143,28 +170,27 @@ public class HomeViewController implements Initializable {
 
       ResultSet rs = ps.executeQuery();
 
-      while(rs.next()) {
+      while (rs.next()) {
         System.out.println(rs.getString("TITLE"));
         System.out.println(rs.getInt("GENRE"));
         System.out.println(rs.getInt("ESRB"));
         System.out.println(rs.getInt("RATING"));
-
       }
 
-
-    } catch(ClassNotFoundException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
 
   private void initializeFilterCBO() {
+
+    // Filter populate
     filter.getItems().add("Action");
     filter.getItems().add("Adventure");
     filter.getItems().add("RPG");
     filter.getItems().add("FPS");
 
     // Filter1 populate
-
     filter1.getItems().add("1");
     filter1.getItems().add("2");
     filter1.getItems().add("3");
@@ -179,22 +205,25 @@ public class HomeViewController implements Initializable {
 
   @FXML
   void addGame(ActionEvent event) {
-    ObservableList<Games> games;
-    games = tableGamesTab.getSelectionModel().getSelectedItems();
+    ObservableList<Games> games = tableGamesTab.getSelectionModel().getSelectedItems();
 
     System.out.println(games.get(0).getTitle());
 
-    String sql = "INSERT INTO USERGAMES (game1) VALUES (?)";
+    String sql = "UPDATE USERGAMES SET GAME1 = ? WHERE USERNAME = ?";
 
-    try{
+    try {
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
       PreparedStatement ps = conn.prepareStatement(sql);
 
       ps.setString(1, games.get(0).getTitle());
+      ps.setString(2, name.getText());
 
+      ps.executeUpdate();
 
+      ps.close();
+      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -216,7 +245,7 @@ public class HomeViewController implements Initializable {
 
       ResultSet rs = stmt.executeQuery();
 
-      while(rs.next()) {
+      while (rs.next()) {
 
         String title = rs.getString("TITLE");
         int genre = rs.getInt("GENRE");
@@ -224,19 +253,25 @@ public class HomeViewController implements Initializable {
 
         Genre realGenre = null;
 
-        if(genre == 0) {
+        if (genre == 0) {
           realGenre = Genre.ACTION;
-        }if(genre == 1) {
+        }
+        if (genre == 1) {
           realGenre = Genre.ADVENTURE;
-        }if(genre == 2) {
+        }
+        if (genre == 2) {
           realGenre = Genre.RPG;
-        }if(genre == 3) {
+        }
+        if (genre == 3) {
           realGenre = Genre.SPORTS;
-        }if(genre == 4) {
+        }
+        if (genre == 4) {
           realGenre = Genre.MMO;
-        }if(genre == 5) {
+        }
+        if (genre == 5) {
           realGenre = Genre.STRATEGY;
-        }if(genre == 6) {
+        }
+        if (genre == 6) {
           realGenre = Genre.SIMULATION;
         }
 
@@ -261,30 +296,26 @@ public class HomeViewController implements Initializable {
     }
   }
 
-  // not yet working....
   private void initializeNameLabel() {
 
     try {
 
-      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = true";
+      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
 
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
       Statement stmt = conn.createStatement();
-
       ResultSet rs = stmt.executeQuery(sql);
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
+
+        name.setText(username);
       }
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-  }
-
-
-  public void searchGames(javafx.scene.input.KeyEvent keyEvent) {
   }
 }

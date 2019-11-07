@@ -2,6 +2,12 @@ package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +23,9 @@ import org.h2.command.dml.Insert;
 
 public class LibraryViewController implements Initializable {
 
+  private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
+  private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+
   @FXML
   private AnchorPane getLibrary;
 
@@ -26,6 +35,8 @@ public class LibraryViewController implements Initializable {
   // initialize method
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
+
+    initializeNameLabel();
 
     System.out.println("This is Library Tab");
   }
@@ -76,6 +87,31 @@ public class LibraryViewController implements Initializable {
 
     window.setScene(LoginViewScene);
     window.show();
+
+    String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
+    String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(getUserName);
+
+      PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
+
+      while(rs.next()) {
+        String username = rs.getString("USERNAME");
+
+        ps.setString(1, username);
+        ps.executeUpdate();
+      }
+
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
@@ -90,4 +126,26 @@ public class LibraryViewController implements Initializable {
     window.show();
   }
 
+  private void initializeNameLabel() {
+
+    try {
+
+      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        String username = rs.getString("USERNAME");
+
+        myName.setText(username);
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }
