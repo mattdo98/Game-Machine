@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -38,7 +37,7 @@
     </AnchorPane>
     <AnchorPane layoutY="77.0" prefHeight="526.0" prefWidth="809.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
         <AnchorPane fx:id="editGamePage" layoutX="493.0" layoutY="291.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="291.0">
-            <ComboBox layoutY="37.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
+            <ComboBox fx:id="selectGame" layoutY="37.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
             <TextField layoutY="68.0" promptText="New Name" />
             <Button layoutX="202.0" layoutY="161.0" mnemonicParsing="false" text="Edit!" />
             <Label layoutX="1.0" layoutY="4.0" text="Edit Game Info:" textFill="WHITE">
@@ -53,8 +52,7 @@
         <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="14.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="14.0">
             <TextField layoutY="32.0" prefHeight="31.0" prefWidth="187.0" promptText="Game Title" />
             <Button layoutX="195.0" layoutY="32.0" mnemonicParsing="false" text="Add Game" />
-            <ChoiceBox layoutY="220.0" prefHeight="27.0" prefWidth="167.0" />
-            <Button layoutX="180.0" layoutY="220.0" mnemonicParsing="false" text="Delete Game" />
+            <Button layoutX="187.0" layoutY="224.0" mnemonicParsing="false" text="Delete Game" />
             <Label layoutX="1.0" layoutY="-1.0" text="Add Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
@@ -68,6 +66,7 @@
          <ComboBox fx:id="getRating" layoutY="94.0" prefHeight="31.0" prefWidth="187.0" promptText="Rating" />
          <ComboBox fx:id="getGenre" layoutY="63.0" prefHeight="31.0" prefWidth="187.0" promptText="Genre" />
          <ComboBox fx:id="getESRB" layoutY="125.0" prefHeight="31.0" prefWidth="187.0" promptText="ESRB" />
+         <ComboBox fx:id="getGame" layoutY="224.0" prefHeight="31.0" prefWidth="179.0" />
         </AnchorPane>
       <TableView fx:id="tableAdminTab" layoutX="22.0" layoutY="14.0" prefHeight="469.0" prefWidth="440.0">
         <columns>
