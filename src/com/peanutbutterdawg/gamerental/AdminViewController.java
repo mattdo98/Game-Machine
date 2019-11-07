@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -56,10 +57,16 @@ public class AdminViewController implements Initializable {
 
   @FXML private ComboBox<ESRB> getESRB1;
 
+  @FXML private ComboBox<String> getGame;
+
+  @FXML
+  private ComboBox<String> selectGame;
+
   // initialize method
   public void initialize(URL url, ResourceBundle rb) {
     initializeNameLabel();
     initializeGamesTable();
+    initializeGame();
 
     // Set Items for Genre ComboBx
     for (Genre item : Genre.values()) {
@@ -183,6 +190,28 @@ public class AdminViewController implements Initializable {
     window.show();
   }
 
+  private void initializeGame() {
+    try {
+      String sql = "SELECT TITLE FROM VIDEOGAME";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        String title = rs.getString("TITLE");
+
+        selectGame.getItems().addAll(title);
+        getGame.getItems().addAll(title);
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void initializeNameLabel() {
     try {
 
@@ -230,19 +259,19 @@ public class AdminViewController implements Initializable {
         if (esrb == 0) {
           realEsrb = ESRB.RP;
         }
-        if (genre == 1) {
+        if (esrb == 1) {
           realEsrb = ESRB.C;
         }
-        if (genre == 2) {
+        if (esrb == 2) {
           realEsrb = ESRB.E;
         }
-        if (genre == 3) {
+        if (esrb == 3) {
           realEsrb = ESRB.T;
         }
-        if (genre == 4) {
+        if (esrb == 4) {
           realEsrb = ESRB.M;
         }
-        if (genre == 5) {
+        if (esrb == 5) {
           realEsrb = ESRB.A;
         }
 
