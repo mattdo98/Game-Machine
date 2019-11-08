@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -54,9 +55,9 @@ public class HomeViewController implements Initializable {
 
   @FXML private ComboBox<Genre> getGenre;
 
-  @FXML private ComboBox<String> filter1;
-
   @FXML private TableColumn<?, ?> esrbColumn2;
+
+  @FXML private Button setFilter;
 
   @FXML private Label addedGame;
 
@@ -157,36 +158,70 @@ public class HomeViewController implements Initializable {
     window.show();
   }
 
-  // this is the search functionality
-  // NEED TO WORK ON
   @FXML
-  void searchGames(ActionEvent event) {
-    String searchBoxTex = searchBar.getText();
+  void getSearch(ActionEvent event) {
 
-    String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
+    String searchBoxText = searchBar.getText();
+    Genre genreText = getGenre.getValue();
 
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    if (!searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()) {
+      String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
 
-      PreparedStatement ps  = conn.prepareStatement(sql);
+      System.out.println("test");
 
-      ps.setString(1, searchBoxTex);
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
-      ResultSet rs = ps.executeQuery();
+        PreparedStatement ps = conn.prepareStatement(sql);
 
-      while (rs.next()) {
-        String title = rs.getString("TITLE");
+        ps.setString(1, searchBoxText);
 
-        setUpTableSearch(title);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+          String title = rs.getString("TITLE");
+
+          System.out.println(title);
+
+          setUpTableSearchTitle(title);
+        }
+
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
       }
 
+      // to search if the combobox genre was only filled
+      //  currently not working
+    } else if (searchBar.getText().isEmpty() && !getGenre.getSelectionModel().isEmpty()) {
+      String sql = "SELECT GENRE FROM VIDEOGAME WHERE GENRE = ?";
 
+      System.out.println("test");
 
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, genreText.toString());
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+          int genre = rs.getInt("GENRE");
+
+          System.out.println(genreText.getString());
+
+          System.out.println(genre);
+
+          // setUpTableSearchGenre(genre);
+        }
+
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
     }
-
   }
 
   private void initializeFilterCBO() {
@@ -198,18 +233,6 @@ public class HomeViewController implements Initializable {
     for (Genre item : Genre.values()) {
       getGenre.getItems().addAll(item);
     }
-
-    // Filter1 populate
-    filter1.getItems().add("1");
-    filter1.getItems().add("2");
-    filter1.getItems().add("3");
-    filter1.getItems().add("4");
-    filter1.getItems().add("5");
-    filter1.getItems().add("6");
-    filter1.getItems().add("7");
-    filter1.getItems().add("8");
-    filter1.getItems().add("9");
-    filter1.getItems().add("10");
   }
 
   @FXML
@@ -480,7 +503,7 @@ public class HomeViewController implements Initializable {
     return null;
   }
 
-  private void setUpTableSearch(String title) {
+  private void setUpTableSearchTitle(String title) {
     games = FXCollections.observableArrayList();
 
     try {
@@ -492,7 +515,6 @@ public class HomeViewController implements Initializable {
       PreparedStatement ps = conn.prepareStatement(fromDbSql);
 
       ps.setString(1, title);
-
 
       ResultSet rs = ps.executeQuery();
 
@@ -549,7 +571,100 @@ public class HomeViewController implements Initializable {
         }
 
         // testing in the console
-        System.out.println("\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
+        System.out.println(
+            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
+
+        // setting the games to the table view
+        tableGamesTab.setItems(games);
+        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
+      }
+
+      // Setup for the table view
+      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+
+      ps.execute();
+      conn.close();
+      ps.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void setUpTableSearchGenre(int genre) {
+    games = FXCollections.observableArrayList();
+
+    try {
+      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE GENRE = ?";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      // This prepared statement executes my SQL String Command.
+      PreparedStatement ps = conn.prepareStatement(fromDbSql);
+
+      ps.setString(1, Integer.toString(genre));
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+
+        String titleTb = rs.getString("TITLE");
+        int esrbTb = rs.getInt("ESRB");
+        int genreTb = rs.getInt("GENRE");
+        int ratingTb = rs.getInt("RATING");
+
+        System.out.println();
+
+        ESRB realEsrb = null;
+
+        if (esrbTb == 0) {
+          realEsrb = ESRB.RP;
+        }
+        if (esrbTb == 1) {
+          realEsrb = ESRB.C;
+        }
+        if (esrbTb == 2) {
+          realEsrb = ESRB.E;
+        }
+        if (esrbTb == 3) {
+          realEsrb = ESRB.T;
+        }
+        if (esrbTb == 4) {
+          realEsrb = ESRB.M;
+        }
+        if (esrbTb == 5) {
+          realEsrb = ESRB.A;
+        }
+
+        Genre realGenre = null;
+
+        if (genreTb == 0) {
+          realGenre = Genre.ACTION;
+        }
+        if (genreTb == 1) {
+          realGenre = Genre.ADVENTURE;
+        }
+        if (genreTb == 2) {
+          realGenre = Genre.RPG;
+        }
+        if (genreTb == 3) {
+          realGenre = Genre.SPORTS;
+        }
+        if (genreTb == 4) {
+          realGenre = Genre.MMO;
+        }
+        if (genreTb == 5) {
+          realGenre = Genre.STRATEGY;
+        }
+        if (genreTb == 6) {
+          realGenre = Genre.SIMULATION;
+        }
+
+        // testing in the console
+        System.out.println(
+            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
 
         // setting the games to the table view
         tableGamesTab.setItems(games);
