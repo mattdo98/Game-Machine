@@ -23,7 +23,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class AdminViewController implements Initializable {
@@ -47,9 +49,9 @@ public class AdminViewController implements Initializable {
 
   @FXML private ComboBox<Genre> getGenre1;
 
-  @FXML private ComboBox<String> getRating;
+  @FXML private ComboBox<Integer> getRating;
 
-  @FXML private ComboBox<String> getRating1;
+  @FXML private ComboBox<Integer> getNewRating;
 
   @FXML private TableColumn<?, ?> esrbColumn;
 
@@ -57,16 +59,20 @@ public class AdminViewController implements Initializable {
 
   @FXML private ComboBox<ESRB> getESRB1;
 
-  @FXML private ComboBox<String> getGame;
+  @FXML private ComboBox<String> deleteGame;
 
-  @FXML
-  private ComboBox<String> selectGame;
+  @FXML private ComboBox<String> selectGame;
+
+  @FXML private TextField getTitle;
+
+  @FXML private TextField getNewTitle;
 
   // initialize method
   public void initialize(URL url, ResourceBundle rb) {
     initializeNameLabel();
     initializeGamesTable();
-    initializeGame();
+    initializeSelectGame();
+    initializeDeleteGame();
 
     // Set Items for Genre ComboBx
     for (Genre item : Genre.values()) {
@@ -81,32 +87,32 @@ public class AdminViewController implements Initializable {
     }
 
     // Set Items for Rating ComboBox
-    getRating.getItems().add("1");
-    getRating.getItems().add("2");
-    getRating.getItems().add("3");
-    getRating.getItems().add("4");
-    getRating.getItems().add("5");
-    getRating.getItems().add("6");
-    getRating.getItems().add("7");
-    getRating.getItems().add("8");
-    getRating.getItems().add("9");
-    getRating.getItems().add("10");
+    getRating.getItems().add(1);
+    getRating.getItems().add(2);
+    getRating.getItems().add(3);
+    getRating.getItems().add(4);
+    getRating.getItems().add(5);
+    getRating.getItems().add(6);
+    getRating.getItems().add(7);
+    getRating.getItems().add(8);
+    getRating.getItems().add(9);
+    getRating.getItems().add(10);
 
-    // Set Items for Rating1 ComboBox
-    getRating1.getItems().add("1");
-    getRating1.getItems().add("2");
-    getRating1.getItems().add("3");
-    getRating1.getItems().add("4");
-    getRating1.getItems().add("5");
-    getRating1.getItems().add("6");
-    getRating1.getItems().add("7");
-    getRating1.getItems().add("8");
-    getRating1.getItems().add("9");
-    getRating1.getItems().add("10");
+    // Set Items for NewRating ComboBox
+    getNewRating.getItems().add(1);
+    getNewRating.getItems().add(2);
+    getNewRating.getItems().add(3);
+    getNewRating.getItems().add(4);
+    getNewRating.getItems().add(5);
+    getNewRating.getItems().add(6);
+    getNewRating.getItems().add(7);
+    getNewRating.getItems().add(8);
+    getNewRating.getItems().add(9);
+    getNewRating.getItems().add(10);
   }
 
-  @FXML
-  void getAdmin(ActionEvent event) throws IOException {
+  // Get Admin Tab
+  @FXML void getAdmin(ActionEvent event) throws IOException {
     Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
     Scene AdminViewScene = new Scene(AdminViewParent);
 
@@ -117,8 +123,8 @@ public class AdminViewController implements Initializable {
     window.show();
   }
 
-  @FXML
-  void getHome(ActionEvent event) throws IOException {
+  // Get Home Tab
+  @FXML void getHome(ActionEvent event) throws IOException {
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
 
@@ -129,8 +135,8 @@ public class AdminViewController implements Initializable {
     window.show();
   }
 
-  @FXML
-  void getLibrary(ActionEvent event) throws IOException {
+  // Get Library
+  @FXML void getLibrary(ActionEvent event) throws IOException {
     Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
     Scene LibraryViewScene = new Scene(LibraryViewParent);
 
@@ -141,8 +147,8 @@ public class AdminViewController implements Initializable {
     window.show();
   }
 
-  @FXML
-  void getLogout(ActionEvent event) throws IOException {
+  // Get Logout
+  @FXML void getLogout(ActionEvent event) throws IOException {
     Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
     Scene LoginViewScene = new Scene(LoginViewParent);
 
@@ -178,8 +184,8 @@ public class AdminViewController implements Initializable {
     }
   }
 
-  @FXML
-  void getProfile(ActionEvent event) throws IOException {
+  // Get Profile Tab
+  @FXML void getProfile(ActionEvent event) throws IOException {
     Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
     Scene ProfileViewScene = new Scene(ProfileViewParent);
 
@@ -190,7 +196,68 @@ public class AdminViewController implements Initializable {
     window.show();
   }
 
-  private void initializeGame() {
+  // Add Game Button
+  @FXML void addGame(MouseEvent event) {
+    // Variables
+    Genre genreText = getGenre.getValue();
+    ESRB esrbText = getESRB.getValue();
+    int ratingText = getRating.getValue();
+
+    String sql = "INSERT INTO VIDEOGAME (TITLE, GENRE, ESRB, RATING) VALUES (?, ?, ?, ?)";
+
+    try {
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, getTitle.getText());
+      ps.setString(2, genreText.toString());
+      ps.setString(3, esrbText.toString());
+      ps.setString(4, Integer.toString(ratingText));
+
+      ps.executeUpdate();
+
+      initializeGamesTable();
+      initializeSelectGame();
+      initializeDeleteGame();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // Delete Game Button
+  @FXML void deleteGame(MouseEvent event) {
+
+    String sql = "DELETE FROM VIDEOGAME WHERE TITLE = ?";
+
+    try {
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, deleteGame.getValue());
+
+      ps.executeUpdate();
+
+      initializeGamesTable();
+      initializeSelectGame();
+      initializeDeleteGame();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // Initialize Select Game
+  private void initializeSelectGame() {
+
+    selectGame.getItems().clear();
+
     try {
       String sql = "SELECT TITLE FROM VIDEOGAME";
 
@@ -204,7 +271,6 @@ public class AdminViewController implements Initializable {
         String title = rs.getString("TITLE");
 
         selectGame.getItems().addAll(title);
-        getGame.getItems().addAll(title);
       }
 
     } catch (ClassNotFoundException | SQLException e) {
@@ -212,6 +278,31 @@ public class AdminViewController implements Initializable {
     }
   }
 
+  private void initializeDeleteGame() {
+
+    deleteGame.getItems().clear();
+
+    try {
+      String sql = "SELECT TITLE FROM VIDEOGAME";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        String title = rs.getString("TITLE");
+
+        deleteGame.getItems().addAll(title);
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // Initialize Name Label
   private void initializeNameLabel() {
     try {
 
@@ -234,6 +325,7 @@ public class AdminViewController implements Initializable {
     }
   }
 
+  // Initialize Games Table
   private void initializeGamesTable() {
     games = FXCollections.observableArrayList();
 
@@ -256,6 +348,7 @@ public class AdminViewController implements Initializable {
 
         ESRB realEsrb = null;
 
+        // If ESRB Value is Integer, Set ESRB realEsrb
         if (esrb == 0) {
           realEsrb = ESRB.RP;
         }
@@ -277,6 +370,7 @@ public class AdminViewController implements Initializable {
 
         Genre realGenre = null;
 
+        // If Genre Value is Integer, Set Genre realgenre
         if (genre == 0) {
           realGenre = Genre.ACTION;
         }

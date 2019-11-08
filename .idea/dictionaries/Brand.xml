@@ -6,7 +6,9 @@
       <w>firstname</w>
       <w>lastname</w>
       <w>loggedin</w>
+      <w>realgenre</w>
       <w>rentalview</w>
+      <w>skyrim</w>
     </words>
   </dictionary>
 </component>
