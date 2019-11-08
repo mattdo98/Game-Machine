@@ -40,7 +40,7 @@ public class ProfileViewController implements Initializable {
     private TextField userName;
 
     @FXML
-    private TextField userEmail;
+    private TextField fullName;
 
     @FXML
     private TextField subEnd;
@@ -48,7 +48,6 @@ public class ProfileViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNameLabel();
-        displaySubEnd();
         intitalizeProfile();
     }
 
@@ -111,7 +110,7 @@ public class ProfileViewController implements Initializable {
 
             PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
 
-            while(rs.next()) {
+            while (rs.next()) {
                 String username = rs.getString("USERNAME");
 
                 ps.setString(1, username);
@@ -137,17 +136,19 @@ public class ProfileViewController implements Initializable {
         window.show();
     }
 
-    // Initialize start
-    @FXML
-    public void initialize() {
-        // Text to show sub end date
-        displaySubEnd();
-        intitalizeProfile();
 
+
+
+
+    //Initializes Profile Tab
+    private void intitalizeProfile() {
+        getUserName();
+        getFullName();
+        displaySubEnd();
 
     }
 
-    //Matt here, made method that shows a month from the current date
+    //made method that shows a month from the current date
     private void displaySubEnd() {
         Date currentDate = new Date();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -158,16 +159,39 @@ public class ProfileViewController implements Initializable {
         subEnd.setText(df.format(subEndDate));
     }
 
-    //Gets the Users Name from database and sets it to the userName TextField
-    private void intitalizeProfile() {
-        getUserName();
 
+        //gets the full name
+    private void getFullName() {
 
+        profile = FXCollections.observableArrayList();
+        String selectStmt1 = "SELECT FIRSTNAME, LASTNAME FROM USER WHERE ISACTIVEUSER = true";
+        try {
+            Class.forName(JDBC_DRIVER); // Database Driver
+            Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+            // This prepared statement executes my SQL String Command.
+            PreparedStatement stmt = conn.prepareStatement(selectStmt1);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String firstNameGot = rs.getString("FIRSTNAME");
+                String lastNameGot = rs.getString("LASTNAME");
+                //Test to console
+                System.out.println("\nName: " + firstNameGot + " " + lastNameGot);
+                fullName.setText(firstNameGot + " " + lastNameGot);
+            }
+
+            stmt.execute();
+            conn.close();
+            stmt.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    //Get
+
+    //Get username from Database
     private void getUserName() {
-      profile = FXCollections.observableArrayList();
+        profile = FXCollections.observableArrayList();
         String selectStmt = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = true";
 
         try {
@@ -177,14 +201,11 @@ public class ProfileViewController implements Initializable {
             PreparedStatement stmt = conn.prepareStatement(selectStmt);
             ResultSet rs = stmt.executeQuery();
 
-
-
             while (rs.next()) {
-              String usernameGot = rs.getString("USERNAME");
+                String usernameGot = rs.getString("USERNAME");
                 System.out.println("\nUsername: " + usernameGot);
-              userName.setText(usernameGot);
+                userName.setText(usernameGot);
             }
-
 
             stmt.execute();
             conn.close();

@@ -54,7 +54,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="75.0" prefWidth="165.0" text="                     Email:" textFill="WHITE" GridPane.rowIndex="1">
+                        <Label prefHeight="75.0" prefWidth="165.0" text="           Your Name:" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -69,7 +69,7 @@
                               <Font size="19.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="userEmail" editable="false" style="-fx-background-color: #00264d;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="fullName" editable="false" style="-fx-background-color: #00264d; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="19.0" />
                            </font>
