@@ -163,31 +163,30 @@ public class HomeViewController implements Initializable {
   void searchGames(ActionEvent event) {
     String searchBoxTex = searchBar.getText();
 
-    String sql = "SELECT TITLE, GENRE, ESRB, RATING FROM VIDEOGAME WHERE TITLE = ?";
+    String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
 
     try {
-
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps  = conn.prepareStatement(sql);
 
       ps.setString(1, searchBoxTex);
 
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
-        System.out.println(rs.getString("TITLE"));
-        System.out.println(rs.getInt("GENRE"));
-        System.out.println(rs.getInt("ESRB"));
-        System.out.println(rs.getInt("RATING"));
+        String title = rs.getString("TITLE");
 
-
+        setUpTableSearch(title);
       }
+
+
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+
   }
 
   private void initializeFilterCBO() {
@@ -293,6 +292,7 @@ public class HomeViewController implements Initializable {
     } else {
       addedGame.setText("Out of rentals!");
     }
+    initializeGamesTable();
   }
 
   private void initializeGamesTable() {
@@ -478,5 +478,95 @@ public class HomeViewController implements Initializable {
     }
 
     return null;
+  }
+
+  private void setUpTableSearch(String title) {
+    games = FXCollections.observableArrayList();
+
+    try {
+      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = ?";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      // This prepared statement executes my SQL String Command.
+      PreparedStatement ps = conn.prepareStatement(fromDbSql);
+
+      ps.setString(1, title);
+
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+
+        String titleTb = rs.getString("TITLE");
+        int esrbTb = rs.getInt("ESRB");
+        int genreTb = rs.getInt("GENRE");
+        int ratingTb = rs.getInt("RATING");
+
+        ESRB realEsrb = null;
+
+        if (esrbTb == 0) {
+          realEsrb = ESRB.RP;
+        }
+        if (esrbTb == 1) {
+          realEsrb = ESRB.C;
+        }
+        if (esrbTb == 2) {
+          realEsrb = ESRB.E;
+        }
+        if (esrbTb == 3) {
+          realEsrb = ESRB.T;
+        }
+        if (esrbTb == 4) {
+          realEsrb = ESRB.M;
+        }
+        if (esrbTb == 5) {
+          realEsrb = ESRB.A;
+        }
+
+        Genre realGenre = null;
+
+        if (genreTb == 0) {
+          realGenre = Genre.ACTION;
+        }
+        if (genreTb == 1) {
+          realGenre = Genre.ADVENTURE;
+        }
+        if (genreTb == 2) {
+          realGenre = Genre.RPG;
+        }
+        if (genreTb == 3) {
+          realGenre = Genre.SPORTS;
+        }
+        if (genreTb == 4) {
+          realGenre = Genre.MMO;
+        }
+        if (genreTb == 5) {
+          realGenre = Genre.STRATEGY;
+        }
+        if (genreTb == 6) {
+          realGenre = Genre.SIMULATION;
+        }
+
+        // testing in the console
+        System.out.println("\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
+
+        // setting the games to the table view
+        tableGamesTab.setItems(games);
+        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
+      }
+
+      // Setup for the table view
+      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+
+      ps.execute();
+      conn.close();
+      ps.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 }
