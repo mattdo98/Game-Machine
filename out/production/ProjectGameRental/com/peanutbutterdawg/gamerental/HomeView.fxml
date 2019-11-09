@@ -6,12 +6,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.HomeViewController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.HomeViewController">
    <children>
       <AnchorPane layoutX="3.0" layoutY="14.0" prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,9 +33,18 @@
                   <Label layoutX="363.0" layoutY="4.0" text="Top Games" textFill="WHITE" AnchorPane.leftAnchor="363.0" AnchorPane.topAnchor="4.0" />
                   <FlowPane layoutX="25.0" layoutY="25.0" orientation="VERTICAL" prefHeight="186.0" prefWidth="675.0" style="-fx-background-color: #003366;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="30.0">
                      <children>
-                        <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../img/Skyrim.jpg" />
+                           </image></ImageView>
+                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../img/MonsterHunter.jpg" />
+                           </image></ImageView>
+                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../img/BattlefieldFive.jpg" />
+                           </image></ImageView>
                      </children>
                   </FlowPane>
                   <TextField fx:id="searchBar" layoutX="575.0" layoutY="294.0" prefHeight="31.0" prefWidth="200.0" promptText="Search Games" />
