@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class LoginViewController implements Initializable {
@@ -25,20 +22,13 @@ public class LoginViewController implements Initializable {
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
 
   @FXML public AnchorPane getLogin;
+  public Button login;
+  public Button createAccount;
+  public AnchorPane getLoginInfo;
 
   @FXML private AnchorPane EnterLogin;
 
   @FXML private AnchorPane EnterCreateAccount;
-
-  @FXML private Label SuccessCreatedAccount;
-
-  @FXML private TextFlow userName;
-
-  @FXML private TextFlow userEmail;
-
-  @FXML private TextFlow subEnd;
-
-  @FXML private RadioButton AdminLogin;
 
   // Hi this is Robbie. These are the fields for LOGIN:
   //////////////////////////////////////////////////////////////
@@ -46,8 +36,6 @@ public class LoginViewController implements Initializable {
   @FXML private PasswordField password;
 
   @FXML private TextField username;
-
-  @FXML private Button login;
 
   // Hi this is Robbie. These are the fields and methods for CREATE ACCOUNT:
   //////////////////////////////////////////////////////////////
@@ -63,58 +51,92 @@ public class LoginViewController implements Initializable {
 
   @FXML private TextField adminPassword;
 
-  @FXML private Button createAccount;
+  @FXML private Label createAccountLabel;
+
+  @FXML private Label invalidUsername;
+
+  @FXML
+  private void isAdminButton() {
+    if (isAdmin.isSelected()) {
+      adminPassword.setVisible(true);
+    } else {
+      adminPassword.setVisible(false);
+    }
+  }
 
   // Hi Robbie here. Every time the createAccount button is pressed, this code is executed. :)
   @FXML
   private void createAccountButton() {
-    if (!checkUsernameMultiples(createUsername.getText())) {
-      if (isAdmin.isSelected()) {
-        String passwordToCreateAdminAccount = "Ravioli"; // <----- Password to create admin account.
-        if (adminPassword.getText().equals(passwordToCreateAdminAccount)) {
+    boolean check = true;
+    if (!createUsername.getText().equals("")
+        && !createPassword.getText().equals("")
+        && !firstName.getText().equals("")
+        && !lastName.getText().equals("")) {
+      if (!checkUsernameMultiples(createUsername.getText())) {
+        if (isAdmin.isSelected()) {
+          String passwordToCreateAdminAccount =
+              "Ravioli"; // <----- Password to create admin account.
+          if (adminPassword.getText().equals(passwordToCreateAdminAccount)) {
+            insertToDatabase(
+                firstName.getText(),
+                lastName.getText(),
+                createUsername.getText(),
+                createPassword.getText(),
+                false, // <--- When an account is first created, SUB is always false.
+                isAdmin.isSelected(),
+                false);
+            System.out.println("Admin account successfully created.");
+            createAccountLabel.setText("Admin account successfully created.");
+            createAccountLabel.setVisible(true);
+          } else {
+            System.out.println("You entered an incorrect admin password.");
+            createAccountLabel.setText("Invalid admin password.");
+            createAccountLabel.setVisible(true);
+            check = false;
+          }
+        } else {
           insertToDatabase(
               firstName.getText(),
               lastName.getText(),
               createUsername.getText(),
               createPassword.getText(),
               false, // <--- When an account is first created, SUB is always false.
-              isAdmin.isSelected(),
+              isAdmin.isDisabled(),
               false);
-          System.out.println("Admin account successfully created.");
-        } else {
-          System.out.println("You entered an incorrect admin password.");
+          System.out.println("Account successfully created.");
+          createAccountLabel.setText("Account successfully created.");
+          createAccountLabel.setVisible(true);
         }
       } else {
-        insertToDatabase(
-            firstName.getText(),
-            lastName.getText(),
-            createUsername.getText(),
-            createPassword.getText(),
-            false, // <--- When an account is first created, SUB is always false.
-            isAdmin.isDisabled(),
-            false);
-        System.out.println("Account successfully created.");
+        System.out.println("That username is already taken. Please try again.");
+        createAccountLabel.setText("Username unavailable.");
+        createAccountLabel.setVisible(true);
+        check = false;
       }
     } else {
-      System.out.println("That username is already taken. Please try again.");
+      check = false;
+      createAccountLabel.setText("One or more fields are empty. Please enter your information.");
+      createAccountLabel.setVisible(true);
     }
 
-    String sql = "INSERT INTO USERGAMES (USERNAME, GAMECOUNT) VALUES (?, ?)";
+    if (check) {
+      String sql = "INSERT INTO USERGAMES (USERNAME, GAMECOUNT) VALUES (?, ?)";
 
-    try {
+      try {
 
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
-      PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = conn.prepareStatement(sql);
 
-      ps.setString(1, createUsername.getText());
-      ps.setString(2, "0");
+        ps.setString(1, createUsername.getText());
+        ps.setString(2, "0");
 
-      ps.executeUpdate();
+        ps.executeUpdate();
 
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -124,30 +146,32 @@ public class LoginViewController implements Initializable {
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
 
-    System.out.println("is this working, guess not.");
+    // System.out.println("is this working, guess not.");
     // End of game page table initialize
   }
 
   // On Mouse Click Show Create Account Items on LoginView
   @FXML
-  void ClickCreateAccount(MouseEvent event) {
+  void ClickCreateAccount() {
     EnterLogin.setVisible(false);
     EnterCreateAccount.setVisible(true);
-    SuccessCreatedAccount.setVisible(false);
+    createAccountLabel.setVisible(false);
+    invalidUsername.setVisible(false);
   }
 
   // On Mouse Click Show Login Items on LoginView
   @FXML
-  void ClickLogin(MouseEvent event) {
+  void ClickLogin() {
     EnterLogin.setVisible(true);
     EnterCreateAccount.setVisible(false);
-    SuccessCreatedAccount.setVisible(false);
+    createAccountLabel.setVisible(false);
+    invalidUsername.setVisible(false);
   }
 
   // On Action for Login Button
   @FXML
   void Login(ActionEvent event) throws IOException {
-    if(checkLoginInformation(username.getText(), password.getText())){
+    if (checkLoginInformation(username.getText(), password.getText())) {
       Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
       Scene HomeViewScene = new Scene(HomeViewParent);
 
@@ -156,9 +180,9 @@ public class LoginViewController implements Initializable {
 
       window.setScene(HomeViewScene);
       window.show();
-    }
-    else{
+    } else {
       System.out.println("Entered incorrect username or password.");
+      invalidUsername.setVisible(true);
     }
 
     String sql = "UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?";
@@ -221,16 +245,15 @@ public class LoginViewController implements Initializable {
       Statement stmt = conn.createStatement();
       ResultSet rs = stmt.executeQuery(checkFromDB);
 
-      while(rs.next()) {
+      while (rs.next()) {
         String username = rs.getString("USERNAME");
         String password = rs.getString("PASSWORD");
-        if(username.equals(enteredUser) && password.equals(enteredPassword)){
+        if (username.equals(enteredUser) && password.equals(enteredPassword)) {
           stmt.close();
           conn.close();
           return true;
         }
       }
-
 
       stmt.close();
       conn.close();
