@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -47,7 +48,7 @@ public class AdminViewController implements Initializable {
 
   @FXML private ComboBox<Genre> getGenre;
 
-  @FXML private ComboBox<Genre> getGenre1;
+  @FXML private ComboBox<Genre> getNewGenre;
 
   @FXML private ComboBox<Integer> getRating;
 
@@ -57,15 +58,13 @@ public class AdminViewController implements Initializable {
 
   @FXML private ComboBox<ESRB> getESRB;
 
-  @FXML private ComboBox<ESRB> getESRB1;
+  @FXML private ComboBox<ESRB> getNewESRB;
 
   @FXML private ComboBox<String> deleteGame;
 
   @FXML private ComboBox<String> selectGame;
 
   @FXML private TextField getTitle;
-
-  @FXML private TextField getNewTitle;
 
   // initialize method
   public void initialize(URL url, ResourceBundle rb) {
@@ -77,13 +76,13 @@ public class AdminViewController implements Initializable {
     // Set Items for Genre ComboBx
     for (Genre item : Genre.values()) {
       getGenre.getItems().addAll(item);
-      getGenre1.getItems().addAll(item);
+      getNewGenre.getItems().addAll(item);
     }
 
     // Set Items for ESRB ComboBox
     for (ESRB item : ESRB.values()) {
       getESRB.getItems().addAll(item);
-      getESRB1.getItems().addAll(item);
+      getNewESRB.getItems().addAll(item);
     }
 
     // Set Items for Rating ComboBox
@@ -216,6 +215,38 @@ public class AdminViewController implements Initializable {
       ps.setString(2, genreText.toString());
       ps.setString(3, esrbText.toString());
       ps.setString(4, Integer.toString(ratingText));
+
+      ps.executeUpdate();
+
+      initializeGamesTable();
+      initializeSelectGame();
+      initializeDeleteGame();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // Edit Game Button
+  @FXML void editGame(MouseEvent event) {
+    // Variables
+    Genre genreText = getNewGenre.getValue();
+    ESRB esrbText = getNewESRB.getValue();
+    int ratingText = getNewRating.getValue();
+
+    String sql = "UPDATE VIDEOGAME SET GENRE = ?, ESRB = ?, RATING = ? WHERE TITLE = ?";
+
+    try {
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(4, selectGame.getValue());
+      ps.setString(1, genreText.toString());
+      ps.setString(2, esrbText.toString());
+      ps.setString(3, Integer.toString(ratingText));
 
       ps.executeUpdate();
 

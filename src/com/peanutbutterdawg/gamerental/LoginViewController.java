@@ -178,10 +178,6 @@ public class LoginViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-
-    // Clear Username and Password
-    username.setText("");
-    password.setText("");
   }
 
   // Matt here, will delete when implemented in the right controller
