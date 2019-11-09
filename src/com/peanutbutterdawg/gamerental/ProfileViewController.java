@@ -1,5 +1,6 @@
 package com.peanutbutterdawg.gamerental;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -18,9 +19,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -47,10 +50,27 @@ public class ProfileViewController implements Initializable {
     @FXML
     private TextField subEnd;
 
+    @FXML
+    private Pane subPane;
+
+    @FXML
+    private TextField cCardInfo1;
+
+    @FXML
+    private TextField cCardInfo2;
+
+    @FXML
+    private TextField cCardInfo3;
+
+    @FXML
+    private Button buySubButton;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNameLabel();
         intitalizeProfile();
+        initializeSubSelect();
     }
 
     @FXML
@@ -174,12 +194,26 @@ public class ProfileViewController implements Initializable {
     private void intitalizeProfile() {
         getUserName();
         getFullName();
-        displaySubEnd();
+
+        initializeSubTabs();
 
     }
 
+    private void initializeSubTabs(){
+        buySubButton.setVisible(false);
+        subPane.setVisible(false);
+        cCardInfo1.setVisible(false);
+        cCardInfo2.setVisible(false);
+        cCardInfo3.setVisible(false);
+
+
+
+    }
+
+
     //made method that shows a month from the current date
     private void displaySubEnd() {
+
         Date currentDate = new Date();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Calendar tempEnd = Calendar.getInstance();
@@ -267,4 +301,81 @@ public class ProfileViewController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private void initializeSubSelect(){
+
+        try{
+
+            String sql = "SELECT SUBSCRIPTION FROM USER WHERE ISACTIVEUSER = true";
+            Class.forName(JDBC_DRIVER);
+            Connection conn = DriverManager.getConnection(DB_URL);
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                boolean currentSub;
+                if (rs.getBoolean("SUBSCRIPTION")) {
+                    currentSub = true;
+                    displaySubEnd();
+                    System.out.println("Subscription verified");
+
+                } else {
+                    currentSub = false;
+                    System.out.println("No active Subscription. Please Press the button to buy one");
+                    buySubButton.setVisible(true);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            System.out.println("Load failed");
+        }
+
+    }
+
+    @FXML
+    void purchaseSub(ActionEvent event) {
+            //Just sets visibility of Purchase tab
+        subPane.setVisible(true);
+        cCardInfo1.setVisible(true);
+        cCardInfo2.setVisible(true);
+        cCardInfo3.setVisible(true);
+        buySubButton.setVisible(false);
+    }
+
+    @FXML
+    void setSub(ActionEvent event) {
+        try{
+          String ccard1 =  cCardInfo1.getText();
+          String ccard2 = cCardInfo2.getText();
+          String ccard3 = cCardInfo3.getText();
+
+            if (ccard1.isEmpty() | ccard2.isEmpty() | ccard3.isEmpty()){
+                System.out.println("Please enter card information");
+                return;
+            }
+
+
+
+
+            String sql = "UPDATE USER SET SUBSCRIPTION = TRUE WHERE ISACTIVEUSER = true ";
+            Class.forName(JDBC_DRIVER);
+
+            Connection conn = DriverManager.getConnection(DB_URL);
+            PreparedStatement ps =conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+            System.out.println("Subcription Set");
+            displaySubEnd();
+    }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        initializeSubTabs();
+        }
+
+
+
+
+
+
 }

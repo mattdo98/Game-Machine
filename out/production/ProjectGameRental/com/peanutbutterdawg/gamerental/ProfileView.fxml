@@ -2,10 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -81,11 +83,23 @@
                         </TextField>
                      </children>
                   </GridPane>
-                  <Label layoutX="17.0" layoutY="14.0" text="Account information" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
+                  <Pane fx:id="subPane" layoutX="470.0" layoutY="60.0" prefHeight="293.0" prefWidth="242.0" style="-fx-background-color: #000000;">
+                     <children>
+                        <TextField fx:id="cCardInfo1" layoutX="14.0" layoutY="46.0" promptText="Test" />
+                        <TextField fx:id="cCardInfo2" layoutX="14.0" layoutY="93.0" promptText="Purpose" />
+                        <TextField fx:id="cCardInfo3" layoutX="14.0" layoutY="139.0" promptText="Only" />
+                        <Button fx:id="subPaneBtn" layoutX="14.0" layoutY="254.0" mnemonicParsing="false" onAction="#setSub" text="Add Subscription" />
+                        <Label layoutX="17.0" layoutY="25.0" prefHeight="21.0" prefWidth="107.0" text="Credit card number" textFill="WHITE" />
+                        <Label layoutX="17.0" layoutY="71.0" prefHeight="21.0" prefWidth="107.0" text="Expiration Date" textFill="WHITE" />
+                        <Label layoutX="17.0" layoutY="118.0" prefHeight="21.0" prefWidth="107.0" text="CVV number" textFill="WHITE" />
+                        <TextArea editable="false" layoutX="14.0" layoutY="171.0" prefHeight="74.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="You will be billed&#10;$9.99&#10;Charged Monthly&#10;">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </Pane>
+                  <Button fx:id="buySubButton" layoutX="669.0" layoutY="466.0" mnemonicParsing="false" onAction="#purchaseSub" text="Purchase Sub" />
                </children>
             </AnchorPane>
          </children>
