@@ -4,6 +4,7 @@
       <w>anchorpane</w>
       <w>esrb</w>
       <w>firstname</w>
+      <w>isadmin</w>
       <w>lastname</w>
       <w>loggedin</w>
       <w>realgenre</w>

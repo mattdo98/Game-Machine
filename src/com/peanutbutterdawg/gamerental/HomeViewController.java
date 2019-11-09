@@ -27,6 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.nimbus.State;
 import sun.dc.pr.PRError;
 
@@ -75,14 +77,43 @@ public class HomeViewController implements Initializable {
 
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
-    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-    Scene AdminViewScene = new Scene(AdminViewParent);
+    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER = TRUE";
 
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    JFrame parent = new JFrame();
 
-    window.setScene(AdminViewScene);
-    window.show();
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(getUser);
+
+      while (rs.next()) {
+        boolean admin = rs.getBoolean("ISADMIN");
+
+        if (admin == true) {
+          System.out.println("User is Admin");
+
+          Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+          Scene AdminViewScene = new Scene(AdminViewParent);
+
+          // This line gets the Stage information
+          Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+          window.setScene(AdminViewScene);
+          window.show();
+
+        } else {
+          System.out.println("User is Not Admin");
+          JOptionPane.showMessageDialog(parent, "User is Not Admin");
+        }
+      }
+
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
