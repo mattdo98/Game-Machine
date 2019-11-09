@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -26,6 +27,13 @@ public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+
+  @FXML
+  private ImageView imageView1;
+  @FXML
+  private ImageView imageView2;
+  @FXML
+  private ImageView imageView3;
 
   @FXML
   private AnchorPane getLibrary;
@@ -38,6 +46,16 @@ public class LibraryViewController implements Initializable {
   public void initialize(URL url, ResourceBundle rb) {
 
     initializeNameLabel();
+    //try, since this using database methods
+    try {
+      initializeImageView();
+    }
+    //catches
+    catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     System.out.println("This is Library Tab");
   }
@@ -176,5 +194,14 @@ public class LibraryViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+  }
+  private void initializeImageView() throws ClassNotFoundException, SQLException {
+    Class.forName(JDBC_DRIVER); // Database Driver
+    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    Statement stmt = conn.createStatement();
+    String SQL = "SELECT USERNAME FROM USER WHERE ISACIVEUSER = TRUE";
+
+    ResultSet rs = stmt.executeQuery(SQL);
+
   }
 }
