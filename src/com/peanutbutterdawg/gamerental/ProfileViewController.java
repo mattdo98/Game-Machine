@@ -42,6 +42,9 @@ public class ProfileViewController implements Initializable {
     private Label myName;
 
     @FXML
+    private Label subRenew;
+
+    @FXML
     private TextField userName;
 
     @FXML
@@ -65,6 +68,8 @@ public class ProfileViewController implements Initializable {
     @FXML
     private Button buySubButton;
 
+    @FXML
+    private Button subCancel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,7 +95,8 @@ public class ProfileViewController implements Initializable {
                 if (admin == true) {
                     System.out.println("User is Admin");
 
-                    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+                    Parent AdminViewParent = FXMLLoader
+                        .load(getClass().getResource("AdminView.fxml"));
                     Scene AdminViewScene = new Scene(AdminViewParent);
 
                     // This line gets the Stage information
@@ -187,9 +193,6 @@ public class ProfileViewController implements Initializable {
     }
 
 
-
-
-
     //Initializes Profile Tab
     private void intitalizeProfile() {
         getUserName();
@@ -199,13 +202,12 @@ public class ProfileViewController implements Initializable {
 
     }
 
-    private void initializeSubTabs(){
+    private void initializeSubTabs() {
         buySubButton.setVisible(false);
         subPane.setVisible(false);
         cCardInfo1.setVisible(false);
         cCardInfo2.setVisible(false);
         cCardInfo3.setVisible(false);
-
 
 
     }
@@ -224,7 +226,7 @@ public class ProfileViewController implements Initializable {
     }
 
 
-        //gets the full name
+    //gets the full name
     private void getFullName() {
 
         profile = FXCollections.observableArrayList();
@@ -302,9 +304,9 @@ public class ProfileViewController implements Initializable {
         }
     }
 
-    private void initializeSubSelect(){
+    private void initializeSubSelect() {
 
-        try{
+        try {
 
             String sql = "SELECT SUBSCRIPTION FROM USER WHERE ISACTIVEUSER = true";
             Class.forName(JDBC_DRIVER);
@@ -313,17 +315,24 @@ public class ProfileViewController implements Initializable {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
-            while(rs.next()){
+            while (rs.next()) {
                 boolean currentSub;
+
                 if (rs.getBoolean("SUBSCRIPTION")) {
+                    //If current user has a subscription
                     currentSub = true;
+                    subCancel.setVisible(true);
                     displaySubEnd();
                     System.out.println("Subscription verified");
 
-                } else {
+                }
+                //If current user does not have a subscription
+                else {
                     currentSub = false;
-                    System.out.println("No active Subscription. Please Press the button to buy one");
+                    System.out
+                        .println("No active Subscription. Please Press the button to buy one");
                     buySubButton.setVisible(true);
+                    subCancel.setVisible(false);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -335,7 +344,7 @@ public class ProfileViewController implements Initializable {
 
     @FXML
     void purchaseSub(ActionEvent event) {
-            //Just sets visibility of Purchase tab
+        //Just sets visibility of Purchase tab
         subPane.setVisible(true);
         cCardInfo1.setVisible(true);
         cCardInfo2.setVisible(true);
@@ -345,37 +354,54 @@ public class ProfileViewController implements Initializable {
 
     @FXML
     void setSub(ActionEvent event) {
-        try{
-          String ccard1 =  cCardInfo1.getText();
-          String ccard2 = cCardInfo2.getText();
-          String ccard3 = cCardInfo3.getText();
+        try {
+            String ccard1 = cCardInfo1.getText();
+            String ccard2 = cCardInfo2.getText();
+            String ccard3 = cCardInfo3.getText();
 
-            if (ccard1.isEmpty() | ccard2.isEmpty() | ccard3.isEmpty()){
+            if (ccard1.isEmpty() | ccard2.isEmpty() | ccard3.isEmpty()) {
                 System.out.println("Please enter card information");
                 return;
             }
-
-
-
 
             String sql = "UPDATE USER SET SUBSCRIPTION = TRUE WHERE ISACTIVEUSER = true ";
             Class.forName(JDBC_DRIVER);
 
             Connection conn = DriverManager.getConnection(DB_URL);
-            PreparedStatement ps =conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.executeUpdate();
 
             System.out.println("Subcription Set");
             displaySubEnd();
-    }catch (SQLException | ClassNotFoundException e){
+            subCancel.setVisible(true);
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         initializeSubTabs();
+        cCardInfo1.clear();
+        cCardInfo2.clear();
+        cCardInfo3.clear();
+    }
+
+    @FXML
+    void cancelSub(ActionEvent event) {
+        try {
+            String sql = "UPDATE USER SET SUBSCRIPTION = FALSE WHERE ISACTIVEUSER = true ";
+            Class.forName(JDBC_DRIVER);
+
+            Connection conn = DriverManager.getConnection(DB_URL);
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            buySubButton.setVisible(true);
+            subCancel.setVisible(false);
+
+            System.out.println("Sub Canceled");
+
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
 
 
-
-
-
-
+    }
 }

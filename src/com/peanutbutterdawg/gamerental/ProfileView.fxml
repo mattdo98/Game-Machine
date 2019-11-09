@@ -99,7 +99,8 @@
                         </TextArea>
                      </children>
                   </Pane>
-                  <Button fx:id="buySubButton" layoutX="669.0" layoutY="466.0" mnemonicParsing="false" onAction="#purchaseSub" text="Purchase Sub" />
+                  <Button fx:id="buySubButton" layoutX="574.0" layoutY="466.0" mnemonicParsing="false" onAction="#purchaseSub" prefHeight="25.0" prefWidth="138.0" text="Purchase Subscription" />
+                  <Button fx:id="subCancel" layoutX="81.0" layoutY="466.0" mnemonicParsing="false" onAction="#cancelSub" text="Cancel Subscription" />
                </children>
             </AnchorPane>
          </children>
