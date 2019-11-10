@@ -344,7 +344,7 @@ public class LibraryViewController implements Initializable {
     }
 
   }
-  private void initializeImageView() throws ClassNotFoundException, SQLException {
+  /*private void initializeImageView() throws ClassNotFoundException, SQLException {
     boolean game1missing;
     boolean game2missing;
     boolean game3missing;
@@ -398,9 +398,11 @@ public class LibraryViewController implements Initializable {
     img1 = new Image(in1);
     imageView3 = new ImageView(img1);
 
+    }*/
 
 
 
 
-  }
+
+
 }
