@@ -74,7 +74,7 @@ public class LibraryViewController implements Initializable {
       while (rs.next()) {
         boolean admin = rs.getBoolean("ISADMIN");
 
-        if (admin == true) {
+        if (admin) {
           System.out.println("User is Admin");
 
           Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
@@ -199,9 +199,21 @@ public class LibraryViewController implements Initializable {
     Class.forName(JDBC_DRIVER); // Database Driver
     Connection conn = DriverManager.getConnection(DB_URL); // Database Url
     Statement stmt = conn.createStatement();
-    String SQL = "SELECT USERNAME FROM USER WHERE ISACIVEUSER = TRUE";
 
-    ResultSet rs = stmt.executeQuery(SQL);
+    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+    String activeUser = rs.getString("USERNAME");
+
+    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
+        + "FROM USERGAMES WHERE USERNAME = ?");
+
+    pstmt.setString(1, activeUser);
+    rs = pstmt.executeQuery();
+    String game1 = rs.getString("GAME1");
+    String game2 = rs.getString("GAME2");
+    String game3 = rs.getString("GAME3");
+
+
+
 
   }
 }
