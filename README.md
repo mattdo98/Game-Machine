@@ -45,9 +45,13 @@ Video of project demo
 ## **Project Photos**
 
 ![GitHub Logo](Documentation/homescreen.png)
+
 ![GitHub Logo](Documentation/gamescreen.png)
+
 ![GitHub Logo](Documentation/libraryscreen.png)
+
 ![GitHub Logo](Documentation/profilescreen.png)
+
 ![GitHub Logo](Documentation/adminscreen.png)
 
 
