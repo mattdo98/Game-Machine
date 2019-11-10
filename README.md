@@ -42,6 +42,12 @@ Video of project demo
 
 [https://www.youtube.com/watch?v=LM6VDMPzXzY](https://www.youtube.com/watch?v=LM6VDMPzXzY)
 
+## **Project Photos**
+
+![GitHub Logo](/Users/robertkissinger/OneDrive - Florida Gulf Coast University/Projects/ProjectGameRental/Documentation/homescreen.png)
+
+Format: ![Alt Text](url)
+
 
 ## **Built with**
 
