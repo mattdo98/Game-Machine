@@ -71,6 +71,9 @@ public class ProfileViewController implements Initializable {
     @FXML
     private Button subCancel;
 
+    @FXML
+    private Label subLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNameLabel();
@@ -208,6 +211,7 @@ public class ProfileViewController implements Initializable {
         cCardInfo1.setVisible(false);
         cCardInfo2.setVisible(false);
         cCardInfo3.setVisible(false);
+        subLabel.setVisible(false);
 
 
     }
@@ -329,8 +333,9 @@ public class ProfileViewController implements Initializable {
                 //If current user does not have a subscription
                 else {
                     currentSub = false;
-                    System.out
-                        .println("No active Subscription. Please Press the button to buy one");
+                    System.out.println("No active Subscription. Please Press the button below to buy one");
+                    subLabel.setVisible(true);
+                    subLabel.setText("No active Subscription. Please Press the button below to buy one");
                     buySubButton.setVisible(true);
                     subCancel.setVisible(false);
                 }
@@ -350,6 +355,7 @@ public class ProfileViewController implements Initializable {
         cCardInfo2.setVisible(true);
         cCardInfo3.setVisible(true);
         buySubButton.setVisible(false);
+        subLabel.setVisible(false);
     }
 
     @FXML
@@ -374,6 +380,7 @@ public class ProfileViewController implements Initializable {
             System.out.println("Subcription Set");
             displaySubEnd();
             subCancel.setVisible(true);
+           ;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
