@@ -54,6 +54,10 @@ Video of project demo
 
 ![GitHub Logo](Documentation/adminscreen.png)
 
+![GitHub Logo](Documentation/classdiagram.png)
+
+![GitHub Logo](Documentation/database.png)
+
 
 ## **Built with**
 
