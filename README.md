@@ -44,7 +44,7 @@ Video of project demo
 
 ## **Project Photos**
 
-![GitHub Logo](/Users/robertkissinger/OneDrive - Florida Gulf Coast University/Projects/ProjectGameRental/Documentation/homescreen.png)
+![GitHub Logo](Documentation/homescreen.png)
 
 Format: ![Alt Text](url)
 
