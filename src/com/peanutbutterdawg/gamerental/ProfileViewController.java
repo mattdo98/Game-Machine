@@ -404,6 +404,9 @@ public class ProfileViewController implements Initializable {
 
             System.out.println("Sub Canceled");
 
+            subEnd.setText("");
+            subLabel.setVisible(true);
+
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

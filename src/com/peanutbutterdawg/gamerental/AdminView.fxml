@@ -38,7 +38,7 @@
     <AnchorPane layoutY="77.0" prefHeight="526.0" prefWidth="809.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
         <AnchorPane fx:id="editGamePage" layoutX="486.0" layoutY="291.0" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="291.0">
             <ComboBox fx:id="selectGame" layoutY="37.0" prefHeight="27.0" prefWidth="252.0" promptText="Select Game" />
-            <Button layoutX="202.0" layoutY="161.0" mnemonicParsing="false" onMouseClicked="#editGame" text="Edit!" />
+            <Button layoutX="202.0" layoutY="161.0" mnemonicParsing="false" onMouseClicked="#editGame" style="-fx-background-color: #00264d;" text="Edit!" textFill="WHITE" />
             <Label layoutX="1.0" layoutY="4.0" text="Edit Game Info:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
@@ -50,8 +50,8 @@
         </AnchorPane>
         <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="14.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="14.0">
             <TextField fx:id="getTitle" layoutY="32.0" prefHeight="31.0" prefWidth="187.0" promptText="Game Title" />
-            <Button layoutX="195.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#addGame" text="Add Game" />
-            <Button layoutX="187.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#deleteGame" text="Delete Game" />
+            <Button layoutX="195.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#addGame" style="-fx-background-color: #00264d;" text="Add Game" textFill="WHITE" />
+            <Button layoutX="187.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#deleteGame" style="-fx-background-color: #00264d;" text="Delete Game" textFill="WHITE" />
             <Label layoutX="1.0" layoutY="-1.0" text="Add Game:" textFill="WHITE">
                 <font>
                     <Font size="24.0" />
