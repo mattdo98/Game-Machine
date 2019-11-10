@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="getLibrary" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.LibraryViewController">
+<AnchorPane fx:id="getLibrary" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.peanutbutterdawg.gamerental.LibraryViewController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="81.0" prefWidth="800.0" style="-fx-background-color: #003366;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,21 +40,21 @@
                   <Label layoutX="25.0" layoutY="4.0" text="My Games" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="4.0" />
                   <FlowPane layoutX="36.0" layoutY="35.0" orientation="VERTICAL" prefHeight="186.0" prefWidth="675.0" style="-fx-background-color: #003366;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="30.0">
                      <children>
-                        <ImageView fx:id="imageView1" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true">
+                        <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true">
                            <image>
                               <Image url="@../../../img/RocketLeague.jpg" />
                            </image></ImageView>
-                        <ImageView fx:id="imageView2" fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
                            <image>
                               <Image url="@../../../img/Skyrim.jpg" />
                            </image></ImageView>
-                        <ImageView fx:id="imageView3" fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true">
+                        <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true">
                            <image>
                               <Image url="@../../../img/WoW.jpg" />
                            </image></ImageView>
                      </children>
                   </FlowPane>
-                  <Label layoutX="695.0" layoutY="4.0" text="Limit: --- / 3" textFill="WHITE" />
+                  <Label fx:id="gameLimit" layoutX="695.0" layoutY="4.0" text="---" textFill="WHITE" />
                   <Button layoutX="122.0" layoutY="280.0" mnemonicParsing="false" style="-fx-background-color: #00264d;" text="Play!" textFill="WHITE" />
                   <Button layoutX="372.0" layoutY="280.0" mnemonicParsing="false" style="-fx-background-color: #00264d;" text="Play!" textFill="WHITE" AnchorPane.leftAnchor="372.0" />
                   <Button layoutX="622.0" layoutY="280.0" mnemonicParsing="false" style="-fx-background-color: #00264d;" text="Play!" textFill="WHITE" />

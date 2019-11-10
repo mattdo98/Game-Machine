@@ -301,7 +301,7 @@ public class HomeViewController implements Initializable {
       }
     } else if (game2 == null) {
 
-      String sql = "UPDATE USERGAMES SET GAME2 = ? WHERE USERNAME = ?";
+      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
 
       try {
         Class.forName(JDBC_DRIVER); // Database Driver
@@ -310,7 +310,8 @@ public class HomeViewController implements Initializable {
         PreparedStatement ps = conn.prepareStatement(sql);
 
         ps.setString(1, games.get(0).getTitle());
-        ps.setString(2, name.getText());
+        ps.setString(2, "2");
+        ps.setString(3, name.getText());
 
         ps.executeUpdate();
 
