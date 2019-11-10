@@ -58,13 +58,13 @@ public class LibraryViewController implements Initializable {
 
     initializeNameLabel();
     initializeGameLimit();
-    try {
+    /*try {
       initializeImageView();
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+    }*/
     System.out.println("This is Library Tab");
   }
 
@@ -222,7 +222,7 @@ public class LibraryViewController implements Initializable {
     }
 
   }
-  private void initializeImageView() throws ClassNotFoundException, SQLException {
+ /* private void initializeImageView() throws ClassNotFoundException, SQLException {
     boolean game1missing;
     boolean game2missing;
     boolean game3missing;
@@ -233,21 +233,16 @@ public class LibraryViewController implements Initializable {
     Connection conn = DriverManager.getConnection(DB_URL); // Database Url
     Statement stmt = conn.createStatement();
 
-    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
-    String activeUser = rs.getString("USERNAME");
+    ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE ISACTIVEUSER = TRUE");
+    String activeUser = rs.getString(4);
 
     PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
         + "FROM USERGAMES WHERE USERNAME = ?");
 
     pstmt.setString(1, activeUser);
     rs = pstmt.executeQuery();
-    try{
-    game1 = rs.getString("GAME1");
-    }catch(JdbcSQLNonTransientException e){
-      System.out.println("there is no game");
-      game1missing = true;
-    }
 
+    game1 = rs.getString("GAME1");
     game2 = rs.getString("GAME2");
     game3 = rs.getString("GAME3");
 
@@ -264,5 +259,5 @@ public class LibraryViewController implements Initializable {
 
 
 
-  }
+  }*/
 }
