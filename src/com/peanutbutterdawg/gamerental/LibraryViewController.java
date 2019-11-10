@@ -1,7 +1,10 @@
 package com.peanutbutterdawg.gamerental;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,16 +20,24 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.h2.jdbc.JdbcSQLNonTransientException;
 
 public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
-
+  @FXML
+  private ImageView imageView1;
+  @FXML
+  private ImageView imageView2;
+  @FXML
+  private ImageView imageView3;
   @FXML
   private AnchorPane getLibrary;
 
@@ -37,12 +48,23 @@ public class LibraryViewController implements Initializable {
   private Label gameLimit;
 
 
+
+
+
+
   // initialize method
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
 
     initializeNameLabel();
     initializeGameLimit();
+    try {
+      initializeImageView();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     System.out.println("This is Library Tab");
   }
 
@@ -198,6 +220,49 @@ public class LibraryViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+
+  }
+  private void initializeImageView() throws ClassNotFoundException, SQLException {
+    boolean game1missing;
+    boolean game2missing;
+    boolean game3missing;
+    String game1;
+    String game2;
+    String game3;
+    Class.forName(JDBC_DRIVER); // Database Driver
+    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    Statement stmt = conn.createStatement();
+
+    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+    String activeUser = rs.getString("USERNAME");
+
+    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
+        + "FROM USERGAMES WHERE USERNAME = ?");
+
+    pstmt.setString(1, activeUser);
+    rs = pstmt.executeQuery();
+    try{
+    game1 = rs.getString("GAME1");
+    }catch(JdbcSQLNonTransientException e){
+      System.out.println("there is no game");
+      game1missing = true;
+    }
+
+    game2 = rs.getString("GAME2");
+    game3 = rs.getString("GAME3");
+
+    pstmt = conn.prepareStatement("SELECT IMG FROM VIDEOGAME WHERE TITLE = ?");
+
+    pstmt.setString(1,game1);
+    rs = pstmt.executeQuery();
+    Blob blob1 = rs.getBlob("IMG");
+    InputStream in1 = blob1.getBinaryStream();
+    Image img1 = new Image(in1);
+    imageView1 = new ImageView(img1);
+
+
+
+
 
   }
 }
