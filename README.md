@@ -42,7 +42,7 @@ Video of project demo
 
 [https://www.youtube.com/watch?v=LM6VDMPzXzY](https://www.youtube.com/watch?v=LM6VDMPzXzY)
 
-## **Project Photos**
+## **Project Photos:**
 
 ![GitHub Logo](Documentation/homescreen.png)
 
@@ -54,7 +54,7 @@ Video of project demo
 
 ![GitHub Logo](Documentation/adminscreen.png)
 
-## **Class Diagram & Database Visualizations**
+## **Class Diagram & Database Visualizations:**
 
 ![GitHub Logo](Documentation/classdiagram.png)
 
