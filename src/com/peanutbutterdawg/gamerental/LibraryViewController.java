@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -32,6 +37,7 @@ public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+  private ObservableList<Games> games;
   @FXML
   private ImageView imageView1;
   @FXML
@@ -46,6 +52,17 @@ public class LibraryViewController implements Initializable {
 
   @FXML
   private Label gameLimit;
+  @FXML
+  private TableView tableView;
+  @FXML
+  private TableColumn column1;
+  @FXML
+  private TableColumn column2;
+  @FXML
+  private TableColumn column3;
+  @FXML
+  private TableColumn column4;
+
 
 
 
@@ -65,8 +82,113 @@ public class LibraryViewController implements Initializable {
     } catch (SQLException e) {
       e.printStackTrace();
     }*/
+    try {
+      initializeGameTable();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     System.out.println("This is Library Tab");
   }
+
+  private void initializeGameTable() throws SQLException, ClassNotFoundException {
+    String game1;
+    String game2;
+    String game3;
+    games = FXCollections.observableArrayList();
+    Class.forName(JDBC_DRIVER); // Database Driver
+    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    Statement stmt = conn.createStatement();
+
+    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+    rs.next();
+    String activeUser = rs.getString("USERNAME");
+
+    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
+        + "FROM USERGAMES WHERE USERNAME = ?");
+
+    pstmt.setString(1, activeUser);
+    rs = pstmt.executeQuery();
+    rs.next();
+
+    game1 = rs.getString("GAME1");
+    game2 = rs.getString("GAME2");
+    game3 = rs.getString("GAME3");
+    String SQL = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = '"
+        + game1 + "' OR TITLE = '" + game2 + "' OR TITLE = '" + game3 + "'";
+    rs = stmt.executeQuery(SQL);
+    while(rs.next()){
+      String title = rs.getString("TITLE");
+      int esrb = rs.getInt("ESRB");
+      int genre = rs.getInt("GENRE");
+      int rating = rs.getInt("RATING");
+
+      ESRB realEsrb = null;
+
+      if (esrb == 0) {
+        realEsrb = ESRB.RP;
+      }
+      if (esrb == 1) {
+        realEsrb = ESRB.C;
+      }
+      if (esrb == 2) {
+        realEsrb = ESRB.E;
+      }
+      if (esrb == 3) {
+        realEsrb = ESRB.T;
+      }
+      if (esrb == 4) {
+        realEsrb = ESRB.M;
+      }
+      if (esrb == 5) {
+        realEsrb = ESRB.A;
+      }
+
+      Genre realGenre = null;
+
+      if (genre == 0) {
+        realGenre = Genre.ACTION;
+      }
+      if (genre == 1) {
+        realGenre = Genre.ADVENTURE;
+      }
+      if (genre == 2) {
+        realGenre = Genre.RPG;
+      }
+      if (genre == 3) {
+        realGenre = Genre.SPORTS;
+      }
+      if (genre == 4) {
+        realGenre = Genre.MMO;
+      }
+      if (genre == 5) {
+        realGenre = Genre.STRATEGY;
+      }
+      if (genre == 6) {
+        realGenre = Genre.SIMULATION;
+      }
+
+      // testing in the console
+      System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating);
+
+      // setting the games to the table view
+      tableView.setItems(games);
+      games.add(new Games(title, realGenre, rating, realEsrb));
+    }
+
+    // Setup for the table view
+    column1.setCellValueFactory(new PropertyValueFactory<>("title"));
+    column2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+    column3.setCellValueFactory(new PropertyValueFactory<>("rating"));
+    column4.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+
+
+    conn.close();
+    stmt.close();
+    }
+
+
 
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
@@ -222,7 +344,7 @@ public class LibraryViewController implements Initializable {
     }
 
   }
- /* private void initializeImageView() throws ClassNotFoundException, SQLException {
+  private void initializeImageView() throws ClassNotFoundException, SQLException {
     boolean game1missing;
     boolean game2missing;
     boolean game3missing;
@@ -233,31 +355,52 @@ public class LibraryViewController implements Initializable {
     Connection conn = DriverManager.getConnection(DB_URL); // Database Url
     Statement stmt = conn.createStatement();
 
-    ResultSet rs = stmt.executeQuery("SELECT * FROM USER WHERE ISACTIVEUSER = TRUE");
-    String activeUser = rs.getString(4);
+    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+    rs.next();
+    String activeUser = rs.getString("USERNAME");
 
     PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
         + "FROM USERGAMES WHERE USERNAME = ?");
 
     pstmt.setString(1, activeUser);
     rs = pstmt.executeQuery();
+    rs.next();
 
     game1 = rs.getString("GAME1");
     game2 = rs.getString("GAME2");
     game3 = rs.getString("GAME3");
 
-    pstmt = conn.prepareStatement("SELECT IMG FROM VIDEOGAME WHERE TITLE = ?");
 
+
+    pstmt = conn.prepareStatement("SELECT IMG FROM VIDEOGAME WHERE TITLE = ?");
     pstmt.setString(1,game1);
     rs = pstmt.executeQuery();
+    rs.next();
     Blob blob1 = rs.getBlob("IMG");
     InputStream in1 = blob1.getBinaryStream();
     Image img1 = new Image(in1);
     imageView1 = new ImageView(img1);
 
+    rs = pstmt.executeQuery();
+    pstmt.setString(1,game2);
+    rs.next();
+    blob1 = rs.getBlob("IMG");
+    in1 = blob1.getBinaryStream();
+    img1 = new Image(in1);
+    imageView2 = new ImageView(img1);
+
+
+    pstmt.setString(1,game3);
+    rs = pstmt.executeQuery();
+    rs.next();
+    blob1 = rs.getBlob("IMG");
+    in1 = blob1.getBinaryStream();
+    img1 = new Image(in1);
+    imageView3 = new ImageView(img1);
 
 
 
 
-  }*/
+
+  }
 }
