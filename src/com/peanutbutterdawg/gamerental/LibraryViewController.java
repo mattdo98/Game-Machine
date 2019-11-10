@@ -200,7 +200,7 @@ public class LibraryViewController implements Initializable {
     Connection conn = DriverManager.getConnection(DB_URL); // Database Url
     Statement stmt = conn.createStatement();
 
-    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACIVEUSER = TRUE");
+    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
     String activeUser = rs.getString("USERNAME");
 
     PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
