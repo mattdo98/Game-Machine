@@ -54,6 +54,8 @@ Video of project demo
 
 ![GitHub Logo](Documentation/adminscreen.png)
 
+## **Class Diagram & Database Visualizations**
+
 ![GitHub Logo](Documentation/classdiagram.png)
 
 ![GitHub Logo](Documentation/database.png)
