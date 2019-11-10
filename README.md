@@ -83,7 +83,8 @@
 
 Video of project demo
 
-[https://www.youtube.com/watch?v=LM6VDMPzXzY](https://www.youtube.com/watch?v=LM6VDMPzXzY)
+[https://www.youtube.com/watch?v=LM6VDMPzXzY](https://www.youtube.com/watch?v=LM6VDMPzXzY) Alpha Submission
+[https://www.youtube.com/watch?v=CCRRkg8oBA](https://www.youtube.com/watch?v=_CCRRkg8oBA) (New) Beta Submission
 
 ## **Project Photos:**
 
