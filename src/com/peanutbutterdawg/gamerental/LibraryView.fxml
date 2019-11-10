@@ -34,10 +34,10 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Button>
-            <AnchorPane layoutY="65.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
+            <AnchorPane layoutY="81.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
                <children>
                   <Label fx:id="gameLimit" layoutX="695.0" layoutY="4.0" text="---" textFill="WHITE" />
-                  <TableView fx:id="tableView" layoutX="-1.0" layoutY="160.0" prefHeight="167.0" prefWidth="501.0">
+                  <TableView fx:id="tableView" layoutX="14.0" layoutY="160.0" prefHeight="167.0" prefWidth="501.0">
                     <columns>
                       <TableColumn fx:id="column1" prefWidth="157.0" text="Title" />
                       <TableColumn fx:id="column2" prefWidth="225.0" text="Genre" />
