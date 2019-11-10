@@ -17,7 +17,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -29,34 +28,21 @@ public class LibraryViewController implements Initializable {
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
 
   @FXML
-  private ImageView imageView1;
-  @FXML
-  private ImageView imageView2;
-  @FXML
-  private ImageView imageView3;
-
-  @FXML
   private AnchorPane getLibrary;
 
   @FXML
   private Label myName;
+
+  @FXML
+  private Label gameLimit;
+
 
   // initialize method
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
 
     initializeNameLabel();
-    //try, since this using database methods
-    try {
-      initializeImageView();
-    }
-    //catches
-    catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
+    initializeGameLimit();
     System.out.println("This is Library Tab");
   }
 
@@ -74,7 +60,7 @@ public class LibraryViewController implements Initializable {
       while (rs.next()) {
         boolean admin = rs.getBoolean("ISADMIN");
 
-        if (admin) {
+        if (admin == true) {
           System.out.println("User is Admin");
 
           Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
@@ -187,33 +173,31 @@ public class LibraryViewController implements Initializable {
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
-
         myName.setText(username);
       }
-
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
-  private void initializeImageView() throws ClassNotFoundException, SQLException {
-    Class.forName(JDBC_DRIVER); // Database Driver
-    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-    Statement stmt = conn.createStatement();
 
-    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
-    String activeUser = rs.getString("USERNAME");
+  private void initializeGameLimit(){
+    try {
+      String sqlLimit = "SELECT GAMECOUNT FROM USERGAMES";
 
-    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
-        + "FROM USERGAMES WHERE USERNAME = ?");
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
-    pstmt.setString(1, activeUser);
-    rs = pstmt.executeQuery();
-    String game1 = rs.getString("GAME1");
-    String game2 = rs.getString("GAME2");
-    String game3 = rs.getString("GAME3");
-
-
-
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(sqlLimit);
+      while(rs.next()) {
+        String gameCount = rs.getString("GAMECOUNT");
+        gameLimit.setText("Limit: " + gameCount + "/3");
+      }
+      conn.close();
+      stmt.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
 
   }
 }
