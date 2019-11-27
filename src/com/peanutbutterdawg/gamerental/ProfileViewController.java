@@ -1,6 +1,7 @@
 package com.peanutbutterdawg.gamerental;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -20,13 +21,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 
 public class ProfileViewController implements Initializable {
 
@@ -73,6 +75,16 @@ public class ProfileViewController implements Initializable {
 
     @FXML
     private Label subLabel;
+    @FXML
+    private Hyperlink helpLink;
+    @FXML
+    private TextField userPassWord;
+    @FXML
+    private Button showPassBtn;
+    @FXML
+    private Button hidePassBtn;
+    @FXML
+    private Label ccardError;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -99,7 +111,7 @@ public class ProfileViewController implements Initializable {
                     System.out.println("User is Admin");
 
                     Parent AdminViewParent = FXMLLoader
-                        .load(getClass().getResource("AdminView.fxml"));
+                            .load(getClass().getResource("AdminView.fxml"));
                     Scene AdminViewScene = new Scene(AdminViewParent);
 
                     // This line gets the Stage information
@@ -200,9 +212,9 @@ public class ProfileViewController implements Initializable {
     private void intitalizeProfile() {
         getUserName();
         getFullName();
-
+        setUserPassWord();
         initializeSubTabs();
-
+        hidePassBtn.setVisible(false);
     }
 
     private void initializeSubTabs() {
@@ -212,6 +224,7 @@ public class ProfileViewController implements Initializable {
         cCardInfo2.setVisible(false);
         cCardInfo3.setVisible(false);
         subLabel.setVisible(false);
+        ccardError.setVisible(false);
 
 
     }
@@ -357,7 +370,7 @@ public class ProfileViewController implements Initializable {
         buySubButton.setVisible(false);
         subLabel.setVisible(false);
     }
-
+        //Sets the subscription
     @FXML
     void setSub(ActionEvent event) {
         try {
@@ -367,6 +380,7 @@ public class ProfileViewController implements Initializable {
 
             if (ccard1.isEmpty() | ccard2.isEmpty() | ccard3.isEmpty()) {
                 System.out.println("Please enter card information");
+                ccardError.setVisible(true);
                 return;
             }
 
@@ -380,7 +394,7 @@ public class ProfileViewController implements Initializable {
             System.out.println("Subcription Set");
             displaySubEnd();
             subCancel.setVisible(true);
-           ;
+            ;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -388,8 +402,9 @@ public class ProfileViewController implements Initializable {
         cCardInfo1.clear();
         cCardInfo2.clear();
         cCardInfo3.clear();
+        ccardError.setVisible(false);
     }
-
+        //On action to cancel sub
     @FXML
     void cancelSub(ActionEvent event) {
         try {
@@ -414,4 +429,56 @@ public class ProfileViewController implements Initializable {
 
 
     }
+        //help popup
+    @FXML
+    void setHelpLink() {
+
+        JFrame parent = new JFrame();
+        JOptionPane.showMessageDialog(parent, "Having trouble with our program? Have suggestions on how to improve it?\n" +
+                " Feel free to email us at support@pbdawg.com\n ");
+
+
+    }
+    // Gets user password and sets it to the textfield
+    @FXML
+    void setUserPassWord() {
+        try {
+            String sql = "SELECT PASSWORD FROM USER WHERE ISACTIVEUSER = TRUE";
+
+            Class.forName(JDBC_DRIVER); // Database Driver
+            Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String password = rs.getString("PASSWORD");
+
+                userPassWord.setText(password);
+                userPassWord.setVisible(false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    //Shows password information
+    @FXML
+    void showPassword() {
+        userPassWord.setVisible(true);
+        showPassBtn.setVisible(false);
+        hidePassBtn.setVisible(true);
+
+    }
+    //Hides password information
+    @FXML
+    void hidePassword() {
+        userPassWord.setVisible(false);
+        hidePassBtn.setVisible(false);
+        showPassBtn.setVisible(true);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -40,7 +41,7 @@
             </Button>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
                <children>
-                  <GridPane layoutX="14.0" layoutY="63.0" prefHeight="232.0" prefWidth="430.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="75.0">
+                  <GridPane layoutX="14.0" layoutY="63.0" prefHeight="342.0" prefWidth="430.0" style="-fx-border-color: #003366; -fx-background-color: #003366;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="75.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="165.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="189.0" />
@@ -49,38 +50,45 @@
                       <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label prefHeight="27.0" prefWidth="178.0" text="             Username:" textFill="#fffefe">
+                        <Label prefHeight="27.0" prefWidth="238.0" text="                   Username:" textFill="#fffefe">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="75.0" prefWidth="165.0" text="           Your Name:" textFill="WHITE" GridPane.rowIndex="1">
+                        <Label prefHeight="75.0" prefWidth="222.0" text="                 Your Name:" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="74.0" prefWidth="212.0" text=" Subscription Ends: " textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
+                        <Label prefHeight="163.0" prefWidth="202.0" text="       Subscription Ends:" textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="2">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="userName" editable="false" prefHeight="124.0" prefWidth="189.0" style="-fx-text-fill: #ffffff; -fx-background-color: #00264d;" GridPane.columnIndex="1">
+                        <TextField fx:id="userName" editable="false" prefHeight="124.0" prefWidth="189.0" style="-fx-text-fill: #ffffff; -fx-background-color: #003366;" GridPane.columnIndex="1">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="fullName" editable="false" style="-fx-background-color: #00264d; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="fullName" editable="false" style="-fx-background-color: #003366; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="subEnd" editable="false" style="-fx-background-color: #00264d; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="subEnd" editable="false" prefHeight="49.0" prefWidth="226.0" style="-fx-background-color: #003366; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </TextField>
+                        <Label prefHeight="123.0" prefWidth="437.0" text="           Your Password:" textFill="WHITE" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="userPassWord" prefHeight="86.0" prefWidth="226.0" style="-fx-background-color: #003366; -fx-text-fill: #ffffff;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <Pane fx:id="subPane" layoutX="470.0" layoutY="60.0" prefHeight="293.0" prefWidth="242.0" style="-fx-background-color: #003366;">
@@ -88,7 +96,7 @@
                         <TextField fx:id="cCardInfo1" layoutX="28.0" layoutY="21.0" promptText="Test" />
                         <TextField fx:id="cCardInfo2" layoutX="28.0" layoutY="73.0" promptText="Purpose" />
                         <TextField fx:id="cCardInfo3" layoutX="28.0" layoutY="125.0" promptText="Only" />
-                        <Button fx:id="subPaneBtn" layoutX="54.0" layoutY="248.0" mnemonicParsing="false" onAction="#setSub" text="Add Subscription" />
+                        <Button fx:id="subPaneBtn" layoutX="54.0" layoutY="248.0" mnemonicParsing="false" onAction="#setSub" style="-fx-background-color: #00264d;" text="Add Subscription" textFill="WHITE" />
                         <Label layoutX="54.0" prefHeight="21.0" prefWidth="134.0" text="Credit card number" textFill="WHITE" />
                         <Label layoutX="68.0" layoutY="52.0" prefHeight="21.0" prefWidth="107.0" text="Expiration Date" textFill="WHITE" />
                         <Label layoutX="68.0" layoutY="104.0" prefHeight="21.0" prefWidth="107.0" text="CVV number" textFill="WHITE" />
@@ -99,9 +107,13 @@
                         </TextArea>
                      </children>
                   </Pane>
-                  <Button fx:id="buySubButton" layoutX="355.0" layoutY="466.0" mnemonicParsing="false" onAction="#purchaseSub" prefHeight="31.0" prefWidth="179.0" text="Purchase Subscription" />
-                  <Button fx:id="subCancel" layoutX="607.0" layoutY="466.0" mnemonicParsing="false" onAction="#cancelSub" prefHeight="31.0" prefWidth="179.0" text="Cancel Subscription" />
+                  <Button fx:id="buySubButton" layoutX="470.0" layoutY="466.0" mnemonicParsing="false" onAction="#purchaseSub" prefHeight="31.0" prefWidth="179.0" style="-fx-background-color: #003366;" text="Purchase Subscription" textFill="WHITE" />
+                  <Button fx:id="subCancel" layoutX="470.0" layoutY="466.0" mnemonicParsing="false" onAction="#cancelSub" prefHeight="31.0" prefWidth="179.0" style="-fx-background-color: #003366;" text="Cancel Subscription" textFill="WHITE" />
                   <Label fx:id="subLabel" layoutX="355.0" layoutY="437.0" prefHeight="21.0" prefWidth="439.0" text="No subscription, please select the button below to purchase one!" textFill="WHITE" />
+                  <Hyperlink fx:id="helpLink" layoutX="25.0" layoutY="467.0" onAction="#setHelpLink" text="Need Help?" underline="true" />
+                  <Button fx:id="showPassBtn" layoutX="455.0" layoutY="360.0" mnemonicParsing="false" onAction="#showPassword" style="-fx-background-color: #00264d; -fx-border-color: #003366;" text="Show Password" textFill="WHITE" />
+                  <Button fx:id="hidePassBtn" layoutX="455.0" layoutY="360.0" mnemonicParsing="false" onAction="#hidePassword" prefHeight="33.0" prefWidth="134.0" style="-fx-background-color: #00264d; -fx-border-color: #003366;" text="Hide Password" textFill="WHITE" />
+                  <Label fx:id="ccardError" layoutX="468.0" layoutY="21.0" prefHeight="21.0" prefWidth="242.0" text="Please enter info into all fields" textFill="RED" />
                </children>
             </AnchorPane>
          </children>
