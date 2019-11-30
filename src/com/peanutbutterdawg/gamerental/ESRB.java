@@ -13,4 +13,8 @@ public enum ESRB {
   ESRB(int value) {
     this.value = value;
   }
+
+  public int getString() {
+    return value;
+  }
 }

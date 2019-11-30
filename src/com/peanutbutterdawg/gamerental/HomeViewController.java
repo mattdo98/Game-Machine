@@ -194,8 +194,10 @@ public class HomeViewController implements Initializable {
 
     String searchBoxText = searchBar.getText();
     Genre genreText = getGenre.getValue();
+    ESRB esrbText = getESRB.getValue();
 
-    if (!searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()) {
+    if (!searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()
+        && getESRB.getSelectionModel().isEmpty()) {
       String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
 
       System.out.println("test");
@@ -223,8 +225,8 @@ public class HomeViewController implements Initializable {
       }
 
       // to search if the combobox genre was only filled
-      //  currently not working
-    } else if (searchBar.getText().isEmpty() && !getGenre.getSelectionModel().isEmpty()) {
+    } else if (searchBar.getText().isEmpty() && !getGenre.getSelectionModel().isEmpty()
+                && getESRB.getSelectionModel().isEmpty()) {
       String sql = "SELECT GENRE FROM VIDEOGAME WHERE GENRE = ?";
 
       System.out.println("test");
@@ -246,9 +248,36 @@ public class HomeViewController implements Initializable {
 
           System.out.println(genre);
 
-          // setUpTableSearchGenre(genre);
+          setUpTableSearchGenre(genre);
         }
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
+    } else if(searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()
+        && !getESRB.getSelectionModel().isEmpty()) {
 
+      System.out.println("Test if.");
+
+      String sql = "SELECT ESRB FROM VIDEOGAME WHERE ESRB = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, esrbText.toString());
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+          int esrb = rs.getInt("ESRB");
+
+          System.out.println(esrbText.getString());
+
+          setUpTableSearchESRB(esrb);
+        }
+        System.out.println("Test done.");
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
@@ -636,7 +665,98 @@ public class HomeViewController implements Initializable {
       // This prepared statement executes my SQL String Command.
       PreparedStatement ps = conn.prepareStatement(fromDbSql);
 
-      ps.setString(1, Integer.toString(genre));
+      ps.setInt(1, genre);
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+
+        String titleTb = rs.getString("TITLE");
+        int esrbTb = rs.getInt("ESRB");
+        int genreTb = rs.getInt("GENRE");
+        int ratingTb = rs.getInt("RATING");
+
+        System.out.println();
+
+        ESRB realEsrb = null;
+
+        if (esrbTb == 0) {
+          realEsrb = ESRB.RP;
+        }
+        if (esrbTb == 1) {
+          realEsrb = ESRB.C;
+        }
+        if (esrbTb == 2) {
+          realEsrb = ESRB.E;
+        }
+        if (esrbTb == 3) {
+          realEsrb = ESRB.T;
+        }
+        if (esrbTb == 4) {
+          realEsrb = ESRB.M;
+        }
+        if (esrbTb == 5) {
+          realEsrb = ESRB.A;
+        }
+
+        Genre realGenre = null;
+
+        if (genreTb == 0) {
+          realGenre = Genre.ACTION;
+        }
+        if (genreTb == 1) {
+          realGenre = Genre.ADVENTURE;
+        }
+        if (genreTb == 2) {
+          realGenre = Genre.RPG;
+        }
+        if (genreTb == 3) {
+          realGenre = Genre.SPORTS;
+        }
+        if (genreTb == 4) {
+          realGenre = Genre.MMO;
+        }
+        if (genreTb == 5) {
+          realGenre = Genre.STRATEGY;
+        }
+        if (genreTb == 6) {
+          realGenre = Genre.SIMULATION;
+        }
+
+        // testing in the console
+        System.out.println(
+            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
+
+        // setting the games to the table view
+        tableGamesTab.setItems(games);
+        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
+      }
+
+      // Setup for the table view
+      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+
+      ps.execute();
+      conn.close();
+      ps.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  private void setUpTableSearchESRB(int esrb) {
+    games = FXCollections.observableArrayList();
+
+    try {
+      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE ESRB = ?";
+
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      // This prepared statement executes my SQL String Command.
+      PreparedStatement ps = conn.prepareStatement(fromDbSql);
+
+      ps.setInt(1, esrb);
 
       ResultSet rs = ps.executeQuery();
 
