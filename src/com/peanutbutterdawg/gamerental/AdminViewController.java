@@ -38,7 +38,7 @@ public class AdminViewController implements Initializable {
 
   private ObservableList<Games> games;
 
-  @FXML private Label myName;
+  @FXML private Label name;
 
   @FXML private TableView<Games> tableAdminTab;
 
@@ -378,7 +378,7 @@ public class AdminViewController implements Initializable {
       while (rs.next()) {
         String username = rs.getString("USERNAME");
 
-        myName.setText(username);
+        name.setText(username);
       }
 
     } catch (ClassNotFoundException | SQLException e) {

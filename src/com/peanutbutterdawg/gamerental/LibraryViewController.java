@@ -1,10 +1,7 @@
 package com.peanutbutterdawg.gamerental;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,53 +18,48 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.h2.jdbc.JdbcSQLNonTransientException;
 
 public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
   private ObservableList<Games> games;
-  @FXML
-  private ImageView imageView1;
-  @FXML
-  private ImageView imageView2;
-  @FXML
-  private ImageView imageView3;
-  @FXML
-  private AnchorPane getLibrary;
 
   @FXML
   private Label myName;
 
   @FXML
   private Label gameLimit;
+
   @FXML
   private TableView tableView;
+
   @FXML
   private TableColumn column1;
+
   @FXML
   private TableColumn column2;
+
   @FXML
   private TableColumn column3;
+
   @FXML
   private TableColumn column4;
 
+  @FXML
+  private ComboBox<String> removeGame;
 
-
-
-
-
+  @FXML
+  private Label removedGame;
 
   // initialize method
   @FXML
@@ -75,13 +67,8 @@ public class LibraryViewController implements Initializable {
 
     initializeNameLabel();
     initializeGameLimit();
-    /*try {
-      initializeImageView();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }*/
+    initializeRemoveGame();
+
     try {
       initializeGameTable();
     } catch (SQLException e) {
@@ -118,7 +105,7 @@ public class LibraryViewController implements Initializable {
     String SQL = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = '"
         + game1 + "' OR TITLE = '" + game2 + "' OR TITLE = '" + game3 + "'";
     rs = stmt.executeQuery(SQL);
-    while(rs.next()){
+    while (rs.next()) {
       String title = rs.getString("TITLE");
       int esrb = rs.getInt("ESRB");
       int genre = rs.getInt("GENRE");
@@ -183,12 +170,9 @@ public class LibraryViewController implements Initializable {
     column3.setCellValueFactory(new PropertyValueFactory<>("rating"));
     column4.setCellValueFactory(new PropertyValueFactory<>("esrb"));
 
-
     conn.close();
     stmt.close();
-    }
-
-
+  }
 
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
@@ -277,7 +261,7 @@ public class LibraryViewController implements Initializable {
 
       PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
 
-      while(rs.next()) {
+      while (rs.next()) {
         String username = rs.getString("USERNAME");
 
         ps.setString(1, username);
@@ -303,8 +287,198 @@ public class LibraryViewController implements Initializable {
     window.show();
   }
 
-  private void initializeNameLabel() {
+  @FXML
+  void playGame(MouseEvent event) {
 
+  }
+
+
+  @FXML
+  void removeGame(MouseEvent event) {
+    String game1 = getGame1();
+    String game2 = getGame2();
+    String game3 = getGame3();
+
+    if (game1 == removeGame.getValue()) {
+
+      String sql = "UPDATE USERGAMES SET GAME1 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, null);
+        ps.setString(2, "1");
+        ps.setString(3, myName.getText());
+
+        ps.executeUpdate();
+
+        removedGame.setText("Game Removed From Library!");
+        removeGame.getItems().clear();
+        initializeNameLabel();
+        initializeGameLimit();
+        initializeRemoveGame();
+
+        try {
+          initializeGameTable();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+
+        ps.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
+    } else if (game2 == removeGame.getValue()) {
+
+      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, null);
+        ps.setString(2, "2");
+        ps.setString(3, myName.getText());
+
+        ps.executeUpdate();
+
+        removedGame.setText("Game Removed From Library!");
+        removeGame.getItems().clear();
+        initializeNameLabel();
+        initializeGameLimit();
+        initializeRemoveGame();
+
+        try {
+          initializeGameTable();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+
+        ps.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
+    } else if (game3 == removeGame.getValue()) {
+      String sql = "UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, null);
+        ps.setString(2, "3");
+        ps.setString(3, myName.getText());
+
+        ps.executeUpdate();
+
+        removedGame.setText("Game Removed From Library!");
+        removeGame.getItems().clear();
+        initializeNameLabel();
+        initializeGameLimit();
+        initializeRemoveGame();
+
+        try {
+          initializeGameTable();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+
+        ps.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private String getGame1() {
+    String sql = "SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, myName.getText());
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        return rs.getString("GAME1");
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
+  private String getGame2() {
+    String sql = "SELECT GAME2 FROM USERGAMES WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, myName.getText());
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        return rs.getString("GAME2");
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
+  private String getGame3() {
+    String sql = "SELECT GAME3 FROM USERGAMES WHERE USERNAME = ?";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      PreparedStatement ps = conn.prepareStatement(sql);
+
+      ps.setString(1, myName.getText());
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        return rs.getString("GAME3");
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
+  private void initializeNameLabel() {
     try {
 
       String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
@@ -319,6 +493,44 @@ public class LibraryViewController implements Initializable {
         String username = rs.getString("USERNAME");
         myName.setText(username);
       }
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void initializeRemoveGame() {
+    String game1;
+    String game2;
+    String game3;
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      Statement stmt = conn.createStatement();
+
+      ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+      rs.next();
+      String activeUser = rs.getString("USERNAME");
+
+      PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
+          + "FROM USERGAMES WHERE USERNAME = ?");
+
+      pstmt.setString(1, activeUser);
+      rs = pstmt.executeQuery();
+      rs.next();
+
+      game1 = rs.getString("GAME1");
+      game2 = rs.getString("GAME2");
+      game3 = rs.getString("GAME3");
+
+      String SQL = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = '"
+          + game1 + "' OR TITLE = '" + game2 + "' OR TITLE = '" + game3 + "'";
+      rs = stmt.executeQuery(SQL);
+
+      removeGame.getItems().addAll(game1, game2, game3);
+
+      conn.close();
+      stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -344,65 +556,4 @@ public class LibraryViewController implements Initializable {
     }
 
   }
-  /*private void initializeImageView() throws ClassNotFoundException, SQLException {
-    boolean game1missing;
-    boolean game2missing;
-    boolean game3missing;
-    String game1;
-    String game2;
-    String game3;
-    Class.forName(JDBC_DRIVER); // Database Driver
-    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-    Statement stmt = conn.createStatement();
-
-    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
-    rs.next();
-    String activeUser = rs.getString("USERNAME");
-
-    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
-        + "FROM USERGAMES WHERE USERNAME = ?");
-
-    pstmt.setString(1, activeUser);
-    rs = pstmt.executeQuery();
-    rs.next();
-
-    game1 = rs.getString("GAME1");
-    game2 = rs.getString("GAME2");
-    game3 = rs.getString("GAME3");
-
-
-
-    pstmt = conn.prepareStatement("SELECT IMG FROM VIDEOGAME WHERE TITLE = ?");
-    pstmt.setString(1,game1);
-    rs = pstmt.executeQuery();
-    rs.next();
-    Blob blob1 = rs.getBlob("IMG");
-    InputStream in1 = blob1.getBinaryStream();
-    Image img1 = new Image(in1);
-    imageView1 = new ImageView(img1);
-
-    rs = pstmt.executeQuery();
-    pstmt.setString(1,game2);
-    rs.next();
-    blob1 = rs.getBlob("IMG");
-    in1 = blob1.getBinaryStream();
-    img1 = new Image(in1);
-    imageView2 = new ImageView(img1);
-
-
-    pstmt.setString(1,game3);
-    rs = pstmt.executeQuery();
-    rs.next();
-    blob1 = rs.getBlob("IMG");
-    in1 = blob1.getBinaryStream();
-    img1 = new Image(in1);
-    imageView3 = new ImageView(img1);
-
-    }*/
-
-
-
-
-
-
 }
