@@ -65,6 +65,8 @@ public class HomeViewController implements Initializable {
 
   @FXML private ComboBox<ESRB> getESRB;
 
+  @FXML private Button resetTableButton;
+
   @FXML private Button admin;
 
   @Override
@@ -355,6 +357,11 @@ public class HomeViewController implements Initializable {
     } else {
       addedGame.setText("Out of rentals!");
     }
+    initializeGamesTable();
+  }
+
+  @FXML
+  void resetTableView(ActionEvent event) {
     initializeGamesTable();
   }
 
