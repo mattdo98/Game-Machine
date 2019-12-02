@@ -1,13 +1,8 @@
 package com.peanutbutterdawg.gamerental;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -29,6 +26,12 @@ public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+
+  @FXML private ImageView gameImgView1;
+
+  @FXML private ImageView gameImgView2;
+
+  @FXML private ImageView gameImgView3;
 
   @FXML private Label myName;
 
@@ -58,115 +61,16 @@ public class LibraryViewController implements Initializable {
     initializeGameLimit();
     initializeRemoveGame();
 
-    try {
-      initializeGameTable();
-    } catch (SQLException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+    initializeGameView();
     System.out.println("This is Library Tab");
 
     checkForAdmin();
   }
 
-  private void initializeGameTable() throws SQLException, ClassNotFoundException {
-    String game1;
-    String game2;
-    String game3;
-    ObservableList<Games> games = FXCollections.observableArrayList();
-    Class.forName(JDBC_DRIVER); // Database Driver
-    Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-    Statement stmt = conn.createStatement();
-
-    ResultSet rs = stmt.executeQuery("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
-    rs.next();
-    String activeUser = rs.getString("USERNAME");
-
-    PreparedStatement pstmt =
-        conn.prepareStatement("SELECT GAME1, GAME2, GAME3 " + "FROM USERGAMES WHERE USERNAME = ?");
-
-    pstmt.setString(1, activeUser);
-    rs = pstmt.executeQuery();
-    rs.next();
-
-    game1 = rs.getString("GAME1");
-    game2 = rs.getString("GAME2");
-    game3 = rs.getString("GAME3");
-    String SQL =
-        "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = '"
-            + game1
-            + "' OR TITLE = '"
-            + game2
-            + "' OR TITLE = '"
-            + game3
-            + "'";
-    rs = stmt.executeQuery(SQL);
-    while (rs.next()) {
-      String title = rs.getString("TITLE");
-      int esrb = rs.getInt("ESRB");
-      int genre = rs.getInt("GENRE");
-      int rating = rs.getInt("RATING");
-
-      ESRB realEsrb = null;
-
-      if (esrb == 0) {
-        realEsrb = ESRB.RP;
-      }
-      if (esrb == 1) {
-        realEsrb = ESRB.C;
-      }
-      if (esrb == 2) {
-        realEsrb = ESRB.E;
-      }
-      if (esrb == 3) {
-        realEsrb = ESRB.T;
-      }
-      if (esrb == 4) {
-        realEsrb = ESRB.M;
-      }
-      if (esrb == 5) {
-        realEsrb = ESRB.A;
-      }
-
-      Genre realGenre = null;
-
-      if (genre == 0) {
-        realGenre = Genre.ACTION;
-      }
-      if (genre == 1) {
-        realGenre = Genre.ADVENTURE;
-      }
-      if (genre == 2) {
-        realGenre = Genre.RPG;
-      }
-      if (genre == 3) {
-        realGenre = Genre.SPORTS;
-      }
-      if (genre == 4) {
-        realGenre = Genre.MMO;
-      }
-      if (genre == 5) {
-        realGenre = Genre.STRATEGY;
-      }
-      if (genre == 6) {
-        realGenre = Genre.SIMULATION;
-      }
-
-      // testing in the console
-      System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating);
-
-      // setting the games to the table view
-      tableView.setItems(games);
-      games.add(new Games(title, realGenre, rating, realEsrb));
-    }
-
-    // Setup for the table view
-    column1.setCellValueFactory(new PropertyValueFactory<>("title"));
-    column2.setCellValueFactory(new PropertyValueFactory<>("genre"));
-    column3.setCellValueFactory(new PropertyValueFactory<>("rating"));
-    column4.setCellValueFactory(new PropertyValueFactory<>("esrb"));
-
-    conn.close();
-    stmt.close();
+  private void initializeGameView(){
+    getGame1();
+    getGame2();
+    getGame3();
   }
 
   // Get Admin Tab
@@ -275,6 +179,34 @@ public class LibraryViewController implements Initializable {
         PreparedStatement ps = conn.prepareStatement(sql);
 
         ps.setString(1, null);
+        ps.setString(2, "0");
+        ps.setString(3, myName.getText());
+
+        ps.executeUpdate();
+
+        removedGame.setText("Game Removed From Library!");
+        removeGame.getItems().clear();
+        initializeNameLabel();
+        initializeGameLimit();
+        initializeRemoveGame();
+        initializeGameView();
+
+        ps.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
+    } else if (game2 == removeGame.getValue()) {
+
+      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, null);
         ps.setString(2, "1");
         ps.setString(3, myName.getText());
 
@@ -285,21 +217,15 @@ public class LibraryViewController implements Initializable {
         initializeNameLabel();
         initializeGameLimit();
         initializeRemoveGame();
-
-        try {
-          initializeGameTable();
-        } catch (SQLException | ClassNotFoundException e) {
-          e.printStackTrace();
-        }
+        initializeGameView();
 
         ps.close();
         conn.close();
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
-    } else if (game2 == removeGame.getValue()) {
-
-      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
+    } else if (game3 == removeGame.getValue()) {
+      String sql = "UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
 
       try {
         Class.forName(JDBC_DRIVER); // Database Driver
@@ -318,48 +244,7 @@ public class LibraryViewController implements Initializable {
         initializeNameLabel();
         initializeGameLimit();
         initializeRemoveGame();
-
-        try {
-          initializeGameTable();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-          e.printStackTrace();
-        }
-
-        ps.close();
-        conn.close();
-      } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
-      }
-    } else if (game3 == removeGame.getValue()) {
-      String sql = "UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
-
-      try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        ps.setString(1, null);
-        ps.setString(2, "3");
-        ps.setString(3, myName.getText());
-
-        ps.executeUpdate();
-
-        removedGame.setText("Game Removed From Library!");
-        removeGame.getItems().clear();
-        initializeNameLabel();
-        initializeGameLimit();
-        initializeRemoveGame();
-
-        try {
-          initializeGameTable();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-          e.printStackTrace();
-        }
+        initializeGameView();
 
         ps.close();
         conn.close();
@@ -367,12 +252,12 @@ public class LibraryViewController implements Initializable {
         e.printStackTrace();
       }
     }
+    initializeGameLimit();
   }
 
   private String getGame1() {
-    String sql = "SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?";
-
     try {
+      String sql = "SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?";
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
@@ -383,19 +268,37 @@ public class LibraryViewController implements Initializable {
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
-        return rs.getString("GAME1");
-      }
+        String title = rs.getString("GAME1");
+        try{
+          String sqlGame = "SELECT IMG FROM VIDEOGAME WHERE TITLE = ?";
+          PreparedStatement psGame = conn.prepareStatement(sqlGame);
 
+          psGame.setString(1, title);
+          ResultSet rsGame = psGame.executeQuery();
+
+          if (title != null) {
+            while (rsGame.next()) {
+              InputStream input1 = rsGame.getBinaryStream("IMG");
+              Image img1 = new Image(input1);
+              gameImgView1.setImage(img1);
+              return title;
+            }
+          } else {
+            gameImgView1.setImage(null);
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-
     return null;
   }
 
   private String getGame2() {
     String sql = "SELECT GAME2 FROM USERGAMES WHERE USERNAME = ?";
-
     try {
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
@@ -407,13 +310,30 @@ public class LibraryViewController implements Initializable {
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
-        return rs.getString("GAME2");
-      }
+        String title = rs.getString("GAME2");
+        try{
+          String sqlGame = "SELECT IMG FROM VIDEOGAME WHERE TITLE = ?";
+          PreparedStatement psGame = conn.prepareStatement(sqlGame);
 
+          psGame.setString(1, title);
+          ResultSet rsGame = psGame.executeQuery();
+          if (title != null) {
+            while (rsGame.next()) {
+              InputStream input2 = rsGame.getBinaryStream("IMG");
+              Image img2 = new Image(input2);
+              gameImgView2.setImage(img2);
+              return title;
+            }
+          }else {
+            gameImgView2.setImage(null);
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-
     return null;
   }
 
@@ -431,7 +351,26 @@ public class LibraryViewController implements Initializable {
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
-        return rs.getString("GAME3");
+        String title = rs.getString("GAME3");
+        try{
+          String sqlGame = "SELECT IMG FROM VIDEOGAME WHERE TITLE = ?";
+          PreparedStatement psGame = conn.prepareStatement(sqlGame);
+
+          psGame.setString(1, title);
+          ResultSet rsGame = psGame.executeQuery();
+          if (title != null) {
+            while (rsGame.next()) {
+              InputStream input3 = rsGame.getBinaryStream("IMG");
+              Image img1 = new Image(input3);
+              gameImgView3.setImage(img1);
+              return title;
+            }
+          }else{
+            gameImgView3.setImage(null);
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
 
     } catch (ClassNotFoundException | SQLException e) {
@@ -515,6 +454,8 @@ public class LibraryViewController implements Initializable {
 
       Statement stmt = conn.createStatement();
       ResultSet rs = stmt.executeQuery(sqlLimit);
+
+
       while (rs.next()) {
         String gameCount = rs.getString("GAMECOUNT");
         gameLimit.setText("Limit: " + gameCount + "/3");

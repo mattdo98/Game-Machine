@@ -1,6 +1,6 @@
 package com.peanutbutterdawg.gamerental;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +23,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AdminViewController implements Initializable {
 
@@ -31,6 +33,9 @@ public class AdminViewController implements Initializable {
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
 
   private ObservableList<Games> games;
+
+  @FXML
+  public Button addPhotoBtn;
 
   @FXML private Label name;
 
@@ -63,6 +68,8 @@ public class AdminViewController implements Initializable {
   @FXML private TextField getTitle;
 
   @FXML private Button admin;
+
+  private String fileInputPath = "";
 
   // initialize method
   public void initialize(URL url, ResourceBundle rb) {
@@ -202,14 +209,17 @@ public class AdminViewController implements Initializable {
   // Add Game Button
   @FXML
   void addGame(MouseEvent event) {
+
+
     // Variables
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
     int ratingText = getRating.getValue();
 
-    String sql = "INSERT INTO VIDEOGAME (TITLE, GENRE, ESRB, RATING) VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO VIDEOGAME (TITLE, GENRE, ESRB, RATING, IMG) VALUES (?, ?, ?, ?, ?)";
 
     try {
+      InputStream input = new FileInputStream(new File(fileInputPath));
 
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
@@ -220,6 +230,8 @@ public class AdminViewController implements Initializable {
       ps.setString(2, genreText.toString());
       ps.setString(3, esrbText.toString());
       ps.setString(4, Integer.toString(ratingText));
+      ps.setBlob(5, input);
+//      fileInputStream = new FileInputStream(fileChooser.showOpenDialog());
 
       ps.executeUpdate();
 
@@ -227,11 +239,27 @@ public class AdminViewController implements Initializable {
       initializeSelectGame();
       initializeDeleteGame();
 
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException | FileNotFoundException e) {
       e.printStackTrace();
     }
   }
 
+  @FXML
+  void addPhotoBtn(ActionEvent event){
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Image", ".png", ".jpg",
+        ".jpeg");
+    fileChooser.addChoosableFileFilter(filter);
+
+    int result = fileChooser.showSaveDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION){
+      File selectedFile = fileChooser.getSelectedFile();
+      fileInputPath = selectedFile.getAbsolutePath();
+    } else{
+      System.out.println("NO DATA.");
+    }
+  }
   // Edit Game Button
   @FXML
   void editGame(MouseEvent event) {
@@ -240,7 +268,7 @@ public class AdminViewController implements Initializable {
     ESRB esrbText = getNewESRB.getValue();
     int ratingText = getNewRating.getValue();
 
-    String sql = "UPDATE VIDEOGAME SET GENRE = ?, ESRB = ?, RATING = ? WHERE TITLE = ?";
+    String sql = "UPDATE VIDEOGAME SET GENRE = ?, ESRB = ?, RATING = ?, IMG = ? WHERE TITLE = ?";
 
     try {
 

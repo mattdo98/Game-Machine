@@ -43,7 +43,7 @@
                            </image></ImageView>
                         <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="235.0" layoutY="10.0" pickOnBounds="true">
                            <image>
-                              <Image url="@../../../img/BattlefieldFive.jpg" />
+                              <Image url="@../../../img/battlefieldV.jpg" />
                            </image></ImageView>
                      </children>
                   </FlowPane>
