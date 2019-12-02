@@ -49,6 +49,7 @@
             <ComboBox fx:id="getNewRating" layoutY="130.0" prefHeight="31.0" prefWidth="187.0" promptText="New Rating" />
             <ComboBox fx:id="getNewGenre" layoutY="99.0" prefHeight="31.0" prefWidth="187.0" promptText="New Genre" />
             <ComboBox fx:id="getNewESRB" layoutY="161.0" prefHeight="31.0" prefWidth="187.0" promptText="New ESRB" />
+         <Button fx:id="addPhotoBtn2" alignment="CENTER" contentDisplay="CENTER" layoutY="74.0" mnemonicParsing="false" onAction="#addPhotoBtn" prefHeight="25.0" prefWidth="187.0" text="Add Photo" textAlignment="CENTER" />
         </AnchorPane>
         <AnchorPane fx:id="addRemoveGame" layoutX="493.0" layoutY="14.0" snapToPixel="false" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="14.0">
             <TextField fx:id="getTitle" layoutY="32.0" prefHeight="31.0" prefWidth="188.0" promptText="Game Title" />

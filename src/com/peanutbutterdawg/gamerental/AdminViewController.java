@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -31,6 +32,7 @@ public class AdminViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
+  public Button addPhotoBtn2;
 
   private ObservableList<Games> games;
 
@@ -210,7 +212,6 @@ public class AdminViewController implements Initializable {
   @FXML
   void addGame(MouseEvent event) {
 
-
     // Variables
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
@@ -231,7 +232,6 @@ public class AdminViewController implements Initializable {
       ps.setString(3, esrbText.toString());
       ps.setString(4, Integer.toString(ratingText));
       ps.setBlob(5, input);
-//      fileInputStream = new FileInputStream(fileChooser.showOpenDialog());
 
       ps.executeUpdate();
 
@@ -246,20 +246,18 @@ public class AdminViewController implements Initializable {
 
   @FXML
   void addPhotoBtn(ActionEvent event){
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Image", ".png", ".jpg",
-        ".jpeg");
-    fileChooser.addChoosableFileFilter(filter);
-
-    int result = fileChooser.showSaveDialog(null);
-    if (result == JFileChooser.APPROVE_OPTION){
-      File selectedFile = fileChooser.getSelectedFile();
-      fileInputPath = selectedFile.getAbsolutePath();
-    } else{
-      System.out.println("NO DATA.");
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter(".IMAGES", "*.png", "*.jpg", "*.jpeg")
+    );
+    File tempFile = fileChooser.showOpenDialog(null);
+    if (tempFile != null){
+      fileInputPath = tempFile.getAbsolutePath();
+    }else{
+      System.out.println("No Data");
     }
   }
+  
   // Edit Game Button
   @FXML
   void editGame(MouseEvent event) {
@@ -271,16 +269,19 @@ public class AdminViewController implements Initializable {
     String sql = "UPDATE VIDEOGAME SET GENRE = ?, ESRB = ?, RATING = ?, IMG = ? WHERE TITLE = ?";
 
     try {
+      InputStream input = new FileInputStream(new File(fileInputPath));
 
       Class.forName(JDBC_DRIVER); // Database Driver
       Connection conn = DriverManager.getConnection(DB_URL); // Database Url
 
       PreparedStatement ps = conn.prepareStatement(sql);
 
-      ps.setString(4, selectGame.getValue());
+      ps.setString(5, selectGame.getValue());
       ps.setString(1, genreText.toString());
       ps.setString(2, esrbText.toString());
       ps.setString(3, Integer.toString(ratingText));
+      ps.setBlob(4, input);
+
 
       ps.executeUpdate();
 
@@ -288,7 +289,7 @@ public class AdminViewController implements Initializable {
       initializeSelectGame();
       initializeDeleteGame();
 
-    } catch (ClassNotFoundException | SQLException e) {
+    } catch (ClassNotFoundException | SQLException | FileNotFoundException e) {
       e.printStackTrace();
     }
   }
