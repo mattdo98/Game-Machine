@@ -18,13 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -68,8 +62,11 @@ public class AdminViewController implements Initializable {
 
   @FXML private TextField getTitle;
 
+  @FXML private Button admin;
+
   // initialize method
   public void initialize(URL url, ResourceBundle rb) {
+
     initializeNameLabel();
     initializeGamesTable();
     initializeSelectGame();
@@ -113,47 +110,21 @@ public class AdminViewController implements Initializable {
   }
 
   // Get Admin Tab
-  @FXML void getAdmin(ActionEvent event) throws IOException {
-    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER = TRUE";
+  @FXML
+  void getAdmin(ActionEvent event) throws IOException {
+    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+    Scene AdminViewScene = new Scene(AdminViewParent);
 
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    // This line gets the Stage information
+    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUser);
-
-      while (rs.next()) {
-        boolean admin = rs.getBoolean("ISADMIN");
-
-        if (admin == true) {
-          System.out.println("User is Admin");
-
-          Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-          Scene AdminViewScene = new Scene(AdminViewParent);
-
-          // This line gets the Stage information
-          Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-          window.setScene(AdminViewScene);
-          window.show();
-
-        } else {
-          System.out.println("User is Not Admin");
-          JFrame parent = new JFrame();
-          JOptionPane.showMessageDialog(parent, "User is Not Admin");
-        }
-      }
-
-      stmt.close();
-      conn.close();
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
+    window.setScene(AdminViewScene);
+    window.show();
   }
 
   // Get Home Tab
-  @FXML void getHome(ActionEvent event) throws IOException {
+  @FXML
+  void getHome(ActionEvent event) throws IOException {
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
 
@@ -165,7 +136,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Get Library
-  @FXML void getLibrary(ActionEvent event) throws IOException {
+  @FXML
+  void getLibrary(ActionEvent event) throws IOException {
     Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
     Scene LibraryViewScene = new Scene(LibraryViewParent);
 
@@ -177,7 +149,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Get Logout
-  @FXML void getLogout(ActionEvent event) throws IOException {
+  @FXML
+  void getLogout(ActionEvent event) throws IOException {
     Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
     Scene LoginViewScene = new Scene(LoginViewParent);
 
@@ -199,7 +172,7 @@ public class AdminViewController implements Initializable {
 
       PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
 
-      while(rs.next()) {
+      while (rs.next()) {
         String username = rs.getString("USERNAME");
 
         ps.setString(1, username);
@@ -214,7 +187,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Get Profile Tab
-  @FXML void getProfile(ActionEvent event) throws IOException {
+  @FXML
+  void getProfile(ActionEvent event) throws IOException {
     Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
     Scene ProfileViewScene = new Scene(ProfileViewParent);
 
@@ -226,7 +200,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Add Game Button
-  @FXML void addGame(MouseEvent event) {
+  @FXML
+  void addGame(MouseEvent event) {
     // Variables
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
@@ -258,7 +233,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Edit Game Button
-  @FXML void editGame(MouseEvent event) {
+  @FXML
+  void editGame(MouseEvent event) {
     // Variables
     Genre genreText = getNewGenre.getValue();
     ESRB esrbText = getNewESRB.getValue();
@@ -290,7 +266,8 @@ public class AdminViewController implements Initializable {
   }
 
   // Delete Game Button
-  @FXML void deleteGame(MouseEvent event) {
+  @FXML
+  void deleteGame(MouseEvent event) {
 
     String sql = "DELETE FROM VIDEOGAME WHERE TITLE = ?";
 
@@ -455,7 +432,15 @@ public class AdminViewController implements Initializable {
         }
 
         // testing in the console
-        System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating + "\nESRB: " + realEsrb);
+        System.out.println(
+            "\nTitle: "
+                + title
+                + "\nGenre: "
+                + realGenre
+                + "\nRating: "
+                + rating
+                + "\nESRB: "
+                + realEsrb);
 
         // setting the games to the table view
         tableAdminTab.setItems(games);

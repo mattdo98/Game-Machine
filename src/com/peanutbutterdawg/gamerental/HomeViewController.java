@@ -65,8 +65,11 @@ public class HomeViewController implements Initializable {
 
   @FXML private ComboBox<ESRB> getESRB;
 
+  @FXML private Button admin;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    checkForAdmin();
     // this initializes the filter combo boxes with hardcoded data
     initializeFilterCBO();
     // this initializes the table view with hardcoded data
@@ -75,49 +78,22 @@ public class HomeViewController implements Initializable {
     initializeNameLabel();
   }
 
+  // Get Admin Tab
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
-    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER = TRUE";
+    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+    Scene AdminViewScene = new Scene(AdminViewParent);
 
-    JFrame parent = new JFrame();
+    // This line gets the Stage information
+    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUser);
-
-      while (rs.next()) {
-        boolean admin = rs.getBoolean("ISADMIN");
-
-        if (admin == true) {
-          System.out.println("User is Admin");
-
-          Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-          Scene AdminViewScene = new Scene(AdminViewParent);
-
-          // This line gets the Stage information
-          Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-          window.setScene(AdminViewScene);
-          window.show();
-
-        } else {
-          System.out.println("User is Not Admin");
-          JOptionPane.showMessageDialog(parent, "User is Not Admin");
-        }
-      }
-
-      stmt.close();
-      conn.close();
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
+    window.setScene(AdminViewScene);
+    window.show();
   }
 
   @FXML
   void getHome(ActionEvent event) throws IOException {
+    checkForAdmin();
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
 
@@ -196,7 +172,8 @@ public class HomeViewController implements Initializable {
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
 
-    if (!searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()
+    if (!searchBar.getText().isEmpty()
+        && getGenre.getSelectionModel().isEmpty()
         && getESRB.getSelectionModel().isEmpty()) {
       String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
 
@@ -225,8 +202,9 @@ public class HomeViewController implements Initializable {
       }
 
       // to search if the combobox genre was only filled
-    } else if (searchBar.getText().isEmpty() && !getGenre.getSelectionModel().isEmpty()
-                && getESRB.getSelectionModel().isEmpty()) {
+    } else if (searchBar.getText().isEmpty()
+        && !getGenre.getSelectionModel().isEmpty()
+        && getESRB.getSelectionModel().isEmpty()) {
       String sql = "SELECT GENRE FROM VIDEOGAME WHERE GENRE = ?";
 
       System.out.println("test");
@@ -253,7 +231,8 @@ public class HomeViewController implements Initializable {
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
-    } else if(searchBar.getText().isEmpty() && getGenre.getSelectionModel().isEmpty()
+    } else if (searchBar.getText().isEmpty()
+        && getGenre.getSelectionModel().isEmpty()
         && !getESRB.getSelectionModel().isEmpty()) {
 
       System.out.println("Test if.");
@@ -745,6 +724,7 @@ public class HomeViewController implements Initializable {
       e.printStackTrace();
     }
   }
+
   private void setUpTableSearchESRB(int esrb) {
     games = FXCollections.observableArrayList();
 
@@ -832,6 +812,31 @@ public class HomeViewController implements Initializable {
       ps.execute();
       conn.close();
       ps.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void checkForAdmin() {
+    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(getUser);
+
+      while (rs.next()) {
+        boolean adminbool = rs.getBoolean("ISADMIN");
+
+        if (adminbool) {
+          admin.setVisible(true);
+        } else {
+          admin.setVisible(false);
+        }
+      }
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }

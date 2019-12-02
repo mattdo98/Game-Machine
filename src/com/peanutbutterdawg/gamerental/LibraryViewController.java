@@ -18,10 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -32,34 +29,26 @@ public class LibraryViewController implements Initializable {
 
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
   private static final String DB_URL = "jdbc:h2:./res/H2"; // Path to my DataBase URL
-  private ObservableList<Games> games;
 
-  @FXML
-  private Label myName;
+  @FXML private Label myName;
 
-  @FXML
-  private Label gameLimit;
+  @FXML private Label gameLimit;
 
-  @FXML
-  private TableView tableView;
+  @FXML private TableView tableView;
 
-  @FXML
-  private TableColumn column1;
+  @FXML private TableColumn column1;
 
-  @FXML
-  private TableColumn column2;
+  @FXML private TableColumn column2;
 
-  @FXML
-  private TableColumn column3;
+  @FXML private TableColumn column3;
 
-  @FXML
-  private TableColumn column4;
+  @FXML private TableColumn column4;
 
-  @FXML
-  private ComboBox<String> removeGame;
+  @FXML private ComboBox<String> removeGame;
 
-  @FXML
-  private Label removedGame;
+  @FXML private Label removedGame;
+
+  @FXML private Button admin;
 
   // initialize method
   @FXML
@@ -71,19 +60,19 @@ public class LibraryViewController implements Initializable {
 
     try {
       initializeGameTable();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
+    } catch (SQLException | ClassNotFoundException e) {
       e.printStackTrace();
     }
     System.out.println("This is Library Tab");
+
+    checkForAdmin();
   }
 
   private void initializeGameTable() throws SQLException, ClassNotFoundException {
     String game1;
     String game2;
     String game3;
-    games = FXCollections.observableArrayList();
+    ObservableList<Games> games = FXCollections.observableArrayList();
     Class.forName(JDBC_DRIVER); // Database Driver
     Connection conn = DriverManager.getConnection(DB_URL); // Database Url
     Statement stmt = conn.createStatement();
@@ -92,8 +81,8 @@ public class LibraryViewController implements Initializable {
     rs.next();
     String activeUser = rs.getString("USERNAME");
 
-    PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
-        + "FROM USERGAMES WHERE USERNAME = ?");
+    PreparedStatement pstmt =
+        conn.prepareStatement("SELECT GAME1, GAME2, GAME3 " + "FROM USERGAMES WHERE USERNAME = ?");
 
     pstmt.setString(1, activeUser);
     rs = pstmt.executeQuery();
@@ -102,8 +91,14 @@ public class LibraryViewController implements Initializable {
     game1 = rs.getString("GAME1");
     game2 = rs.getString("GAME2");
     game3 = rs.getString("GAME3");
-    String SQL = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = '"
-        + game1 + "' OR TITLE = '" + game2 + "' OR TITLE = '" + game3 + "'";
+    String SQL =
+        "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = '"
+            + game1
+            + "' OR TITLE = '"
+            + game2
+            + "' OR TITLE = '"
+            + game3
+            + "'";
     rs = stmt.executeQuery(SQL);
     while (rs.next()) {
       String title = rs.getString("TITLE");
@@ -174,44 +169,17 @@ public class LibraryViewController implements Initializable {
     stmt.close();
   }
 
+  // Get Admin Tab
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
-    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER = TRUE";
+    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
+    Scene AdminViewScene = new Scene(AdminViewParent);
 
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+    // This line gets the Stage information
+    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUser);
-
-      while (rs.next()) {
-        boolean admin = rs.getBoolean("ISADMIN");
-
-        if (admin == true) {
-          System.out.println("User is Admin");
-
-          Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-          Scene AdminViewScene = new Scene(AdminViewParent);
-
-          // This line gets the Stage information
-          Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-          window.setScene(AdminViewScene);
-          window.show();
-
-        } else {
-          System.out.println("User is Not Admin");
-          JFrame parent = new JFrame();
-          JOptionPane.showMessageDialog(parent, "User is Not Admin");
-        }
-      }
-
-      stmt.close();
-      conn.close();
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
+    window.setScene(AdminViewScene);
+    window.show();
   }
 
   @FXML
@@ -288,10 +256,7 @@ public class LibraryViewController implements Initializable {
   }
 
   @FXML
-  void playGame(MouseEvent event) {
-
-  }
-
+  void playGame(MouseEvent event) {}
 
   @FXML
   void removeGame(MouseEvent event) {
@@ -323,9 +288,7 @@ public class LibraryViewController implements Initializable {
 
         try {
           initializeGameTable();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
           e.printStackTrace();
         }
 
@@ -512,8 +475,9 @@ public class LibraryViewController implements Initializable {
       rs.next();
       String activeUser = rs.getString("USERNAME");
 
-      PreparedStatement pstmt = conn.prepareStatement("SELECT GAME1, GAME2, GAME3 "
-          + "FROM USERGAMES WHERE USERNAME = ?");
+      PreparedStatement pstmt =
+          conn.prepareStatement(
+              "SELECT GAME1, GAME2, GAME3 " + "FROM USERGAMES WHERE USERNAME = ?");
 
       pstmt.setString(1, activeUser);
       rs = pstmt.executeQuery();
@@ -523,8 +487,14 @@ public class LibraryViewController implements Initializable {
       game2 = rs.getString("GAME2");
       game3 = rs.getString("GAME3");
 
-      String SQL = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = '"
-          + game1 + "' OR TITLE = '" + game2 + "' OR TITLE = '" + game3 + "'";
+      String SQL =
+          "SELECT TITLE FROM VIDEOGAME WHERE TITLE = '"
+              + game1
+              + "' OR TITLE = '"
+              + game2
+              + "' OR TITLE = '"
+              + game3
+              + "'";
       rs = stmt.executeQuery(SQL);
 
       removeGame.getItems().addAll(game1, game2, game3);
@@ -536,7 +506,7 @@ public class LibraryViewController implements Initializable {
     }
   }
 
-  private void initializeGameLimit(){
+  private void initializeGameLimit() {
     try {
       String sqlLimit = "SELECT GAMECOUNT FROM USERGAMES";
 
@@ -545,7 +515,7 @@ public class LibraryViewController implements Initializable {
 
       Statement stmt = conn.createStatement();
       ResultSet rs = stmt.executeQuery(sqlLimit);
-      while(rs.next()) {
+      while (rs.next()) {
         String gameCount = rs.getString("GAMECOUNT");
         gameLimit.setText("Limit: " + gameCount + "/3");
       }
@@ -554,6 +524,30 @@ public class LibraryViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+  }
 
+  @FXML
+  private void checkForAdmin() {
+    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER";
+
+    try {
+      Class.forName(JDBC_DRIVER); // Database Driver
+      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(getUser);
+
+      while (rs.next()) {
+        boolean adminbool = rs.getBoolean("ISADMIN");
+
+        if (adminbool) {
+          admin.setVisible(true);
+        } else {
+          admin.setVisible(false);
+        }
+      }
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

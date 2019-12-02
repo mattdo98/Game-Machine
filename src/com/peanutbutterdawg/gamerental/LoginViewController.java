@@ -1,13 +1,10 @@
 package com.peanutbutterdawg.gamerental;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -15,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginViewController implements Initializable {
+public class LoginViewController {
 
   // Database stuff: No touch >:-(
   private static final String JDBC_DRIVER = "org.h2.Driver"; // Path to my H2 Driver
@@ -82,9 +79,8 @@ public class LoginViewController implements Initializable {
                 lastName.getText(),
                 createUsername.getText(),
                 createPassword.getText(),
-                false, // <--- When an account is first created, SUB is always false.
-                isAdmin.isSelected(),
-                false);
+                // <--- When an account is first created, SUB is always false.
+                isAdmin.isSelected());
             System.out.println("Admin account successfully created.");
             createAccountLabel.setText("Admin account successfully created.");
             createAccountLabel.setVisible(true);
@@ -100,9 +96,8 @@ public class LoginViewController implements Initializable {
               lastName.getText(),
               createUsername.getText(),
               createPassword.getText(),
-              false, // <--- When an account is first created, SUB is always false.
-              isAdmin.isDisabled(),
-              false);
+              // <--- When an account is first created, SUB is always false.
+              isAdmin.isDisabled());
           System.out.println("Account successfully created.");
           createAccountLabel.setText("Account successfully created.");
           createAccountLabel.setVisible(true);
@@ -144,7 +139,7 @@ public class LoginViewController implements Initializable {
 
   // initialize method
   @FXML
-  public void initialize(URL url, ResourceBundle rb) {
+  public void initialize() {
 
     // System.out.println("is this working, guess not.");
     // End of game page table initialize
@@ -172,6 +167,23 @@ public class LoginViewController implements Initializable {
   @FXML
   void Login(ActionEvent event) throws IOException {
     if (checkLoginInformation(username.getText(), password.getText())) {
+      String sql = "UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?";
+
+      try {
+        Class.forName(JDBC_DRIVER); // Database Driver
+        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, username.getText());
+
+        ps.executeUpdate();
+
+        ps.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
       Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
       Scene HomeViewScene = new Scene(HomeViewParent);
 
@@ -183,24 +195,6 @@ public class LoginViewController implements Initializable {
     } else {
       System.out.println("Entered incorrect username or password.");
       invalidUsername.setVisible(true);
-    }
-
-    String sql = "UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?";
-
-    try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
-      ps.setString(1, username.getText());
-
-      ps.executeUpdate();
-
-      ps.close();
-      conn.close();
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
     }
   }
 
@@ -267,13 +261,7 @@ public class LoginViewController implements Initializable {
 
   // You can call this method to save to database
   private void insertToDatabase(
-      String firstname,
-      String lastname,
-      String username,
-      String password,
-      Boolean subscription,
-      Boolean isAdmin,
-      Boolean isActive) {
+      String firstname, String lastname, String username, String password, Boolean isAdmin) {
 
     // had to add this so the program knows which user we are talking about
     // all users will be set false, until they login
@@ -289,11 +277,11 @@ public class LoginViewController implements Initializable {
             + "', '"
             + password
             + "', '"
-            + subscription
+            + false
             + "', '"
             + isAdmin
             + "', '"
-            + isActive
+            + false
             + "')";
     // Here I am initializing my DataBase.
     try {
