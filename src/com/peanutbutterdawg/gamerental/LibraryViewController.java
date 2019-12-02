@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -53,6 +54,8 @@ public class LibraryViewController implements Initializable {
 
   @FXML private Button admin;
 
+  @FXML private Pane checkSub;
+
   // initialize method
   @FXML
   public void initialize(URL url, ResourceBundle rb) {
@@ -60,6 +63,7 @@ public class LibraryViewController implements Initializable {
     initializeNameLabel();
     initializeGameLimit();
     initializeRemoveGame();
+    checkForSubscription();
 
     initializeGameView();
     System.out.println("This is Library Tab");
@@ -491,4 +495,37 @@ public class LibraryViewController implements Initializable {
       e.printStackTrace();
     }
   }
-}
+  @FXML
+  private void checkForSubscription(){
+
+    try {
+
+      String sql = "SELECT SUBSCRIPTION FROM USER WHERE ISACTIVEUSER = true";
+      Class.forName(JDBC_DRIVER);
+      Connection conn = DriverManager.getConnection(DB_URL);
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
+      while (rs.next()) {
+        boolean currentSub;
+        if (rs.getBoolean("SUBSCRIPTION")) {
+          // If current user has a subscription
+          currentSub = true;
+          checkSub.setVisible(false);
+
+        }
+        // If current user does not have a subscription
+        else {
+          currentSub = false;
+          checkSub.setVisible(true);
+
+        }
+      }
+
+
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  }
