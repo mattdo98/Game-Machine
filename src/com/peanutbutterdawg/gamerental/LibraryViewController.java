@@ -50,8 +50,6 @@ public class LibraryViewController implements Initializable {
 
   @FXML private ComboBox<String> removeGame;
 
-  @FXML private Label removedGame;
-
   @FXML private Button admin;
 
   @FXML private Pane checkSub;
@@ -188,7 +186,6 @@ public class LibraryViewController implements Initializable {
 
         ps.executeUpdate();
 
-        removedGame.setText("Game Removed From Library!");
         removeGame.getItems().clear();
         initializeNameLabel();
         initializeGameLimit();
@@ -216,7 +213,6 @@ public class LibraryViewController implements Initializable {
 
         ps.executeUpdate();
 
-        removedGame.setText("Game Removed From Library!");
         removeGame.getItems().clear();
         initializeNameLabel();
         initializeGameLimit();
@@ -243,7 +239,6 @@ public class LibraryViewController implements Initializable {
 
         ps.executeUpdate();
 
-        removedGame.setText("Game Removed From Library!");
         removeGame.getItems().clear();
         initializeNameLabel();
         initializeGameLimit();

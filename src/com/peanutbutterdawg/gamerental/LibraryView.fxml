@@ -51,7 +51,6 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="removedGame" layoutX="298.0" layoutY="267.0" textFill="WHITE" />
                   <ImageView fx:id="gameImgView1" fitHeight="240.0" fitWidth="260.0" layoutX="6.0" layoutY="62.0" pickOnBounds="true" smooth="false">
                      <image>
                      </image></ImageView>
