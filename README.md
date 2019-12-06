@@ -3,7 +3,7 @@
   
 * Project Requirements: Create a Rental Inventory Tracking System. Users with accounts can browse, select, and rent game titles. Users can also see which games they have rented. Users shall also be able to search for games based on content (Title, ESRB Rating, Popularity).
 
-## **Update: Beta Submission Sunday, November 18th, 2019:**
+## **Update: Project Deployed! Friday, December 6th, 2019!**
 
 **Login Screen:**
 
