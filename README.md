@@ -101,7 +101,7 @@
 
 ## **Class Diagram & Database Visualizations:**
 
-![GitHub Logo](Documentation/classdiagram.png)
+![GitHub Logo](Documentation/USECASE.png)
 
 ![GitHub Logo](Documentation/database.png)
 
