@@ -85,7 +85,9 @@
 
 [https://www.youtube.com/watch?v=LM6VDMPzXzY](https://www.youtube.com/watch?v=LM6VDMPzXzY) Alpha Submission
 
-[https://www.youtube.com/watch?v=CCRRkg8oBA](https://www.youtube.com/watch?v=_CCRRkg8oBA) (New) Beta Submission
+[https://www.youtube.com/watch?v=CCRRkg8oBA](https://www.youtube.com/watch?v=_CCRRkg8oBA) Beta Submission
+
+[https://www.youtube.com/watch?v=IUL4JNuvRok&t=18s](https://www.youtube.com/watch?v=IUL4JNuvRok&t=18s) Final Submission
 
 ## **Project Photos:**
 
