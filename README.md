@@ -89,15 +89,15 @@
 
 ## **Project Photos:**
 
-![GitHub Logo](Documentation/homescreen.png)
+![GitHub Logo](Documentation/login.png)
 
-![GitHub Logo](Documentation/gamescreen.png)
+![GitHub Logo](Documentation/games.png)
 
-![GitHub Logo](Documentation/libraryview.png)
+![GitHub Logo](Documentation/library.png)
 
-![GitHub Logo](Documentation/profilescreen.png)
+![GitHub Logo](Documentation/profile.png)
 
-![GitHub Logo](Documentation/adminscreen.png)
+![GitHub Logo](Documentation/admin.png)
 
 ## **Class Diagram & Database Visualizations:**
 
