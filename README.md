@@ -93,7 +93,7 @@
 
 ![GitHub Logo](Documentation/gamescreen.png)
 
-![GitHub Logo](Documentation/libraryscreen.png)
+![GitHub Logo](Documentation/libraryview.png)
 
 ![GitHub Logo](Documentation/profilescreen.png)
 
