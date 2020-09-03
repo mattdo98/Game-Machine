@@ -1,5 +1,5 @@
 
-# **Team Peanut Butter Dog's Video-Game Rental System:**  :rocket:
+# **Team Redshifts Video-Game Rental System:**  :rocket:
   
 * Project Requirements: Create a Rental Inventory Tracking System. Users with accounts can browse, select, and rent game titles. Users can also see which games they have rented. Users shall also be able to search for games based on content (Title, ESRB Rating, Popularity).
 
