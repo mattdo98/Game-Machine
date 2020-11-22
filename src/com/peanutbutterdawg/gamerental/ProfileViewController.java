@@ -1,7 +1,5 @@
 package com.peanutbutterdawg.gamerental;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -31,9 +29,6 @@ import javafx.stage.Stage;
 import javax.swing.*;
 
 public class ProfileViewController implements Initializable {
-
-  private static final String JDBC_DRIVER = "org.h2.Driver"; // path to h2 driver
-  private static final String DB_URL = "jdbc:h2:./res/H2"; // Database url
 
   private ObservableList<Profile> profile;
 
@@ -66,16 +61,33 @@ public class ProfileViewController implements Initializable {
   @FXML private TextField userPassWord;
   @FXML private Button showPassBtn;
   @FXML private Button hidePassBtn;
-  @FXML private Label ccardError;
+  @FXML private Label cardError;
 
   @FXML private Button admin;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeNameLabel();
-    intitalizeProfile();
+    try {
+      intitalizeProfile();
+    } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     initializeSubSelect();
     checkForAdmin();
+  }
+
+  private ResultSet getResultSet(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    Statement stmt = conn.createStatement();
+    return stmt.executeQuery(sql);
+  }
+
+  private PreparedStatement getPreparedStatement(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    return conn.prepareStatement(sql);
   }
 
   // Get Admin Tab
@@ -83,7 +95,6 @@ public class ProfileViewController implements Initializable {
   void getAdmin(ActionEvent event) throws IOException {
     Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
     Scene AdminViewScene = new Scene(AdminViewParent);
-
     // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -95,7 +106,6 @@ public class ProfileViewController implements Initializable {
   void getHome(ActionEvent event) throws IOException {
     Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
     Scene HomeViewScene = new Scene(HomeViewParent);
-
     // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -107,7 +117,6 @@ public class ProfileViewController implements Initializable {
   void getLibrary(ActionEvent event) throws IOException {
     Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
     Scene LibraryViewScene = new Scene(LibraryViewParent);
-
     // This line gets the Stage information
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -116,7 +125,7 @@ public class ProfileViewController implements Initializable {
   }
 
   @FXML
-  void getLogout(ActionEvent event) throws IOException {
+  public void getLogout(ActionEvent event) throws IOException {
     Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
     Scene LoginViewScene = new Scene(LoginViewParent);
 
@@ -126,17 +135,10 @@ public class ProfileViewController implements Initializable {
     window.setScene(LoginViewScene);
     window.show();
 
-    String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
-    String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
 
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUserName);
-
-      PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
+      PreparedStatement ps = getPreparedStatement("UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?");
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -144,9 +146,6 @@ public class ProfileViewController implements Initializable {
         ps.setString(1, username);
         ps.executeUpdate();
       }
-
-      stmt.close();
-      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -165,7 +164,7 @@ public class ProfileViewController implements Initializable {
   }
 
   // Initializes Profile Tab
-  private void intitalizeProfile() {
+  private void intitalizeProfile() throws SQLException, ClassNotFoundException {
     getUserName();
     getFullName();
     setUserPassWord();
@@ -180,7 +179,7 @@ public class ProfileViewController implements Initializable {
     cCardInfo2.setVisible(false);
     cCardInfo3.setVisible(false);
     subLabel.setVisible(false);
-    ccardError.setVisible(false);
+    cardError.setVisible(false);
   }
 
   // made method that shows a month from the current date
@@ -195,17 +194,11 @@ public class ProfileViewController implements Initializable {
     subEnd.setText(df.format(subEndDate));
   }
 
-  // gets the full name
   private void getFullName() {
-
     profile = FXCollections.observableArrayList();
-    String selectStmt1 = "SELECT FIRSTNAME, LASTNAME FROM USER WHERE ISACTIVEUSER = true";
+
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement stmt = conn.prepareStatement(selectStmt1);
-      ResultSet rs = stmt.executeQuery();
+      ResultSet rs =  getResultSet("SELECT FIRSTNAME, LASTNAME FROM USER WHERE ISACTIVEUSER = true");
 
       while (rs.next()) {
         String firstNameGot = rs.getString("FIRSTNAME");
@@ -214,10 +207,6 @@ public class ProfileViewController implements Initializable {
         System.out.println("\nName: " + firstNameGot + " " + lastNameGot);
         fullName.setText(firstNameGot + " " + lastNameGot);
       }
-
-      stmt.execute();
-      conn.close();
-      stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -226,24 +215,14 @@ public class ProfileViewController implements Initializable {
   // Get username from Database
   private void getUserName() {
     profile = FXCollections.observableArrayList();
-    String selectStmt = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = true";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement stmt = conn.prepareStatement(selectStmt);
-      ResultSet rs = stmt.executeQuery();
+      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = true");
 
       while (rs.next()) {
         String usernameGot = rs.getString("USERNAME");
         System.out.println("\nUsername: " + usernameGot);
         userName.setText(usernameGot);
       }
-
-      stmt.execute();
-      conn.close();
-      stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -252,14 +231,7 @@ public class ProfileViewController implements Initializable {
   private void initializeNameLabel() {
 
     try {
-
-      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -276,19 +248,12 @@ public class ProfileViewController implements Initializable {
 
     try {
 
-      String sql = "SELECT SUBSCRIPTION FROM USER WHERE ISACTIVEUSER = true";
-      Class.forName(JDBC_DRIVER);
-      Connection conn = DriverManager.getConnection(DB_URL);
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT SUBSCRIPTION FROM USER WHERE ISACTIVEUSER = true");
 
       while (rs.next()) {
-        boolean currentSub;
 
         if (rs.getBoolean("SUBSCRIPTION")) {
           // If current user has a subscription
-          currentSub = true;
           subCancel.setVisible(true);
           displaySubEnd();
           System.out.println("Subscription verified");
@@ -296,7 +261,6 @@ public class ProfileViewController implements Initializable {
         }
         // If current user does not have a subscription
         else {
-          currentSub = false;
           System.out.println("No active Subscription. Please Press the button below to buy one");
           subLabel.setVisible(true);
           subLabel.setText("No active Subscription. Please Press the button below to buy one");
@@ -330,21 +294,16 @@ public class ProfileViewController implements Initializable {
 
       if (ccard1.isEmpty() | ccard2.isEmpty() | ccard3.isEmpty()) {
         System.out.println("Please enter card information");
-        ccardError.setVisible(true);
+        cardError.setVisible(true);
         return;
       }
 
-      String sql = "UPDATE USER SET SUBSCRIPTION = TRUE WHERE ISACTIVEUSER = true ";
-      Class.forName(JDBC_DRIVER);
-
-      Connection conn = DriverManager.getConnection(DB_URL);
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps = getPreparedStatement("UPDATE USER SET SUBSCRIPTION = TRUE WHERE ISACTIVEUSER = true ");
       ps.executeUpdate();
 
       System.out.println("Subcription Set");
       displaySubEnd();
       subCancel.setVisible(true);
-      ;
     } catch (SQLException | ClassNotFoundException e) {
       e.printStackTrace();
     }
@@ -352,19 +311,16 @@ public class ProfileViewController implements Initializable {
     cCardInfo1.clear();
     cCardInfo2.clear();
     cCardInfo3.clear();
-    ccardError.setVisible(false);
+    cardError.setVisible(false);
   }
 
   // On action to cancel sub
   @FXML
   void cancelSub(ActionEvent event) {
     try {
-      String sql = "UPDATE USER SET SUBSCRIPTION = FALSE WHERE ISACTIVEUSER = true ";
-      Class.forName(JDBC_DRIVER);
-
-      Connection conn = DriverManager.getConnection(DB_URL);
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps = getPreparedStatement("UPDATE USER SET SUBSCRIPTION = FALSE WHERE ISACTIVEUSER = true ");
       ps.executeUpdate();
+
       buySubButton.setVisible(true);
       subCancel.setVisible(false);
 
@@ -387,18 +343,12 @@ public class ProfileViewController implements Initializable {
         "Having trouble with our program? Have suggestions on how to improve it?\n"
             + " Feel free to email us at support@pbdawg.com\n ");
   }
+
   // Gets user password and sets it to the textfield
   @FXML
-  private void setUserPassWord() {
+  private void setUserPassWord() throws SQLException, ClassNotFoundException {
+    ResultSet rs = getResultSet("SELECT PASSWORD FROM USER WHERE ISACTIVEUSER = TRUE");
     try {
-      String sql = "SELECT PASSWORD FROM USER WHERE ISACTIVEUSER = TRUE";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
-
       while (rs.next()) {
         String password = rs.getString("PASSWORD");
 
@@ -410,14 +360,14 @@ public class ProfileViewController implements Initializable {
       e.printStackTrace();
     }
   }
-  // Shows password information
+  // Shows password information for security.
   @FXML
   void showPassword() {
     userPassWord.setVisible(true);
     showPassBtn.setVisible(false);
     hidePassBtn.setVisible(true);
   }
-  // Hides password information
+  // Hides password information for security.
   @FXML
   void hidePassword() {
     userPassWord.setVisible(false);
@@ -427,19 +377,13 @@ public class ProfileViewController implements Initializable {
 
   @FXML
   private void checkForAdmin() {
-    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUser);
+      ResultSet rs = getResultSet("SELECT ISADMIN FROM USER WHERE ISACTIVEUSER");
 
       while (rs.next()) {
-        boolean adminbool = rs.getBoolean("ISADMIN");
+        boolean isAdmin = rs.getBoolean("ISADMIN");
 
-        if (adminbool) {
+        if (isAdmin) {
           admin.setVisible(true);
         } else {
           admin.setVisible(false);
