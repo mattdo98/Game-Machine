@@ -73,7 +73,6 @@ public class AdminViewController implements Initializable {
 
   private String fileInputPath = "";
 
-  // initialize method
   public void initialize(URL url, ResourceBundle rb) {
 
     initializeNameLabel();
@@ -118,68 +117,61 @@ public class AdminViewController implements Initializable {
     getNewRating.getItems().add(10);
   }
 
-  // Get Admin Tab
+  private ResultSet getResultSet(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    Statement stmt = conn.createStatement();
+    return stmt.executeQuery(sql);
+  }
+
+  private PreparedStatement getPreparedStatement(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    return conn.prepareStatement(sql);
+  }
+
+  @FXML
+  private void setScene(String parent, ActionEvent event) throws IOException {
+    Parent viewParent = FXMLLoader.load(getClass().getResource(parent));
+    Scene scene = new Scene(viewParent);
+
+    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+    window.setScene(scene);
+    window.show();
+  }
+
   @FXML
   void getAdmin(ActionEvent event) throws IOException {
-    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-    Scene AdminViewScene = new Scene(AdminViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(AdminViewScene);
-    window.show();
+    setScene("AdminView.fxml", event);
   }
 
-  // Get Home Tab
   @FXML
   void getHome(ActionEvent event) throws IOException {
-    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-    Scene HomeViewScene = new Scene(HomeViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(HomeViewScene);
-    window.show();
+    setScene("HomeView.fxml", event);
   }
 
-  // Get Library
   @FXML
   void getLibrary(ActionEvent event) throws IOException {
-    Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
-    Scene LibraryViewScene = new Scene(LibraryViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LibraryViewScene);
-    window.show();
+    setScene("LibraryView.fxml", event);
   }
 
-  // Get Logout
+  @FXML
+  void getProfile(ActionEvent event) throws IOException {
+    setScene("ProfileView.fxml", event);
+  }
+
   @FXML
   void getLogout(ActionEvent event) throws IOException {
-    Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-    Scene LoginViewScene = new Scene(LoginViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LoginViewScene);
-    window.show();
+    setScene("LoginView.fxml", event);
 
     String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
     String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
 
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      ResultSet rs = getResultSet(getUserName);
 
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUserName);
-
-      PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
+      PreparedStatement ps = getPreparedStatement(setActiveToFalse);
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -187,45 +179,23 @@ public class AdminViewController implements Initializable {
         ps.setString(1, username);
         ps.executeUpdate();
       }
-
-      stmt.close();
-      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
 
-  // Get Profile Tab
-  @FXML
-  void getProfile(ActionEvent event) throws IOException {
-    Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
-    Scene ProfileViewScene = new Scene(ProfileViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(ProfileViewScene);
-    window.show();
-  }
-
   // Add Game Button
   @FXML
   void addGame(MouseEvent event) {
-
-    // Variables
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
     int ratingText = getRating.getValue();
 
-    String sql = "INSERT INTO VIDEOGAME (TITLE, GENRE, ESRB, RATING, IMG) VALUES (?, ?, ?, ?, ?)";
-
     try {
       InputStream input = new FileInputStream(new File(fileInputPath));
 
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps = getPreparedStatement("INSERT INTO VIDEOGAME (TITLE, GENRE, ESRB, RATING, IMG) " +
+          "VALUES " + "(?, ?, ?, ?, ?)");
 
       ps.setString(1, getTitle.getText());
       ps.setString(2, genreText.toString());
@@ -257,11 +227,9 @@ public class AdminViewController implements Initializable {
       System.out.println("No Data");
     }
   }
-  
-  // Edit Game Button
+
   @FXML
   void editGame(MouseEvent event) {
-    // Variables
     Genre genreText = getNewGenre.getValue();
     ESRB esrbText = getNewESRB.getValue();
     int ratingText = getNewRating.getValue();
@@ -271,10 +239,8 @@ public class AdminViewController implements Initializable {
     try {
       InputStream input = new FileInputStream(new File(fileInputPath));
 
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps = getPreparedStatement("UPDATE VIDEOGAME SET GENRE = ?, ESRB = ?, " +
+          "RATING = ?, IMG = ? WHERE TITLE = ?");
 
       ps.setString(5, selectGame.getValue());
       ps.setString(1, genreText.toString());
@@ -297,18 +263,10 @@ public class AdminViewController implements Initializable {
   // Delete Game Button
   @FXML
   void deleteGame(MouseEvent event) {
-
-    String sql = "DELETE FROM VIDEOGAME WHERE TITLE = ?";
-
     try {
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
+      PreparedStatement ps = getPreparedStatement("DELETE FROM VIDEOGAME WHERE TITLE = ?");
 
       ps.setString(1, deleteGame.getValue());
-
       ps.executeUpdate();
 
       initializeGamesTable();
@@ -326,13 +284,7 @@ public class AdminViewController implements Initializable {
     selectGame.getItems().clear();
 
     try {
-      String sql = "SELECT TITLE FROM VIDEOGAME";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT TITLE FROM VIDEOGAME");
 
       while (rs.next()) {
         String title = rs.getString("TITLE");
@@ -350,13 +302,7 @@ public class AdminViewController implements Initializable {
     deleteGame.getItems().clear();
 
     try {
-      String sql = "SELECT TITLE FROM VIDEOGAME";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT TITLE FROM VIDEOGAME");
 
       while (rs.next()) {
         String title = rs.getString("TITLE");
@@ -372,14 +318,7 @@ public class AdminViewController implements Initializable {
   // Initialize Name Label
   private void initializeNameLabel() {
     try {
-
-      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -397,13 +336,7 @@ public class AdminViewController implements Initializable {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, ESRB, RATING FROM VIDEOGAME";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement stmt = conn.prepareStatement(fromDbSql);
-
+      PreparedStatement stmt = getPreparedStatement("SELECT TITLE, GENRE, ESRB, RATING FROM VIDEOGAME");
       ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
@@ -483,7 +416,6 @@ public class AdminViewController implements Initializable {
       esrbColumn.setCellValueFactory(new PropertyValueFactory<>("esrb"));
 
       stmt.execute();
-      conn.close();
       stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();

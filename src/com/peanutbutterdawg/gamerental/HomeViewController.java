@@ -80,66 +80,61 @@ public class HomeViewController implements Initializable {
     initializeNameLabel();
   }
 
-  // Get Admin Tab
-  @FXML
-  void getAdmin(ActionEvent event) throws IOException {
-    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-    Scene AdminViewScene = new Scene(AdminViewParent);
+  private ResultSet getResultSet(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    Statement stmt = conn.createStatement();
+    return stmt.executeQuery(sql);
+  }
 
-    // This line gets the Stage information
+  private PreparedStatement getPreparedStatement(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    return conn.prepareStatement(sql);
+  }
+
+  @FXML
+  private void setScene(String parent, ActionEvent event) throws IOException {
+    Parent viewParent = FXMLLoader.load(getClass().getResource(parent));
+    Scene scene = new Scene(viewParent);
+
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-    window.setScene(AdminViewScene);
+    window.setScene(scene);
     window.show();
+  }
+
+  @FXML
+  void getAdmin(ActionEvent event) throws IOException {
+    setScene("AdminView.fxml", event);
   }
 
   @FXML
   void getHome(ActionEvent event) throws IOException {
-    checkForAdmin();
-    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-    Scene HomeViewScene = new Scene(HomeViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(HomeViewScene);
-    window.show();
+    setScene("HomeView.fxml", event);
   }
 
   @FXML
   void getLibrary(ActionEvent event) throws IOException {
-    Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
-    Scene LibraryViewScene = new Scene(LibraryViewParent);
+    setScene("LibraryView.fxml", event);
+  }
 
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LibraryViewScene);
-    window.show();
+  @FXML
+  void getProfile(ActionEvent event) throws IOException {
+    setScene("ProfileView.fxml", event);
   }
 
   @FXML
   void getLogout(ActionEvent event) throws IOException {
-    Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-    Scene LoginViewScene = new Scene(LoginViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LoginViewScene);
-    window.show();
+    setScene("LoginView.fxml", event);
 
     String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
     String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
 
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
+      ResultSet rs = getResultSet(getUserName);
 
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUserName);
-
-      PreparedStatement ps = conn.prepareStatement(setActiveToFalse);
+      PreparedStatement ps = getPreparedStatement(setActiveToFalse);
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -147,29 +142,13 @@ public class HomeViewController implements Initializable {
         ps.setString(1, username);
         ps.executeUpdate();
       }
-
-      stmt.close();
-      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
 
   @FXML
-  void getProfile(ActionEvent event) throws IOException {
-    Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
-    Scene ProfileViewScene = new Scene(ProfileViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(ProfileViewScene);
-    window.show();
-  }
-
-  @FXML
   void getSearch(ActionEvent event) {
-
     String searchBoxText = searchBar.getText();
     Genre genreText = getGenre.getValue();
     ESRB esrbText = getESRB.getValue();
@@ -177,18 +156,10 @@ public class HomeViewController implements Initializable {
     if (!searchBar.getText().isEmpty()
         && getGenre.getSelectionModel().isEmpty()
         && getESRB.getSelectionModel().isEmpty()) {
-      String sql = "SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?";
-
-      System.out.println("test");
 
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
+        PreparedStatement ps = getPreparedStatement("SELECT TITLE FROM VIDEOGAME WHERE TITLE = ?");
         ps.setString(1, searchBoxText);
-
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -207,25 +178,15 @@ public class HomeViewController implements Initializable {
     } else if (searchBar.getText().isEmpty()
         && !getGenre.getSelectionModel().isEmpty()
         && getESRB.getSelectionModel().isEmpty()) {
-      String sql = "SELECT GENRE FROM VIDEOGAME WHERE GENRE = ?";
-
-      System.out.println("test");
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
+        PreparedStatement ps = getPreparedStatement("SELECT GENRE FROM VIDEOGAME WHERE GENRE = ?");
         ps.setString(1, genreText.toString());
-
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
           int genre = rs.getInt("GENRE");
 
           System.out.println(genreText.getString());
-
           System.out.println(genre);
 
           setUpTableSearchGenre(genre);
@@ -237,15 +198,8 @@ public class HomeViewController implements Initializable {
         && getGenre.getSelectionModel().isEmpty()
         && !getESRB.getSelectionModel().isEmpty()) {
 
-      System.out.println("Test if.");
-
-      String sql = "SELECT ESRB FROM VIDEOGAME WHERE ESRB = ?";
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("SELECT ESRB FROM VIDEOGAME WHERE ESRB = ?");
 
         ps.setString(1, esrbText.toString());
 
@@ -255,10 +209,8 @@ public class HomeViewController implements Initializable {
           int esrb = rs.getInt("ESRB");
 
           System.out.println(esrbText.getString());
-
           setUpTableSearchESRB(esrb);
         }
-        System.out.println("Test done.");
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
@@ -287,70 +239,42 @@ public class HomeViewController implements Initializable {
     String game3 = getGame3();
 
     if (game1 == null) {
-
-      String sql = "UPDATE USERGAMES SET GAME1 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("UPDATE USERGAMES SET GAME1 = ?, GAMECOUNT = ? WHERE USERNAME = ?");
 
         ps.setString(1, games.get(0).getTitle());
         ps.setString(2, "1");
         ps.setString(3, name.getText());
-
         ps.executeUpdate();
 
         addedGame.setText("Game Added to Library!");
-
-        ps.close();
-        conn.close();
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
     } else if (game2 == null) {
 
-      String sql = "UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("UPDATE USERGAMES SET GAME2 = ?, GAMECOUNT = ? WHERE USERNAME = ?");
 
         ps.setString(1, games.get(0).getTitle());
         ps.setString(2, "2");
         ps.setString(3, name.getText());
-
         ps.executeUpdate();
 
         addedGame.setText("Game Added to Library!");
-
-        ps.close();
-        conn.close();
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
     } else if (game3 == null) {
-      String sql = "UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?";
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("UPDATE USERGAMES SET GAME3 = ?, GAMECOUNT = ? WHERE USERNAME = ?");
 
         ps.setString(1, games.get(0).getTitle());
         ps.setString(2, "3");
         ps.setString(3, name.getText());
-
         ps.executeUpdate();
 
         addedGame.setText("Game Added to Library!");
-
-        ps.close();
-        conn.close();
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
@@ -365,90 +289,84 @@ public class HomeViewController implements Initializable {
     initializeGamesTable();
   }
 
-  private void initializeGamesTable() {
-    // Initialize and populate the game page filter table with some stuff. I HAVE NO IDEA WHY NO
-    // WORK
+  private void sortTable(ResultSet rs) throws SQLException {
+    while (rs.next()) {
+      String titleTb = rs.getString("TITLE");
+      int esrbTb = rs.getInt("ESRB");
+      int genreTb = rs.getInt("GENRE");
+      int ratingTb = rs.getInt("RATING");
 
+      ESRB realEsrb = null;
+
+      if (esrbTb == 0) {
+        realEsrb = ESRB.RP;
+      }
+      if (esrbTb == 1) {
+        realEsrb = ESRB.C;
+      }
+      if (esrbTb == 2) {
+        realEsrb = ESRB.E;
+      }
+      if (esrbTb == 3) {
+        realEsrb = ESRB.T;
+      }
+      if (esrbTb == 4) {
+        realEsrb = ESRB.M;
+      }
+      if (esrbTb == 5) {
+        realEsrb = ESRB.A;
+      }
+
+      Genre realGenre = null;
+
+      if (genreTb == 0) {
+        realGenre = Genre.ACTION;
+      }
+      if (genreTb == 1) {
+        realGenre = Genre.ADVENTURE;
+      }
+      if (genreTb == 2) {
+        realGenre = Genre.RPG;
+      }
+      if (genreTb == 3) {
+        realGenre = Genre.SPORTS;
+      }
+      if (genreTb == 4) {
+        realGenre = Genre.MMO;
+      }
+      if (genreTb == 5) {
+        realGenre = Genre.STRATEGY;
+      }
+      if (genreTb == 6) {
+        realGenre = Genre.SIMULATION;
+      }
+
+      // testing in the console
+      System.out.println(
+          "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
+
+      // setting the games to the table view
+      tableGamesTab.setItems(games);
+      games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
+    }
+
+    // Setup for the table view
+    titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
+    genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
+    ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
+    esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+  }
+
+  private void initializeGamesTable() {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement stmt = conn.prepareStatement(fromDbSql);
-
+      PreparedStatement stmt = getPreparedStatement("SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME");
       ResultSet rs = stmt.executeQuery();
 
-      while (rs.next()) {
-
-        String title = rs.getString("TITLE");
-        int esrb = rs.getInt("ESRB");
-        int genre = rs.getInt("GENRE");
-        int rating = rs.getInt("RATING");
-
-        ESRB realEsrb = null;
-
-        if (esrb == 0) {
-          realEsrb = ESRB.RP;
-        }
-        if (esrb == 1) {
-          realEsrb = ESRB.C;
-        }
-        if (esrb == 2) {
-          realEsrb = ESRB.E;
-        }
-        if (esrb == 3) {
-          realEsrb = ESRB.T;
-        }
-        if (esrb == 4) {
-          realEsrb = ESRB.M;
-        }
-        if (esrb == 5) {
-          realEsrb = ESRB.A;
-        }
-
-        Genre realGenre = null;
-
-        if (genre == 0) {
-          realGenre = Genre.ACTION;
-        }
-        if (genre == 1) {
-          realGenre = Genre.ADVENTURE;
-        }
-        if (genre == 2) {
-          realGenre = Genre.RPG;
-        }
-        if (genre == 3) {
-          realGenre = Genre.SPORTS;
-        }
-        if (genre == 4) {
-          realGenre = Genre.MMO;
-        }
-        if (genre == 5) {
-          realGenre = Genre.STRATEGY;
-        }
-        if (genre == 6) {
-          realGenre = Genre.SIMULATION;
-        }
-
-        // testing in the console
-        System.out.println("\nTitle: " + title + "\nGenre: " + realGenre + "\nRating: " + rating);
-
-        // setting the games to the table view
-        tableGamesTab.setItems(games);
-        games.add(new Games(title, realGenre, rating, realEsrb));
-      }
-
-      // Setup for the table view
-      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
-      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
-      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
-      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+      sortTable(rs);
 
       stmt.execute();
-      conn.close();
       stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -456,39 +374,22 @@ public class HomeViewController implements Initializable {
   }
 
   private void initializeNameLabel() {
-
     try {
-
-      String sql = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(sql);
+      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
-
         name.setText(username);
       }
-
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
 
   private String getGame1() {
-    String sql = "SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
+      PreparedStatement ps = getPreparedStatement("SELECT GAME1 FROM USERGAMES WHERE USERNAME = ?");
       ps.setString(1, name.getText());
-
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
@@ -498,21 +399,13 @@ public class HomeViewController implements Initializable {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-
     return null;
   }
 
   private String getGame2() {
-    String sql = "SELECT GAME2 FROM USERGAMES WHERE USERNAME = ?";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
+      PreparedStatement ps = getPreparedStatement("SELECT GAME2 FROM USERGAMES WHERE USERNAME = ?");
       ps.setString(1, name.getText());
-
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
@@ -527,16 +420,9 @@ public class HomeViewController implements Initializable {
   }
 
   private String getGame3() {
-    String sql = "SELECT GAME3 FROM USERGAMES WHERE USERNAME = ?";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      PreparedStatement ps = conn.prepareStatement(sql);
-
+      PreparedStatement ps = getPreparedStatement("SELECT GAME3 FROM USERGAMES WHERE USERNAME = ?");
       ps.setString(1, name.getText());
-
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
@@ -554,86 +440,13 @@ public class HomeViewController implements Initializable {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = ?";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement ps = conn.prepareStatement(fromDbSql);
-
+      PreparedStatement ps = getPreparedStatement("SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE TITLE = ?");
       ps.setString(1, title);
-
       ResultSet rs = ps.executeQuery();
 
-      while (rs.next()) {
-
-        String titleTb = rs.getString("TITLE");
-        int esrbTb = rs.getInt("ESRB");
-        int genreTb = rs.getInt("GENRE");
-        int ratingTb = rs.getInt("RATING");
-
-        ESRB realEsrb = null;
-
-        if (esrbTb == 0) {
-          realEsrb = ESRB.RP;
-        }
-        if (esrbTb == 1) {
-          realEsrb = ESRB.C;
-        }
-        if (esrbTb == 2) {
-          realEsrb = ESRB.E;
-        }
-        if (esrbTb == 3) {
-          realEsrb = ESRB.T;
-        }
-        if (esrbTb == 4) {
-          realEsrb = ESRB.M;
-        }
-        if (esrbTb == 5) {
-          realEsrb = ESRB.A;
-        }
-
-        Genre realGenre = null;
-
-        if (genreTb == 0) {
-          realGenre = Genre.ACTION;
-        }
-        if (genreTb == 1) {
-          realGenre = Genre.ADVENTURE;
-        }
-        if (genreTb == 2) {
-          realGenre = Genre.RPG;
-        }
-        if (genreTb == 3) {
-          realGenre = Genre.SPORTS;
-        }
-        if (genreTb == 4) {
-          realGenre = Genre.MMO;
-        }
-        if (genreTb == 5) {
-          realGenre = Genre.STRATEGY;
-        }
-        if (genreTb == 6) {
-          realGenre = Genre.SIMULATION;
-        }
-
-        // testing in the console
-        System.out.println(
-            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
-
-        // setting the games to the table view
-        tableGamesTab.setItems(games);
-        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
-      }
-
-      // Setup for the table view
-      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
-      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
-      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
-      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+      sortTable(rs);
 
       ps.execute();
-      conn.close();
       ps.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -644,88 +457,15 @@ public class HomeViewController implements Initializable {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE GENRE = ?";
-
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement ps = conn.prepareStatement(fromDbSql);
+      PreparedStatement ps = getPreparedStatement("SELECT TITLE, GENRE, RATING, ESRB FROM " +
+          "VIDEOGAME WHERE GENRE =" + " ?");
 
       ps.setInt(1, genre);
-
       ResultSet rs = ps.executeQuery();
 
-      while (rs.next()) {
-
-        String titleTb = rs.getString("TITLE");
-        int esrbTb = rs.getInt("ESRB");
-        int genreTb = rs.getInt("GENRE");
-        int ratingTb = rs.getInt("RATING");
-
-        System.out.println();
-
-        ESRB realEsrb = null;
-
-        if (esrbTb == 0) {
-          realEsrb = ESRB.RP;
-        }
-        if (esrbTb == 1) {
-          realEsrb = ESRB.C;
-        }
-        if (esrbTb == 2) {
-          realEsrb = ESRB.E;
-        }
-        if (esrbTb == 3) {
-          realEsrb = ESRB.T;
-        }
-        if (esrbTb == 4) {
-          realEsrb = ESRB.M;
-        }
-        if (esrbTb == 5) {
-          realEsrb = ESRB.A;
-        }
-
-        Genre realGenre = null;
-
-        if (genreTb == 0) {
-          realGenre = Genre.ACTION;
-        }
-        if (genreTb == 1) {
-          realGenre = Genre.ADVENTURE;
-        }
-        if (genreTb == 2) {
-          realGenre = Genre.RPG;
-        }
-        if (genreTb == 3) {
-          realGenre = Genre.SPORTS;
-        }
-        if (genreTb == 4) {
-          realGenre = Genre.MMO;
-        }
-        if (genreTb == 5) {
-          realGenre = Genre.STRATEGY;
-        }
-        if (genreTb == 6) {
-          realGenre = Genre.SIMULATION;
-        }
-
-        // testing in the console
-        System.out.println(
-            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
-
-        // setting the games to the table view
-        tableGamesTab.setItems(games);
-        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
-      }
-
-      // Setup for the table view
-      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
-      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
-      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
-      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+      sortTable(rs);
 
       ps.execute();
-      conn.close();
       ps.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -736,88 +476,16 @@ public class HomeViewController implements Initializable {
     games = FXCollections.observableArrayList();
 
     try {
-      String fromDbSql = "SELECT TITLE, GENRE, RATING, ESRB FROM VIDEOGAME WHERE ESRB = ?";
 
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement ps = conn.prepareStatement(fromDbSql);
+      PreparedStatement ps = getPreparedStatement("SELECT TITLE, GENRE, RATING, ESRB FROM " +
+          "VIDEOGAME WHERE ESRB = ?");
 
       ps.setInt(1, esrb);
-
       ResultSet rs = ps.executeQuery();
 
-      while (rs.next()) {
-
-        String titleTb = rs.getString("TITLE");
-        int esrbTb = rs.getInt("ESRB");
-        int genreTb = rs.getInt("GENRE");
-        int ratingTb = rs.getInt("RATING");
-
-        System.out.println();
-
-        ESRB realEsrb = null;
-
-        if (esrbTb == 0) {
-          realEsrb = ESRB.RP;
-        }
-        if (esrbTb == 1) {
-          realEsrb = ESRB.C;
-        }
-        if (esrbTb == 2) {
-          realEsrb = ESRB.E;
-        }
-        if (esrbTb == 3) {
-          realEsrb = ESRB.T;
-        }
-        if (esrbTb == 4) {
-          realEsrb = ESRB.M;
-        }
-        if (esrbTb == 5) {
-          realEsrb = ESRB.A;
-        }
-
-        Genre realGenre = null;
-
-        if (genreTb == 0) {
-          realGenre = Genre.ACTION;
-        }
-        if (genreTb == 1) {
-          realGenre = Genre.ADVENTURE;
-        }
-        if (genreTb == 2) {
-          realGenre = Genre.RPG;
-        }
-        if (genreTb == 3) {
-          realGenre = Genre.SPORTS;
-        }
-        if (genreTb == 4) {
-          realGenre = Genre.MMO;
-        }
-        if (genreTb == 5) {
-          realGenre = Genre.STRATEGY;
-        }
-        if (genreTb == 6) {
-          realGenre = Genre.SIMULATION;
-        }
-
-        // testing in the console
-        System.out.println(
-            "\nTitle: " + titleTb + "\nGenre: " + realGenre + "\nRating: " + ratingTb);
-
-        // setting the games to the table view
-        tableGamesTab.setItems(games);
-        games.add(new Games(titleTb, realGenre, ratingTb, realEsrb));
-      }
-
-      // Setup for the table view
-      titleColumn2.setCellValueFactory(new PropertyValueFactory<>("title"));
-      genreColumn2.setCellValueFactory(new PropertyValueFactory<>("genre"));
-      ratingColumn2.setCellValueFactory(new PropertyValueFactory<>("rating"));
-      esrbColumn2.setCellValueFactory(new PropertyValueFactory<>("esrb"));
+      sortTable(rs);
 
       ps.execute();
-      conn.close();
       ps.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -826,19 +494,13 @@ public class HomeViewController implements Initializable {
 
   @FXML
   private void checkForAdmin() {
-    String getUser = "SELECT ISADMIN FROM USER WHERE ISACTIVEUSER";
-
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(getUser);
+      ResultSet rs = getResultSet("SELECT ISADMIN FROM USER WHERE ISACTIVEUSER");
 
       while (rs.next()) {
-        boolean adminbool = rs.getBoolean("ISADMIN");
+        boolean adminBool = rs.getBoolean("ISADMIN");
 
-        if (adminbool) {
+        if (adminBool) {
           admin.setVisible(true);
         } else {
           admin.setVisible(false);

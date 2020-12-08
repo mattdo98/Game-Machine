@@ -113,7 +113,7 @@
                   <Hyperlink fx:id="helpLink" layoutX="25.0" layoutY="467.0" onAction="#setHelpLink" text="Need Help?" underline="true" />
                   <Button fx:id="showPassBtn" layoutX="455.0" layoutY="360.0" mnemonicParsing="false" onAction="#showPassword" style="-fx-background-color: #00264d; -fx-border-color: #003366;" text="Show Password" textFill="WHITE" />
                   <Button fx:id="hidePassBtn" layoutX="455.0" layoutY="360.0" mnemonicParsing="false" onAction="#hidePassword" prefHeight="33.0" prefWidth="134.0" style="-fx-background-color: #00264d; -fx-border-color: #003366;" text="Hide Password" textFill="WHITE" />
-                  <Label fx:id="ccardError" layoutX="468.0" layoutY="21.0" prefHeight="21.0" prefWidth="242.0" text="Please enter info into all fields" textFill="RED" />
+                  <Label fx:id="cardError" layoutX="468.0" layoutY="21.0" prefHeight="21.0" prefWidth="242.0" text="Please enter info into all fields" textFill="RED" />
                </children>
             </AnchorPane>
          </children>

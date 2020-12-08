@@ -35,43 +35,48 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Button>
-            <AnchorPane layoutY="81.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="81.0">
-               <children>
-                  <Label fx:id="gameLimit" layoutX="695.0" layoutY="4.0" text="---" textFill="WHITE" />
-                  <Button layoutX="121.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame" style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE" />
-                  <Button layoutX="330.0" layoutY="480.0" mnemonicParsing="false" onMouseClicked="#removeGame" style="-fx-background-color: #00264d;" text="Remove Game" textFill="WHITE" />
-                  <ComboBox fx:id="removeGame" layoutX="302.0" layoutY="432.0" prefWidth="150.0" />
-                  <Label layoutX="297.0" layoutY="377.0" text="Remove Game:" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="14.0" layoutY="15.0" text="My Games:" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="gameImgView1" fitHeight="240.0" fitWidth="260.0" layoutX="6.0" layoutY="62.0" pickOnBounds="true" smooth="false">
-                     <image>
-                     </image></ImageView>
-                  <ImageView fx:id="gameImgView2" fitHeight="240.0" fitWidth="260.0" layoutX="271.0" layoutY="62.0" pickOnBounds="true">
-                     <image>
-                     </image></ImageView>
-                  <ImageView fx:id="gameImgView3" fitHeight="240.0" fitWidth="260.0" layoutX="536.0" layoutY="62.0" pickOnBounds="true">
-                     <image>
-                     </image></ImageView>
-                  <Button layoutX="363.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame" style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE" />
-                  <Button layoutX="619.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame" style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE" />
-                  <Pane fx:id="checkSub" layoutX="-2.0" prefHeight="519.0" prefWidth="800.0" style="-fx-background-color: #00264d;">
-                     <children>
-                        <Label layoutY="185.0" prefHeight="150.0" prefWidth="800.0" style="-fx-text-fill: #ffffff;" text="                                                     No active Subscription, Please click the profile tab to purchase one.">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-               </children></AnchorPane>
+             <AnchorPane layoutY="81.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00264d;"
+                         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                         AnchorPane.topAnchor="81.0">
+                 <Label fx:id="gameLimit" layoutX="695.0" layoutY="4.0" text="---" textFill="WHITE"/>
+                 <Button layoutX="121.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame"
+                         style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE"/>
+                 <Button layoutX="330.0" layoutY="480.0" mnemonicParsing="false" onMouseClicked="#removeGame"
+                         style="-fx-background-color: #00264d;" text="Remove Game" textFill="WHITE"/>
+                 <ComboBox fx:id="removeGame" layoutX="302.0" layoutY="432.0" prefWidth="150.0"/>
+                 <Label layoutX="297.0" layoutY="377.0" text="Remove Game:" textFill="WHITE">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                 </Label>
+                 <Label layoutX="14.0" layoutY="15.0" text="My Games:" textFill="WHITE">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                 </Label>
+                 <ImageView fx:id="gameImgView1" fitHeight="240.0" fitWidth="260.0" layoutX="6.0" layoutY="62.0"
+                            pickOnBounds="true" smooth="false">
+                 </ImageView>
+                 <ImageView fx:id="gameImgView2" fitHeight="240.0" fitWidth="260.0" layoutX="271.0" layoutY="62.0"
+                            pickOnBounds="true">
+                 </ImageView>
+                 <ImageView fx:id="gameImgView3" fitHeight="240.0" fitWidth="260.0" layoutX="536.0" layoutY="62.0"
+                            pickOnBounds="true">
+                 </ImageView>
+                 <Button layoutX="363.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame"
+                         style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE"/>
+                 <Button layoutX="619.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#playGame"
+                         style="-fx-background-color: #00264d;" text="Play Game!" textFill="WHITE"/>
+                 <Pane fx:id="checkSub" layoutX="-2.0" prefHeight="519.0" prefWidth="800.0"
+                       style="-fx-background-color: #00264d;">
+                     <Label layoutY="185.0" prefHeight="150.0" prefWidth="800.0" style="-fx-text-fill: #ffffff;"
+                            text="                                                     No active Subscription, Please click the profile tab to purchase one.">
+                         <font>
+                             <Font size="14.0"/>
+                         </font>
+                     </Label>
+                 </Pane>
+             </AnchorPane>
          </children>
       </AnchorPane>
    </children>

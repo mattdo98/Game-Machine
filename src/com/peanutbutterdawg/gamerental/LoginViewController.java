@@ -52,6 +52,23 @@ public class LoginViewController {
 
   @FXML private Label invalidUsername;
 
+  private PreparedStatement getPreparedStatement(String sql) throws ClassNotFoundException, SQLException {
+    Class.forName("org.h2.Driver");
+    Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
+    return conn.prepareStatement(sql);
+  }
+
+  @FXML
+  private void setScene(String parent, ActionEvent event) throws IOException {
+    Parent viewParent = FXMLLoader.load(getClass().getResource(parent));
+    Scene scene = new Scene(viewParent);
+
+    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+    window.setScene(scene);
+    window.show();
+  }
+
   @FXML
   private void isAdminButton() {
     if (isAdmin.isSelected()) {
@@ -115,14 +132,9 @@ public class LoginViewController {
     }
 
     if (check) {
-      String sql = "INSERT INTO USERGAMES (USERNAME, GAMECOUNT) VALUES (?, ?)";
-
       try {
 
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("INSERT INTO USERGAMES (USERNAME, GAMECOUNT) VALUES (?, ?)");
 
         ps.setString(1, createUsername.getText());
         ps.setString(2, "0");
@@ -135,14 +147,11 @@ public class LoginViewController {
     }
   }
 
-  /////////////////////////////////////////////////////////////
 
-  // initialize method
   @FXML
   public void initialize() {
 
-    // System.out.println("is this working, guess not.");
-    // End of game page table initialize
+
   }
 
   // On Mouse Click Show Create Account Items on LoginView
@@ -167,55 +176,30 @@ public class LoginViewController {
   @FXML
   void Login(ActionEvent event) throws IOException {
     if (checkLoginInformation(username.getText(), password.getText())) {
-      String sql = "UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?";
-
       try {
-        Class.forName(JDBC_DRIVER); // Database Driver
-        Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = getPreparedStatement("UPDATE USER SET ISACTIVEUSER = TRUE WHERE USERNAME = ?");
 
         ps.setString(1, username.getText());
 
         ps.executeUpdate();
-
         ps.close();
-        conn.close();
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
-      Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-      Scene HomeViewScene = new Scene(HomeViewParent);
 
-      // This line gets the Stage information
-      Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-      window.setScene(HomeViewScene);
-      window.show();
+      setScene("HomeView.fxml", event);
     } else {
       System.out.println("Entered incorrect username or password.");
       invalidUsername.setVisible(true);
     }
   }
 
-  // Matt here, will delete when implemented in the right controller
-  /* Shows subscription ending (*not currently functioning correctly)
-    private String displaySubEnd() {
-      Calendar dateEnd = Calendar.getInstance();
-      dateEnd.add(Calendar.MONTH, 1);
-      return dateEnd.toString();
-    }
-  */
-
   // You can call this method to check is the database contains a username that is taken.
-  //  This works do not edit.
   private Boolean checkUsernameMultiples(String personsUser) {
-    String checkFromDB = "SELECT USERNAME FROM USER";
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      PreparedStatement stmt = conn.prepareStatement(checkFromDB);
+      PreparedStatement stmt = getPreparedStatement("SELECT USERNAME FROM USER");
       ResultSet rs = stmt.executeQuery();
+
       while (rs.next()) {
         String username = rs.getString("USERNAME");
         if (username.equals(personsUser)) {
@@ -223,7 +207,6 @@ public class LoginViewController {
         }
       }
       stmt.close();
-      conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -231,26 +214,16 @@ public class LoginViewController {
   }
 
   private boolean checkLoginInformation(String enteredUser, String enteredPassword) {
-    String checkFromDB = "SELECT USERNAME,PASSWORD FROM USER";
-
     try {
-      Class.forName("org.h2.Driver");
-      Connection conn = DriverManager.getConnection("jdbc:h2:./res/H2");
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(checkFromDB);
+      ResultSet rs = getPreparedStatement("SELECT USERNAME,PASSWORD FROM USER").executeQuery();
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
         String password = rs.getString("PASSWORD");
         if (username.equals(enteredUser) && password.equals(enteredPassword)) {
-          stmt.close();
-          conn.close();
           return true;
         }
       }
-
-      stmt.close();
-      conn.close();
       return false;
     } catch (SQLException | ClassNotFoundException eb) {
       eb.printStackTrace();
@@ -259,7 +232,6 @@ public class LoginViewController {
     return false;
   }
 
-  // You can call this method to save to database
   private void insertToDatabase(
       String firstname, String lastname, String username, String password, Boolean isAdmin) {
 
@@ -268,30 +240,12 @@ public class LoginViewController {
 
     String insertToDB =
         "INSERT INTO USER(FIRSTNAME, LASTNAME, USERNAME, PASSWORD, SUBSCRIPTION, ISADMIN, ISACTIVEUSER) VALUES  "
-            + "('"
-            + firstname
-            + "', '"
-            + lastname
-            + "', '"
-            + username
-            + "', '"
-            + password
-            + "', '"
-            + false
-            + "', '"
-            + isAdmin
-            + "', '"
-            + false
-            + "')";
-    // Here I am initializing my DataBase.
+            + "('" + firstname + "', '" + lastname + "', '" + username + "', '" + password + "', '"
+            + false + "', '" + isAdmin + "', '" + false + "')";
+
     try {
-      Class.forName(JDBC_DRIVER); // Database Driver
-      Connection conn = DriverManager.getConnection(DB_URL); // Database Url
-      // This prepared statement executes my SQL String Command.
-      PreparedStatement stmt = conn.prepareStatement(insertToDB);
+      PreparedStatement stmt = getPreparedStatement(insertToDB);
       stmt.execute();
-      conn.close();
-      stmt.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }

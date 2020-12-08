@@ -90,55 +90,49 @@ public class ProfileViewController implements Initializable {
     return conn.prepareStatement(sql);
   }
 
-  // Get Admin Tab
+  //Transfer to Admin Tab
   @FXML
-  void getAdmin(ActionEvent event) throws IOException {
-    Parent AdminViewParent = FXMLLoader.load(getClass().getResource("AdminView.fxml"));
-    Scene AdminViewScene = new Scene(AdminViewParent);
-    // This line gets the Stage information
+  private void setScene(String parent, ActionEvent event) throws IOException {
+    Parent viewParent = FXMLLoader.load(getClass().getResource(parent));
+    Scene scene = new Scene(viewParent);
+
     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-    window.setScene(AdminViewScene);
+    window.setScene(scene);
     window.show();
+  }
+
+  @FXML
+  void getAdmin(ActionEvent event) throws IOException {
+    setScene("AdminView.fxml", event);
   }
 
   @FXML
   void getHome(ActionEvent event) throws IOException {
-    Parent HomeViewParent = FXMLLoader.load(getClass().getResource("HomeView.fxml"));
-    Scene HomeViewScene = new Scene(HomeViewParent);
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(HomeViewScene);
-    window.show();
+    setScene("HomeView.fxml", event);
   }
 
   @FXML
   void getLibrary(ActionEvent event) throws IOException {
-    Parent LibraryViewParent = FXMLLoader.load(getClass().getResource("LibraryView.fxml"));
-    Scene LibraryViewScene = new Scene(LibraryViewParent);
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(LibraryViewScene);
-    window.show();
+    setScene("LibraryView.fxml", event);
   }
 
   @FXML
-  public void getLogout(ActionEvent event) throws IOException {
-    Parent LoginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-    Scene LoginViewScene = new Scene(LoginViewParent);
+  void getProfile(ActionEvent event) throws IOException {
+    setScene("ProfileView.fxml", event);
+  }
 
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+  @FXML
+  void getLogout(ActionEvent event) throws IOException {
+    setScene("LoginView.fxml", event);
 
-    window.setScene(LoginViewScene);
-    window.show();
+    String getUserName = "SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE";
+    String setActiveToFalse = "UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?";
 
     try {
-      ResultSet rs = getResultSet("SELECT USERNAME FROM USER WHERE ISACTIVEUSER = TRUE");
+      ResultSet rs = getResultSet(getUserName);
 
-      PreparedStatement ps = getPreparedStatement("UPDATE USER SET ISACTIVEUSER = FALSE WHERE USERNAME = ?");
+      PreparedStatement ps = getPreparedStatement(setActiveToFalse);
 
       while (rs.next()) {
         String username = rs.getString("USERNAME");
@@ -151,19 +145,6 @@ public class ProfileViewController implements Initializable {
     }
   }
 
-  @FXML
-  void getProfile(ActionEvent event) throws IOException {
-    Parent ProfileViewParent = FXMLLoader.load(getClass().getResource("ProfileView.fxml"));
-    Scene ProfileViewScene = new Scene(ProfileViewParent);
-
-    // This line gets the Stage information
-    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-    window.setScene(ProfileViewScene);
-    window.show();
-  }
-
-  // Initializes Profile Tab
   private void intitalizeProfile() throws SQLException, ClassNotFoundException {
     getUserName();
     getFullName();
